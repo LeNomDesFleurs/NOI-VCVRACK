@@ -1,0 +1,64 @@
+
+auto FREQ_CV_PARAMpos = Vec(6.435, 29.906);
+auto Q_CV_PARAMpos = Vec(45.333, 29.906);
+auto FREQ_PARAMpos = Vec(12.824, 50.361);
+auto Q_PARAMpos = Vec(38.274, 50.361);
+auto BAND_PARAMpos = Vec(12.353, 76.6);
+auto RATIO_PARAMpos = Vec(38.499, 76.72);
+auto BAND_CV_PARAMpos = Vec(8.312, 94.375);
+auto RATIO_CV_PARAMpos = Vec(43.214, 94.375);
+
+auto FREQ_CV_INPUTpos =Vec(16.637, 16.861);
+auto Q_CV_INPUTpos =Vec(34.706, 16.861);
+auto SIGNAL_INPUTpos =Vec(25.613, 34.015);
+auto BAND_CV_INPUTpos =Vec(15.357, 110.305);
+auto RATIO_CV_INPUTpos =Vec(36.599, 110.305);
+
+auto MIX_OUTPUTpos = Vec(25.613, 95.792);
+
+
+
+
+addParam(createParamCentered<RoundBlackKnob>(mm2px(FREQ_CV_PARAMpos), module, Sinensis::FREQ_CV_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(Q_CV_PARAMpos), module, Sinensis::Q_CV_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(FREQ_PARAMpos), module, Sinensis::FREQ_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(Q_PARAMpos), module, Sinensis::Q_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(BAND_PARAMpos), module, Sinensis::BAND_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(RATIO_PARAMpos), module, Sinensis::RATIO_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(BAND_CV_PARAMpos), module, Sinensis::BAND_CV_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(RATIO_CV_PARAMpos), module, Sinensis::RATIO_CV_PARAM));
+
+addInput(createInputCentered<PJ301MPort>(mm2px(FREQ_CV_INPUTpos), module, Sinensis::FREQ_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(Q_CV_INPUTpos), module, Sinensis::Q_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(SIGNAL_INPUTpos), module, Sinensis::SIGNAL_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(BAND_CV_INPUTpos), module, Sinensis::BAND_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(RATIO_CV_INPUTpos), module, Sinensis::RATIO_CV_INPUT));
+
+addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Sinensis::MIX_OUTPUT));
+
+enum ParamId {
+FREQ_CV_PARAM,
+Q_CV_PARAM,
+FREQ_PARAM,
+Q_PARAM,
+BAND_PARAM,
+RATIO_PARAM,
+BAND_CV_PARAM,
+RATIO_CV_PARAM,
+PARAMS_LEN
+};
+enum InputId {
+FREQ_CV_INPUT,
+Q_CV_INPUT,
+SIGNAL_INPUT,
+BAND_CV_INPUT,
+RATIO_CV_INPUT,
+INPUTS_LEN
+};
+enum OutputId {
+MIX_OUTPUT,
+OUTPUTS_LEN
+};
+enum LightId {
+LIGHTS_LEN
+};
