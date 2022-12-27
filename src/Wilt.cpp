@@ -140,7 +140,7 @@ public:
 
 		//set output
 		outputs[MIX_OUTPUT].setVoltage(rvb_output);
-		outputs[TEST_OUTPUT].setVoltage(test_out);
+		//outputs[TEST_OUTPUT].setVoltage(test_out);
 	}
 };
 
@@ -183,7 +183,7 @@ struct WiltWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(mm2px(RM_INPUTpos), module, Wilt::RM_INPUT));
 
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Wilt::MIX_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Wilt::TEST_OUTPUT));
+		//addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Wilt::TEST_OUTPUT));
 		addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(INTFLOAT_PARAMpos), module, Wilt::INTFLOAT_PARAM, Wilt::INTFLOAT_LIGHT));
 	}
 };
