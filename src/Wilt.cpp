@@ -139,7 +139,7 @@ public:
 		rvb_output = schroeder.process(rvb_input);
 
 		//set output
-		outputs[MIX_OUTPUT].setVoltage(rvb_output);
+		outputs[MIX_OUTPUT].setVoltage(noi::Outils::Clip(rvb_output, -5.f, 5.f));
 		//outputs[TEST_OUTPUT].setVoltage(test_out);
 	}
 };

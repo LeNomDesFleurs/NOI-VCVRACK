@@ -121,7 +121,7 @@ public:
 		}
 		
 		//set output
-		outputs[MIX_OUTPUT].setVoltage(output);
+		outputs[MIX_OUTPUT].setVoltage(noi::Outils::Clip(output, -5.f, 5.f));
 
 	}
 };
