@@ -2,14 +2,14 @@
   "slug": "NOI",
   "name": "NOI",
   "version": "2.0.0",
-  "license": "proprietary",
+  "license": "GPL-3.0-or-later",
   "brand": "NOI",
   "author": "Thomas",
   "authorEmail": "thomasvguillory@gmail.com",
   "authorUrl": "https://lenomdesfleurs.github.io/Blog/",
   "pluginUrl": "",
   "manualUrl": "",
-  "sourceUrl": "",
+  "sourceUrl": "https://github.com/LeNomDesFleurs/NOI-VCVRACK",
   "donateUrl": "",
   "changelogUrl": "",
   "modules": [
@@ -18,7 +18,8 @@
       "name": "Wilt",
       "description": "Digital Wilt",
       "tags": [
-        "Multi-Effect"
+        "Digital",
+        "Effect"
       ]
     },
     {
@@ -42,7 +43,7 @@
       "name": "Sinensis",
       "description": "Multiband Resonating Filter",
       "tags": [
-        "Filter"
+        "VCF"
       ]
     }
   ]

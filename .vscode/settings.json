@@ -1,0 +1,20 @@
+{
+    "shellLauncher.shells.windows": [
+        // ...
+        // Add the MinGW64
+              {
+                    "shell": "C:\\msys64\\usr\\bin\\bash.exe",
+                    "args":  ["--login", "-i"],
+                    "env": 
+                    {
+                        "MSYSTEM": "MINGW64",
+                        "CHERE_INVOKING":"1"
+                    },
+                    "label": "MinGW64"
+              }
+        ],
+        "files.associations": {
+            "cmath": "cpp"
+        },
+        "C_Cpp.errorSquiggles": "enabled",
+}

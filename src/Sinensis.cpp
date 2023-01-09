@@ -10,7 +10,7 @@ private:
 	float test_output;
 	//PARAM
 	float frequence, Q, numberOfBand, ratio;
-	float freq_cv, Q_cv, band_cv;
+	float freq_cv;
 	dsp::ClockDivider oneInFour;
 
 public:
@@ -51,7 +51,7 @@ public:
 	Sinensis() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configParam(FREQ_PARAM, 20.f, 8000.F, 260.f, "Cutoff frequency", " Hz");
-		configParam(Q_PARAM, 1.f, 40.f, 1, "Q");
+		configParam(Q_PARAM, 1.f, 40.f, 20.f, "Q");
 		configParam(BAND_PARAM, 1, 6.0, 3.0, "Number of band");
 		configParam(RATIO_PARAM, 0, 2.f, 1.5, "Ratio");
 
@@ -86,7 +86,7 @@ public:
 			//Ratio
 			ratio = params[RATIO_PARAM].getValue();
 			ratio += params[RATIO_CV_PARAM].getValue() * inputs[RATIO_CV_INPUT].getVoltage();
-			noi::Outils::Clip(&ratio, 0.f, 2.f);
+			ratio = rack::math::clamp(ratio, 0.f, 2.f);
 			//frequence
 			frequence = params[FREQ_PARAM].getValue();
 			frequence += (freq_cv * inputs[FREQ_CV_INPUT].getVoltage());
@@ -113,15 +113,15 @@ public:
 		for (int i = 0; i < numberOfBand; i++) {
 			float j = static_cast<float> (i);
 			if (numberOfBand - j < 1) {
-				output += (bpf[i].processFilter(input) / numberOfBand) * (numberOfBand - j);
+				output += (bpf[i].process(input) / numberOfBand) * (numberOfBand - j);
 			}
 			else {
-				output += bpf[i].processFilter(input) / (numberOfBand);
+				output += bpf[i].process(input) / (numberOfBand);
 			}
 		}
 		
 		//set output
-		outputs[MIX_OUTPUT].setVoltage(noi::Outils::Clip(output, -5.f, 5.f));
+		outputs[MIX_OUTPUT].setVoltage(rack::math::clamp(output, -5.f, 5.f));
 
 	}
 };

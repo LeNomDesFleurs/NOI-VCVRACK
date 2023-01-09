@@ -9,8 +9,9 @@
 #include <math.h>
 #include <vector>
 #include "outils.hpp"
+#include <rack.hpp>
 
-const float cheappi{ 3.14159265359 };
+
 
 namespace noi {
 
@@ -24,7 +25,7 @@ namespace Filter {
 		float m_c, m_d;
 		float m_fc{ 320 }, m_fb{ 100 };
 	public:
-		inline float processFilter(float b0) {
+		inline float process(float b0) {
 			float xh_new = b0 - m_d * (1 - m_c) * xh[0] + m_c * xh[1];
 			float ap_y = -m_c * xh_new + m_d * (1 - m_c) * xh[0] + xh[1];
 			xh[1] = xh[0];
@@ -55,7 +56,7 @@ namespace Filter {
 			alpha = 1 / ((48000 / omega) + 1);
 		}
 
-		inline float processFilter(float x) {
+		inline float process(float x) {
 			float y = x * alpha + yz * (1 - alpha);
 			yz = y;
 			return y;
@@ -70,20 +71,10 @@ namespace Filter {
 
 	private:
 		std::string m_type;
-		float 
-		m_b0,
-		m_b1,
-		m_b2,
-		m_a0,
-		m_a1,
-		m_a2;
-		float 
-		m_b0gain,
-		m_b1gain,
-		m_b2gain,
-		m_a0gain,
-		m_a1gain,
-		m_a2gain;
+		float m_b[3];
+		float m_a[3];
+		float m_b_gain[3];
+		float m_a_gain[3];
 		float m_fc;
 		float m_Q;
 		float m_omega;
@@ -95,62 +86,60 @@ namespace Filter {
 		float m_fS{ 48000 };
 
 	public:
-
-		inline void setGain(float b0, float b1, float b2, float a1, float a2) { m_b0gain = b0; m_b1gain = b1; m_b2gain = b2; m_a1gain = a1; m_a2gain = a2; }
 		inline void computeLPFCoef(){
-			m_a0gain = 1 + m_alpha;
+			m_a_gain[0] = 1 + m_alpha;
 
-			m_b0gain = (1 - m_cosomega) / 2;
-			m_b0gain /= m_a0gain;
+			m_b_gain[0] = (1 - m_cosomega) / 2;
+			m_b_gain[0] /= m_a_gain[0];
 
-			m_b1gain = 1 - m_cosomega;
-			m_b1gain /= m_a0gain;
+			m_b_gain[1] = 1 - m_cosomega;
+			m_b_gain[1] /= m_a_gain[0];
 
-			m_b2gain = m_b0gain;
+			m_b_gain[2] = m_b_gain[0];
+			m_b_gain[2] /= m_a_gain[0];
 
-			m_b2gain /= m_a0gain;
+			m_a_gain[1] = -2 * m_cosomega;
+			m_a_gain[1] /= m_a_gain[0];
 
-			m_a1gain = -2 * m_cosomega;
-			m_a1gain /= m_a0gain;
+			m_a_gain[2] = 1 - m_alpha;
+			m_a_gain[2] /= m_a_gain[0];
 
-			m_a2gain = 1 - m_alpha;
-			m_a2gain /= m_a0gain;
 		}
 		inline void computeHPFCoef(){
-			m_a0gain = 1 + m_alpha;
+			m_a_gain[0] = 1 + m_alpha;
 
-			m_b0gain = (1 + m_cosomega) / 2;
-			m_b0gain /= m_a0gain;
+			m_b_gain[0] = (1 + m_cosomega) / 2;
+			m_b_gain[0] /= m_a_gain[0];
 
-			m_b1gain = -(1 + m_cosomega);
-			m_b1gain /= m_a0gain;
+			m_b_gain[1] = -(1 + m_cosomega);
+			m_b_gain[1] /= m_a_gain[0];
 
-			m_b2gain = m_b0gain;
-			m_b2gain /= m_a0gain;
+			m_b_gain[2] = m_b_gain[0];
+			m_b_gain[2] /= m_a_gain[0];
 
-			m_a1gain = -2 * m_cosomega;
-			m_a1gain /= m_a0gain;
+			m_a_gain[1] = -2 * m_cosomega;
+			m_a_gain[1] /= m_a_gain[0];
 
-			m_a2gain = 1 - m_alpha;
-			m_a2gain /= m_a0gain;
+			m_a_gain[2] = 1 - m_alpha;
+			m_a_gain[2] /= m_a_gain[0];
 		}
 		inline void computeBPFCoef() {
-			m_a0gain = 1 + m_alpha;
+			m_a_gain[0] = 1 + m_alpha;
 
-			m_b0gain = m_alpha * m_Q;
-			m_b0gain /= m_a0gain;
+			m_b_gain[0] = m_alpha * m_Q;
+			m_b_gain[0] /= m_a_gain[0];
 
-			m_b1gain = 0;
-			m_b1gain /= m_a0gain;
+			m_b_gain[1] = 0;
+			m_b_gain[1] /= m_a_gain[0];
 
-			m_b2gain = -m_Q * m_alpha;
-			m_b2gain /= m_a0gain;
+			m_b_gain[2] = -m_Q * m_alpha;
+			m_b_gain[2] /= m_a_gain[0];
 
-			m_a1gain = -2 * m_cosomega;
-			m_a1gain /= m_a0gain;
+			m_a_gain[1] = -2 * m_cosomega;
+			m_a_gain[1] /= m_a_gain[0];
 
-			m_a2gain = 1 - m_alpha;
-			m_a2gain /= m_a0gain;
+			m_a_gain[2] = 1 - m_alpha;
+			m_a_gain[2] /= m_a_gain[0];
 		}
 		inline void computePEAKCoef() {
 			float V0 = powf(10, m_G / 20);
@@ -158,15 +147,15 @@ namespace Filter {
 			float k2 = K * K;
 			float divide = (1 + (1 / m_Q) * K + k2);
 
-			m_b0gain = 1 + (V0 / m_Q) * K + k2;
-			m_b0gain /= divide;
-			m_b1gain = 2 * (k2 - 1);
-			m_b1gain /= divide;
-			m_a1gain = m_b1gain;
-			m_b2gain = 1 - (V0 / m_Q) * K + k2;
-			m_b2gain /= divide;
-			m_a2gain = 1 - (1 / m_Q) * K + k2;
-			m_a2gain /= divide;
+			m_b_gain[0] = 1 + (V0 / m_Q) * K + k2;
+			m_b_gain[0] /= divide;
+			m_b_gain[1] = 2 * (k2 - 1);
+			m_b_gain[1] /= divide;
+			m_a_gain[1] = m_b_gain[1];
+			m_b_gain[2] = 1 - (V0 / m_Q) * K + k2;
+			m_b_gain[2] /= divide;
+			m_a_gain[2] = 1 - (1 / m_Q) * K + k2;
+			m_a_gain[2] /= divide;
 
 		}
 
@@ -204,9 +193,9 @@ namespace Filter {
 		}
 		inline std::string getType() { return m_type; }
 
-		inline float processFilter(float b0) {
+		inline float process(float b0) {
 			//feedback & clipping
-			float feedback = m_a0;
+			float feedback = m_a[0];
 			//1500 chosed by experimentation w/ sinensis, self osc around Q = 38
 			feedback *= (m_Q / 1500.F);
 			if (feedback < -4.5 || feedback > 4.5) {
@@ -214,90 +203,89 @@ namespace Filter {
 			}
 			feedback = rack::math::clamp(feedback, -5.f, 5.f);
 			b0 += feedback;
-			m_b2 = m_b1;
-			m_b1 = m_b0;
-			m_b0 = b0;
-			m_a2 = m_a1;
-			m_a1 = m_a0;
+			//shift new value in
+			m_b[2] = m_b[1];
+			m_b[1] = m_b[0];
+			m_b[0] = b0;
+			m_a[2] = m_a[1];
+			m_a[1] = m_a[0];
 
-		
-			//b0 += (m_a1 * m_Q / 20);
-			//b0 = rack::math::clamp(b0, -5.f, 5.f);
-			m_a0 = m_b0 * m_b0gain
-				+ m_b1 * m_b1gain
-				+ m_b2 * m_b2gain
-				- m_a1 * m_a1gain
-				- m_a2 * m_a2gain;
+			m_a[0] = m_b[0] * m_b_gain[0]
+				+ m_b[1] * m_b_gain[1]
+				+ m_b[2] * m_b_gain[2]
+				- m_a[1] * m_a_gain[1]
+				- m_a[2] * m_a_gain[2];
 
-			return m_a0;
+			return m_a[0];
 		}
 		inline void setType(std::string type) { m_type = type; }
-		inline Biquad(std::string type, float freq, float Q) { m_type = type; setParam(freq, Q); }
-		inline Biquad(std::string type) { m_type = type; }
+		inline Biquad(std::string type, float freq, float Q) { setType(type); setParam(freq, Q); }
+		inline Biquad(std::string type) { setType(type); }
 	};/*Biquad*/
 
 	class Allpass {
-
 	private:
-		int m_size;
-		std::vector<float> m_buffer;
-		int m_read;
-		int m_write;
+		noi::Outils::RingBuffer m_buffer{0.2f};
 		float m_gain;
 		float m_looptime;
-
 	public:
-
-		inline Allpass(float time) { m_looptime = time; m_size = noi::Outils::MsToSample(time); m_read = 0; m_write = m_size; m_buffer.resize(m_size); }
-		inline void SetGain(float rt60) {
+		inline void setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
 			m_gain = pow(10, (m_gain / 20));
 		}
-
-
-		inline float ProcessFilter(float input) {
-			float delay = m_buffer[m_read];
-			m_read = (m_read + 1) % m_size;
-
+		inline float process(float input) {
+			float delay = m_buffer.read();
 			float y = ((input + delay * m_gain) * (-m_gain)) + delay;
-
-			m_buffer[m_write] = y;
-			m_write = (m_write + 1) % m_size;
-
+			m_buffer.write(y);
 			return y;
 		}
+		inline float processFreeze(float input) {
+			float delay = m_buffer.read();
+			float y = ((input + delay * m_gain) * (-m_gain)) + delay;
+			return y;
+		}
+		inline void resize (float time){
+			m_buffer.setSize(time);
+			m_looptime = time;
+		}
+		inline void repitch(float time){
+			m_buffer.repitch(time);
+			m_looptime = time;
+		}
+		inline 	Allpass(float time) {resize(time);}
 	};
-
-	
 
 	class Comb {
 	private:
-		int m_size;
-		std::vector<float> m_buffer;
-		int m_read;
-		int m_write;
 		float m_gain;
 		float m_looptime;
-
+		//max time 200ms
+		noi::Outils::RingBuffer m_buffer{.2f};
 	public:
-		inline 	Comb(float time) { m_looptime = time; m_size = noi::Outils::MsToSample(time); m_read = 0; m_write = m_size; m_buffer.resize(m_size); }
-		inline void SetGain(float rt60) {
+		inline void setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
 			m_gain = pow(10, (m_gain / 20));
 		}
-
-
-		inline float ProcessFilter(float input) {
-			float delay = m_buffer[m_read];
-			m_read = (m_read + 1) % m_size;
-
-
+		inline float process(float input) {
+			float delay = m_buffer.read();
 			float y = delay * m_gain + input;
-			m_buffer[m_write] = y;
-			m_write = (m_write + 1) % m_size;
-
+			m_buffer.write(y);
 			return y;
 		}
+		inline float processFreeze(float input) {
+			float delay = m_buffer.read();
+			float y = delay * m_gain + input;
+			return y;
+		}
+		inline void resize (float time){
+			m_buffer.setSize(time);
+			m_looptime = time;
+		}
+				inline void repitch(float time){
+			m_buffer.repitch(time);
+			m_looptime = time;
+		}
+		inline 	Comb(float time) {resize(time);}
 	};/*Comb*/
 
 

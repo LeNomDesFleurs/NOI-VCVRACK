@@ -152,7 +152,7 @@ struct Sunflower : Module {
 			
 		//}
 			outputs[OUT_TEST].setVoltage(test_out);
-		outputs[OUTPUT].setVoltage(noi::Outils::clip(output, -5.f, 5.f));
+		outputs[OUTPUT].setVoltage(output);
 		//latch light
 		lights[LIGHT_ONLYCONNECTED].setBrightness(params[PARAM_ONLYCONNECTED].getValue());
 

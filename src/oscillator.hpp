@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef OSCILLATOR
 #define OSCILLATOR
 
@@ -53,8 +52,8 @@ namespace noi{
 				m_up_or_down = (m_up_or_down > 0) ? -1 : 1;
 				//genere une nouvelle fin
 				float new_rand = 2.0 * random::normal();
-				if (m_up_or_down) { new_rand = noi::Outils::MapValue(new_rand, -5.f, +5.f, m_statut, rack::math::clamp(m_statut + m_size, -5.f, 5.f)); }
-				if (!m_up_or_down) { new_rand = noi::Outils::MapValue(new_rand, -5.f, +5.f, rack::math::clamp(m_statut - m_size, -5.f, 5.f), m_statut); }
+				if (m_up_or_down) { new_rand = noi::Outils::mapValue(new_rand, -5.f, +5.f, m_statut, rack::math::clamp(m_statut + m_size, -5.f, 5.f)); }
+				if (!m_up_or_down) { new_rand = noi::Outils::mapValue(new_rand, -5.f, +5.f, rack::math::clamp(m_statut - m_size, -5.f, 5.f), m_statut); }
 				//alternate ascend and descend
 				m_line_goal = new_rand;
 				float difference = (m_up_or_down > 0) ? m_line_goal - m_statut : m_statut - m_line_goal;

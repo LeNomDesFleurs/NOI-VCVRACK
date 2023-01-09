@@ -8,19 +8,8 @@
 struct Wilt : Module {
 private:
 	int counter{};
-	//noi::Filter::Allpass ap1{ 0.0017 };
-	//noi::Filter::Allpass ap2{ 0.005 };
-	//noi::Filter::Comb cb1{ 0.0297 };
-	//noi::Filter::Comb cb2{ 0.0371 };
-	//noi::Filter::Comb cb3{ 0.0411 };
-	//noi::Filter::Comb cb4{ 0.0437 };
 	noi::Filter::Biquad lpf{ "LPF", 10000.f, 0.707 };
 	noi::Reverb::Schroeder schroeder;
-	//float c1;
-	//float c2;
-	//float c3;
-	//float c4;
-	//float b0;
 	float redux_input;
 	float redux_output;
 	float rm_input;
@@ -104,9 +93,9 @@ public:
 		if (params[INTFLOAT_PARAM].getValue()) {
 			redux_mod = truncf(redux_mod);
 		}
-		redux_mod = noi::Outils::MapValue(redux_mod, -5, 5, -50, 50);
+		redux_mod = noi::Outils::mapValue(redux_mod, -5, 5, -50, 50);
 		repeats = params[REDUX_PARAM].getValue() + redux_mod;
-		noi::Outils::Clip<float>(&repeats, 0, 100);
+		noi::Outils::clipRef<float>(repeats, 0, 100);
 		if (counter >= repeats) { counter = 0; redux_output = redux_input; }
 		counter++;
 		lights[INTFLOAT_LIGHT].setBrightness(params[INTFLOAT_PARAM].getValue());
@@ -128,7 +117,7 @@ public:
 
 		filter_input = rm_output;	
 		lpf.setParam(params[TONE_PARAM].getValue());
-		filter_output = lpf.processFilter(filter_input);
+		filter_output = lpf.process(filter_input);
 
 
 		//schroeder reverb
@@ -139,8 +128,8 @@ public:
 		rvb_output = schroeder.process(rvb_input);
 
 		//set output
-		outputs[MIX_OUTPUT].setVoltage(noi::Outils::Clip(rvb_output, -5.f, 5.f));
-		//outputs[TEST_OUTPUT].setVoltage(test_out);
+		outputs[MIX_OUTPUT].setVoltage(rack::math::clamp(rvb_output, -5.f, 5.f));
+		outputs[TEST_OUTPUT].setVoltage(test_out);
 	}
 };
 
@@ -183,7 +172,7 @@ struct WiltWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(mm2px(RM_INPUTpos), module, Wilt::RM_INPUT));
 
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Wilt::MIX_OUTPUT));
-		//addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Wilt::TEST_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Wilt::TEST_OUTPUT));
 		addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(INTFLOAT_PARAMpos), module, Wilt::INTFLOAT_PARAM, Wilt::INTFLOAT_LIGHT));
 	}
 };
