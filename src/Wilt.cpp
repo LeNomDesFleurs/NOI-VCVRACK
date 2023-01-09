@@ -95,7 +95,7 @@ public:
 		}
 		redux_mod = noi::Outils::mapValue(redux_mod, -5, 5, -50, 50);
 		repeats = params[REDUX_PARAM].getValue() + redux_mod;
-		noi::Outils::clipRef<float>(repeats, 0, 100);
+		repeats = rack::math::clamp(repeats, 0.f, 100.f);
 		if (counter >= repeats) { counter = 0; redux_output = redux_input; }
 		counter++;
 		lights[INTFLOAT_LIGHT].setBrightness(params[INTFLOAT_PARAM].getValue());
