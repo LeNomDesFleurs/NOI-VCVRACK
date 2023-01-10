@@ -14,6 +14,15 @@
   "changelogUrl": "",
   "modules": [
     {
+      "slug":"Hellebore",
+      "name": "Hellebore",
+      "description": "granular reverb",
+      "tags" :[
+        "Digital",
+        "Effect"
+      ]
+    },
+    {
       "slug": "Wilt",
       "name": "Wilt",
       "description": "Digital Wilt",
