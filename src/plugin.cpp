@@ -15,5 +15,6 @@ void init(Plugin* p) {
 	p->addModel(modelDicotyledon);
 	p->addModel(modelSunflower);
 	p->addModel(modelSinensis);
+	p->addModel(modelHellebore);
 	// p->addModel(modelMyModule);
 }

@@ -10,6 +10,7 @@
 #include <vector>
 #include "outils.hpp"
 #include <rack.hpp>
+#include "buffer.hpp"
 
 
 
@@ -260,7 +261,7 @@ namespace Filter {
 		float m_gain;
 		float m_looptime;
 		//max time 200ms
-		noi::Outils::RingBuffer m_buffer{.2f};
+		noi::buffer::RingBufferTest m_buffer{.2f};
 	public:
 		inline void setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
@@ -273,7 +274,7 @@ namespace Filter {
 			return y;
 		}
 		inline float processFreeze(float input) {
-			float delay = m_buffer.read();
+			float delay = m_buffer.pitchRead();
 			float y = delay * m_gain + input;
 			return y;
 		}
