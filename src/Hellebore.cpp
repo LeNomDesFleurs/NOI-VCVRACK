@@ -55,9 +55,11 @@ struct Hellebore : Module {
 
 	noi::Reverb::Moorer moorer{};
 	noi::Filter::LPF SlewLPF{20};
+	float time;
+	float new_time;
 
 	void process(const ProcessArgs& args) override {
-		bool freeze = params[FREEZE_PARAM].getValue()>0;
+		bool freeze_statut = params[FREEZE_PARAM].getValue()>0;
 		float combTime_cv = inputs[SIZE_CV_INPUT].getVoltage()*params[SIZE_CV_PARAM].getValue()*10.f;
 		combTime_cv = SlewLPF.process(combTime_cv);
 		float time_cv = inputs[TIME_CV_INPUT].getVoltage()*params[TIME_CV_PARAM].getValue();
@@ -66,14 +68,14 @@ struct Hellebore : Module {
 		float time = params[TIME_PARAM].getValue() + time_cv;
 		float input = inputs[SIGNAL_INPUT].getVoltage();
 		float drywet = params[DRYWET_PARAM].getValue();
-		if (freeze){
-			moorer.repitchComb(combTime, variation);
-		}else{moorer.resizeComb(combTime, variation);}
+
+		moorer.setFreeze(freeze_statut);
+		moorer.resizeComb(combTime, variation);
 		moorer.setParam(time, variation);
 		moorer.setDryWet(drywet);
-		float output = freeze? moorer.process(input):moorer.process(input);
+		float output = freeze_statut? moorer.process(input):moorer.process(input);
 		outputs[MIX_OUTPUT].setVoltage(output);
-		lights[FREEZE_LIGHT].setBrightness(freeze? 1.f: 0.f);
+		lights[FREEZE_LIGHT].setBrightness(freeze_statut? 1.f: 0.f);
 	}
 };
 

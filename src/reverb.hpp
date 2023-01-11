@@ -67,25 +67,7 @@ namespace noi {
 				m_comb[5].setGain(rt60);
 			}
 			inline void setDryWet(float DryWet) { m_DryWet = DryWet; }
-			inline void repitchComb(float time, float variation){
-				if (m_combTime == time && m_disp==variation) { return; }
-				m_combTime = time;
-				m_disp = variation;
-				variation /= 20.f;
 
-
-				m_comb[0].repitch(noi::Outils::clip(time + variation, 0.006f, 0.1f ));
-				time *= 1.12;
-				m_comb[1].repitch(noi::Outils::clip((time - variation), 0.006f, 0.1f));
-				time *= 1.12;
-				m_comb[2].repitch(noi::Outils::clip(time + (variation/2.f), 0.006f, 0.1f));
-				time *= 1.12;
-				m_comb[3].repitch(noi::Outils::clip((time - (variation/2.f)), 0.006f, 0.1f));
-				time *= 1.12;
-				m_comb[4].repitch(noi::Outils::clip(time, 0.006f, 0.1f));
-				time *= 1.12;
-				m_comb[5].repitch(noi::Outils::clip(time, 0.006f, 0.1f));
-			}
 			inline void resizeComb(float time, float variation) {
 				if (m_combTime == time && m_disp==variation) { return; }
 				m_combTime = time;
@@ -105,6 +87,11 @@ namespace noi {
 				m_comb[5].resize(noi::Outils::clip(time, 0.006f, 0.1f));
 			}
 
+			inline void setFreeze(bool statut){
+				for (auto i : m_comb){
+					i.setFreeze(statut);
+				}
+			}
 			inline float process(float input) {
 				float sum = 0;
 				//process combs
@@ -117,7 +104,7 @@ namespace noi {
 			}
 			inline float processFreeze(float input){
 				float sum = 0;
-				for (auto i : m_comb){sum += i.process(input);}
+				for (auto i : m_comb){sum += i.processFreeze(input);}
 				sum /= 6;
 				float reverb_out = ap1.processFreeze(sum);
 				float out = reverb_out * m_DryWet + input * (1.f - m_DryWet); 
