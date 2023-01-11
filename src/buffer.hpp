@@ -41,11 +41,11 @@ class RingBuffer{
 	// 	return m_buffer[int_read];
 	// }
 	inline void write(float newSample){
+		if (m_freeze){return;}
 		m_write = std::fmod((m_write + 1) , m_buffer_end);
 		int int_write = static_cast<int>(m_write);
 		m_buffer[int_write] = newSample;
 	}
-	inline float getStep(){return m_step;}
 	inline float  getSize(){
 		float size = m_read - m_write;
 		if (size < 0.f){size += m_buffer_end;}

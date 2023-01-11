@@ -26,6 +26,7 @@ struct Hellebore : Module {
 	};
 	enum OutputId {
 	MIX_OUTPUT,
+	TEST_OUTPUT,
 	OUTPUTS_LEN
 	};
 	enum LightId {
@@ -51,6 +52,7 @@ struct Hellebore : Module {
 		configInput(TIME_CV_INPUT, "Time CV");
 		configInput(SIGNAL_INPUT, "");
 		configOutput(MIX_OUTPUT, "");
+		configOutput(TEST_OUTPUT, "TEST");
 	}
 
 	noi::Reverb::Moorer moorer{};
@@ -63,18 +65,19 @@ struct Hellebore : Module {
 		float combTime_cv = inputs[SIZE_CV_INPUT].getVoltage()*params[SIZE_CV_PARAM].getValue()*10.f;
 		combTime_cv = SlewLPF.process(combTime_cv);
 		float time_cv = inputs[TIME_CV_INPUT].getVoltage()*params[TIME_CV_PARAM].getValue();
-		float combTime = params[SIZE_PARAM].getValue()+combTime_cv;
+		float comb_feedback_time = params[SIZE_PARAM].getValue()+combTime_cv;
 		float variation = params[VARIATION_PARAM].getValue();
 		float time = params[TIME_PARAM].getValue() + time_cv;
 		float input = inputs[SIGNAL_INPUT].getVoltage();
 		float drywet = params[DRYWET_PARAM].getValue();
 
 		moorer.setFreeze(freeze_statut);
-		moorer.resizeComb(combTime, variation);
+		moorer.resizeComb(comb_feedback_time, variation);
 		moorer.setParam(time, variation);
 		moorer.setDryWet(drywet);
-		float output = freeze_statut? moorer.process(input):moorer.process(input);
+		float output = moorer.process(input);
 		outputs[MIX_OUTPUT].setVoltage(output);
+		outputs[TEST_OUTPUT].setVoltage(moorer.getDryWet());
 		lights[FREEZE_LIGHT].setBrightness(freeze_statut? 1.f: 0.f);
 	}
 };
@@ -120,6 +123,7 @@ addInput(createInputCentered<PJ301MPort>(mm2px(SIGNAL_INPUTpos), module, Hellebo
 addInput(createInputCentered<PJ301MPort>(mm2px(SIZE_CV_INPUTpos), module, Hellebore::SIZE_CV_INPUT));
 
 addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Hellebore::MIX_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10,10)), module, Hellebore::TEST_OUTPUT));
 }
 };
 

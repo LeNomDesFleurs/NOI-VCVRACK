@@ -67,7 +67,7 @@ namespace noi {
 				m_comb[5].setGain(rt60);
 			}
 			inline void setDryWet(float DryWet) { m_DryWet = DryWet; }
-
+			inline float getDryWet(){return m_DryWet;}
 			inline void resizeComb(float time, float variation) {
 				if (m_combTime == time && m_disp==variation) { return; }
 				m_combTime = time;
@@ -93,24 +93,15 @@ namespace noi {
 				}
 			}
 			inline float process(float input) {
-				float sum = 0;
+				float comb_sum = 0;
 				//process combs
-				for (auto i : m_comb){sum += i.process(input);}
-				sum /= 6;
+				for (auto i : m_comb){comb_sum += i.process(input);}
+				comb_sum /= 6;
 				//process allpass
-				float reverb_out = ap1.process(sum);
-				float out = (reverb_out * m_DryWet) + input * (1.f - m_DryWet); 
+				float reverb_out = ap1.process(comb_sum);
+				float out = (reverb_out * m_DryWet);
+				//+ (input * (1.f - m_DryWet)); 
 				return out;
-			}
-			inline float processFreeze(float input){
-				float sum = 0;
-				for (auto i : m_comb){sum += i.processFreeze(input);}
-				sum /= 6;
-				float reverb_out = ap1.processFreeze(sum);
-				float out = reverb_out * m_DryWet + input * (1.f - m_DryWet); 
-				return out;
-
-
 			}
 
 		};/*Moorer*/

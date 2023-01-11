@@ -273,11 +273,6 @@ namespace Filter {
 			m_buffer.write(y);
 			return y;
 		}
-		inline float processFreeze(float input) {
-			float delay = m_buffer.read();
-			float y = delay * m_gain + input;
-			return y;
-		}
 		inline void resize (float time){
 			m_buffer.setSize(time);
 			m_looptime = time;
