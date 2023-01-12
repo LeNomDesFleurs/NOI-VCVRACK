@@ -1,5 +1,6 @@
 #include "filter.hpp"
-
+#include <vector>
+#include <array>
 
 namespace noi {
 
@@ -49,20 +50,21 @@ namespace noi {
 		private:
 			noi::Filter::Comb m_comb[6]{ 0.0050 , 0.0056, 0.0061, 0.0068, 0.0072, 0.0078 };
 			noi::Filter::Allpass ap1{ 0.006 };
-			float m_DryWet,
-				m_RT60, 
-				m_disp, 
-				m_combTime;
+			float m_DryWet{1.f},
+				m_RT60{5.f}, 
+				m_disp{0.5}, 
+				m_combTime{0.01};
 		public:
-			inline void setParam(float rt60, float disp) {
-				if (m_RT60 == rt60 && disp == m_disp) { return; }
+		inline Moorer(){}
+			inline void setTime(float rt60, float variation) {
+				if (m_RT60 == rt60 && variation == m_disp) { return; }
 				m_RT60 = rt60;
-				m_disp = disp;
+				m_disp = variation;
 				ap1.setGain(rt60);
-				m_comb[0].setGain(rt60+disp);
-				m_comb[1].setGain(noi::Outils::clip(rt60-disp, 0.F, 100.f));
-				m_comb[2].setGain(rt60+(disp/2.f));
-				m_comb[3].setGain(noi::Outils::clip(rt60-(disp/2.f), 0.F, 100.f));
+				m_comb[0].setGain(rt60+variation);
+				m_comb[1].setGain(rack::math::clamp(rt60-variation, 0.F, 100.f));
+				m_comb[2].setGain(rt60+(variation/2.f));
+				m_comb[3].setGain(rack::math::clamp(rt60-(variation/2.f), 0.F, 100.f));
 				m_comb[4].setGain(rt60);
 				m_comb[5].setGain(rt60);
 			}
@@ -74,17 +76,17 @@ namespace noi {
 				m_disp = variation;
 				variation /= 20.f;
 			
-				m_comb[0].resize(noi::Outils::clip(time + variation, 0.006f, 0.1f ));
+				m_comb[0].resize(rack::math::clamp(time + variation, 0.006f, 1.f ));
 				time *= 1.12;
-				m_comb[1].resize(noi::Outils::clip((time - variation), 0.006f, 0.1f));
+				m_comb[1].resize(rack::math::clamp((time - variation), 0.006f, 1.f));
 				time *= 1.12;
-				m_comb[2].resize(noi::Outils::clip(time + (variation/2.f), 0.006f, 0.1f));
+				m_comb[2].resize(rack::math::clamp(time + (variation/2.f), 0.006f, 1.f));
 				time *= 1.12;
-				m_comb[3].resize(noi::Outils::clip((time - (variation/2.f)), 0.006f, 0.1f));
+				m_comb[3].resize(rack::math::clamp((time - (variation/2.f)), 0.006f, 1.f));
 				time *= 1.12;
-				m_comb[4].resize(noi::Outils::clip(time, 0.006f, 0.1f));
+				m_comb[4].resize(rack::math::clamp(time, 0.006f, 1.f));
 				time *= 1.12;
-				m_comb[5].resize(noi::Outils::clip(time, 0.006f, 0.1f));
+				m_comb[5].resize(rack::math::clamp(time, 0.006f, 1.f));
 			}
 
 			inline void setFreeze(bool statut){
@@ -105,6 +107,66 @@ namespace noi {
 			}
 
 		};/*Moorer*/
+class MoorerTest{
+private:
+std::array<noi::Filter::Comb, 6> m_comb = {
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02)
+};
+noi::Filter::Allpass ap1{ 0.006 };
+		float m_DryWet{1.f},
+				m_RT60{5.f}, 
+				m_disp{0.5}, 
+				m_combTime{0.01};
+public:
+inline MoorerTest(){}
+	inline void setTime(float rt60, float variation) {
+				if (m_RT60 == rt60 && variation == m_disp) { return; }
+				m_RT60 = rt60;
+				m_disp = variation;
+			ap1.setGain(rt60);
+			for (auto& comb:m_comb){
+				comb.setGain(rt60);
+				rt60*=1.1;
+			}
 
+			}
+			inline void setDryWet(float DryWet) { m_DryWet = DryWet; }
+			inline float getDryWet(){return m_DryWet;}
+			inline void resizeComb(float time, float variation) {
+				if (m_combTime == time && m_disp==variation) { return; }
+				m_combTime = time;
+				m_disp = variation;
+				variation /= 20.f;
+				for (auto& comb : m_comb){
+					comb.resize(time);
+					time *= 1.1;
+				}				
+			}
+
+			inline void setFreeze(bool statut){
+				for (auto& comb : m_comb){
+					comb.setFreeze(statut);
+				}
+			}
+			inline float process(float input) {
+				float comb_sum = 0;
+				//process combs
+				for (auto& comb : m_comb){
+					comb_sum +=comb.process(input);
+				}
+				comb_sum /=6.f;
+				//process allpass
+				float output = ap1.process(comb_sum)*m_DryWet;
+				output += input * (1.f-m_DryWet);
+				//+ (input * (1.f - m_DryWet)); 
+				return output;
+			}
+		
+};
 	}/*Reverb*/
 }/*noi*/

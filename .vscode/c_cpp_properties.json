@@ -4,8 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "E:\\VCV\\Rack-SDK\\dep\\include",
-                "E:\\VCV\\Rack-SDK\\include"
+                "D:\\VCV\\Rack-SDK\\dep\\include",
+                "D:\\VCV\\Rack-SDK\\include"
             ],
             "defines": [
                 "_DEBUG",

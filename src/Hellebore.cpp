@@ -37,9 +37,9 @@ struct Hellebore : Module {
 	Hellebore() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 
-		configParam(VARIATION_PARAM, 0.f, 1.f, 0.f, "Variation");
+		configParam(VARIATION_PARAM, 0.f, 1.f, 0.5, "Variation");
 		configParam(SIZE_PARAM, 0.003, 0.200f, 0.01f, "Size");
-		configParam(TIME_PARAM, 0.010f, 20.f, 0.020f, "Time");
+		configParam(TIME_PARAM, 0.010f, 20.f, 10.f, "Time");
 		configParam(DRYWET_PARAM, 0.f, 1.f, 1.f, "Drywet");
 		configParam(FREEZE_PARAM, 0, 1, 0, "Freeze");
 
@@ -55,8 +55,9 @@ struct Hellebore : Module {
 		configOutput(TEST_OUTPUT, "TEST");
 	}
 
-	noi::Reverb::Moorer moorer{};
+	noi::Reverb::MoorerTest moorer{};
 	noi::Filter::LPF SlewLPF{20};
+	noi::buffer::RingBuffer buffer{2.f};
 	float time;
 	float new_time;
 
@@ -70,12 +71,17 @@ struct Hellebore : Module {
 		float time = params[TIME_PARAM].getValue() + time_cv;
 		float input = inputs[SIGNAL_INPUT].getVoltage();
 		float drywet = params[DRYWET_PARAM].getValue();
-
+ 
 		moorer.setFreeze(freeze_statut);
 		moorer.resizeComb(comb_feedback_time, variation);
-		moorer.setParam(time, variation);
+		moorer.setTime(time, variation);
 		moorer.setDryWet(drywet);
 		float output = moorer.process(input);
+		
+		//buffer.setFreeze(freeze_statut);
+		//buffer.setSize(comb_feedback_time);
+		//float output = buffer.read();
+		//buffer.write(input);
 		outputs[MIX_OUTPUT].setVoltage(output);
 		outputs[TEST_OUTPUT].setVoltage(moorer.getDryWet());
 		lights[FREEZE_LIGHT].setBrightness(freeze_statut? 1.f: 0.f);

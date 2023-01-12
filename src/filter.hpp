@@ -261,11 +261,12 @@ namespace Filter {
 		float m_gain;
 		float m_looptime;
 		//max time 200ms
-		noi::buffer::RingBuffer m_buffer{.2f};
+		noi::buffer::RingBuffer m_buffer{2.f};
 	public:
 		inline void setGain(float rt60) {
-			m_gain = -60 * m_looptime / rt60;
-			m_gain = pow(10, (m_gain / 20));
+			// m_gain = -60.f * m_looptime / rt60;
+			// m_gain = pow(10.f, (m_gain / 20.f));
+		m_gain = rt60/10;
 		}
 		inline float process(float input) {
 			float delay = m_buffer.read();
@@ -273,14 +274,15 @@ namespace Filter {
 			m_buffer.write(y);
 			return y;
 		}
-		inline void resize (float time){
+		inline void resize(float time){
+			if (m_looptime == time){return;}
 			m_buffer.setSize(time);
 			m_looptime = time;
 		}
 		inline void setFreeze(bool statut){
 			m_buffer.setFreeze(statut);
 		}
-		inline 	Comb(float time) {resize(time);}
+		inline Comb(float time) {resize(time);}
 	};/*Comb*/
 
 
