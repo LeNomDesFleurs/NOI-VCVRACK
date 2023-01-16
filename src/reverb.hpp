@@ -111,7 +111,41 @@ public:
 		//+ (input * (1.f - m_DryWet)); 
 		return output;
 	}
+	inline float * processStereo(float inputL, float inputR){
+		float inputs[2] = {inputL, inputR};
+		return inputs; 
+	}
 		
+};
+class StereoMoorer{
+private:
+std::array<noi::Filter::Comb, 6> m_combL = {
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02)
+};
+noi::Filter::Allpass m_allpassL{ 0.006 };
+std::array<noi::Filter::Comb, 6> m_combR = {
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02),
+			noi::Filter::Comb(0.02)
+};
+noi::Filter::Allpass m_allpassR{ 0.006 };
+
+public:
+inline float * processStereo(float inputL, float inputR){
+
+}
+inline float processMono(float input){
+
+	return output;
+}
 };
 }/*Reverb*/
 }/*noi*/

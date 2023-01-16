@@ -62,6 +62,7 @@ struct Hellebore : Module {
 	noi::buffer::RingBuffer test_buf {2.f};
 
 	void process(const ProcessArgs& args) override {
+		float output[2] = {0, 0};
 		//freeze
 		bool freeze_statut = params[FREEZE_PARAM].getValue() > 0;
 		//buffer size
@@ -76,22 +77,20 @@ struct Hellebore : Module {
 		//drywet
 		float drywet = params[DRYWET_PARAM].getValue();
 		//input
- 		float input = inputs[L_INPUT].getVoltage();
+ 		float inputL = inputs[L_INPUT].getVoltage();
+ 		float inputR = inputs[R_INPUT].getVoltage();
 
 		moorer.setFreeze(freeze_statut);
 		moorer.resizeComb(comb_feedback_time, variation);
 		moorer.setTime(time, variation);
 		moorer.setDryWet(drywet);
-		float output = moorer.process(input);
-		
-
-
-
-		//buffer.setFreeze(freeze_statut);
-		//buffer.setSize(comb_feedback_time);
-		//float output = buffer.read();
-		//buffer.write(input);
-		outputs[L_OUTPUT].setVoltage(output);
+		// if (inputs[R_INPUT].isConnected()){
+		// 	output = moorer.processStereo(inputL, inputR);
+		// }
+		// else{output[0] = moorer.process(inputL);}
+		output[0] = moorer.process(inputL);
+		outputs[L_OUTPUT].setVoltage(output[0]);
+		outputs[R_OUTPUT].setVoltage(output[1]);
 		// outputs[R_OUTPUT].setVoltage(test_out2);
 		// outputs[TEST_OUTPUT].setVoltage(test_out);
 		lights[FREEZE_LIGHT].setBrightness(freeze_statut? 1.f: 0.f);
