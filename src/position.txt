@@ -1,62 +1,65 @@
 
-auto FREQ_CV_PARAMpos = Vec(6.435, 29.906);
-auto Q_CV_PARAMpos = Vec(45.333, 29.906);
-auto FREQ_PARAMpos = Vec(12.824, 50.361);
-auto Q_PARAMpos = Vec(38.274, 50.361);
-auto BAND_PARAMpos = Vec(12.353, 76.6);
-auto RATIO_PARAMpos = Vec(38.499, 76.72);
-auto BAND_CV_PARAMpos = Vec(8.312, 94.375);
-auto RATIO_CV_PARAMpos = Vec(43.214, 94.375);
+auto FREEZE_PARAMpos = Vec(38.294, -79.612);
+auto SIZE_PARAMpos = Vec(19.319, -75.356);
+auto VARIATION_CV_PARAMpos = Vec(31.357, 28.627);
+auto TIME_CV_PARAMpos = Vec(43.028, 38.12);
+auto VARIATION_PARAMpos = Vec(24.01, 42.546);
+auto DRYWET_PARAMpos = Vec(8.198, 57.377);
+auto TIME_PARAMpos = Vec(38.094, 62.24);
+auto SIZE_CV_PARAMpos = Vec(38.269, 94.029);
 
-auto FREQ_CV_INPUTpos =Vec(16.637, 16.861);
-auto Q_CV_INPUTpos =Vec(34.706, 16.861);
-auto SIGNAL_INPUTpos =Vec(25.613, 34.015);
-auto BAND_CV_INPUTpos =Vec(15.357, 110.305);
-auto RATIO_CV_INPUTpos =Vec(36.599, 110.305);
+auto VARIATION_CV_INPUTpos =Vec(26.475, 15.843);
+auto SIGNAL_INPUTpos =Vec(7.445, 16.123);
+auto TIME_CV_INPUTpos =Vec(43.143, 16.691);
+auto R_INPUTpos =Vec(17.361, 28.846);
+auto SIZE_CV_INPUTpos =Vec(29.056, 109.843);
 
-auto MIX_OUTPUTpos = Vec(25.613, 95.792);
+auto R_OUTPUTpos = Vec(16.739, 95.669);
+auto L_OUTPUTpos = Vec(8.694, 108.391);
 
 
 
 
-addParam(createParamCentered<RoundBlackKnob>(mm2px(FREQ_CV_PARAMpos), module, Sinensis::FREQ_CV_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(Q_CV_PARAMpos), module, Sinensis::Q_CV_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(FREQ_PARAMpos), module, Sinensis::FREQ_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(Q_PARAMpos), module, Sinensis::Q_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(BAND_PARAMpos), module, Sinensis::BAND_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(RATIO_PARAMpos), module, Sinensis::RATIO_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(BAND_CV_PARAMpos), module, Sinensis::BAND_CV_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(RATIO_CV_PARAMpos), module, Sinensis::RATIO_CV_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(FREEZE_PARAMpos), module, Hellebore::FREEZE_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(SIZE_PARAMpos), module, Hellebore::SIZE_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(VARIATION_CV_PARAMpos), module, Hellebore::VARIATION_CV_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(TIME_CV_PARAMpos), module, Hellebore::TIME_CV_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(VARIATION_PARAMpos), module, Hellebore::VARIATION_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(DRYWET_PARAMpos), module, Hellebore::DRYWET_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(TIME_PARAMpos), module, Hellebore::TIME_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(SIZE_CV_PARAMpos), module, Hellebore::SIZE_CV_PARAM));
 
-addInput(createInputCentered<PJ301MPort>(mm2px(FREQ_CV_INPUTpos), module, Sinensis::FREQ_CV_INPUT));
-addInput(createInputCentered<PJ301MPort>(mm2px(Q_CV_INPUTpos), module, Sinensis::Q_CV_INPUT));
-addInput(createInputCentered<PJ301MPort>(mm2px(SIGNAL_INPUTpos), module, Sinensis::SIGNAL_INPUT));
-addInput(createInputCentered<PJ301MPort>(mm2px(BAND_CV_INPUTpos), module, Sinensis::BAND_CV_INPUT));
-addInput(createInputCentered<PJ301MPort>(mm2px(RATIO_CV_INPUTpos), module, Sinensis::RATIO_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(VARIATION_CV_INPUTpos), module, Hellebore::VARIATION_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(SIGNAL_INPUTpos), module, Hellebore::SIGNAL_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(TIME_CV_INPUTpos), module, Hellebore::TIME_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(R_INPUTpos), module, Hellebore::R_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(SIZE_CV_INPUTpos), module, Hellebore::SIZE_CV_INPUT));
 
-addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Sinensis::MIX_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(R_OUTPUTpos), module, Hellebore::R_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(L_OUTPUTpos), module, Hellebore::L_OUTPUT));
 
 enum ParamId {
-FREQ_CV_PARAM,
-Q_CV_PARAM,
-FREQ_PARAM,
-Q_PARAM,
-BAND_PARAM,
-RATIO_PARAM,
-BAND_CV_PARAM,
-RATIO_CV_PARAM,
+FREEZE_PARAM,
+SIZE_PARAM,
+VARIATION_CV_PARAM,
+TIME_CV_PARAM,
+VARIATION_PARAM,
+DRYWET_PARAM,
+TIME_PARAM,
+SIZE_CV_PARAM,
 PARAMS_LEN
 };
 enum InputId {
-FREQ_CV_INPUT,
-Q_CV_INPUT,
+VARIATION_CV_INPUT,
 SIGNAL_INPUT,
-BAND_CV_INPUT,
-RATIO_CV_INPUT,
+TIME_CV_INPUT,
+R_INPUT,
+SIZE_CV_INPUT,
 INPUTS_LEN
 };
 enum OutputId {
-MIX_OUTPUT,
+R_OUTPUT,
+L_OUTPUT,
 OUTPUTS_LEN
 };
 enum LightId {

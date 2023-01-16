@@ -226,7 +226,7 @@ namespace Filter {
 
 	class Allpass {
 	private:
-		noi::Outils::RingBuffer m_buffer{0.2f};
+		noi::buffer::RingBuffer m_buffer{0.2f};
 		float m_gain;
 		float m_looptime;
 	public:
@@ -240,17 +240,8 @@ namespace Filter {
 			m_buffer.write(y);
 			return y;
 		}
-		inline float processFreeze(float input) {
-			float delay = m_buffer.read();
-			float y = ((input + delay * m_gain) * (-m_gain)) + delay;
-			return y;
-		}
 		inline void resize (float time){
 			m_buffer.setSize(time);
-			m_looptime = time;
-		}
-		inline void repitch(float time){
-			m_buffer.repitch(time);
 			m_looptime = time;
 		}
 		inline 	Allpass(float time) {resize(time);}
@@ -260,13 +251,11 @@ namespace Filter {
 	private:
 		float m_gain;
 		float m_looptime;
-		//max time 200ms
 		noi::buffer::RingBuffer m_buffer{2.f};
 	public:
 		inline void setGain(float rt60) {
-			// m_gain = -60.f * m_looptime / rt60;
-			// m_gain = pow(10.f, (m_gain / 20.f));
-		m_gain = rt60/10;
+			m_gain = -60.f * m_looptime / rt60;
+			m_gain = pow(10.f, (m_gain / 20.f));
 		}
 		inline float process(float input) {
 			float delay = m_buffer.read();
@@ -274,8 +263,11 @@ namespace Filter {
 			m_buffer.write(y);
 			return y;
 		}
+		inline float processFreezed(){
+			return m_buffer.read();
+		}
 		inline void resize(float time){
-			if (m_looptime == time){return;}
+			//if (m_looptime == time){return;}
 			m_buffer.setSize(time);
 			m_looptime = time;
 		}

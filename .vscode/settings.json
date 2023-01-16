@@ -16,7 +16,8 @@
         "files.associations": {
             "cmath": "cpp",
             "initializer_list": "cpp",
-            "string_view": "cpp"
+            "string_view": "cpp",
+            "array": "cpp"
         },
         "C_Cpp.errorSquiggles": "enabled",
 }

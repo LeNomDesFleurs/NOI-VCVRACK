@@ -32,7 +32,9 @@ namespace noi {
 
 	};/*LPF*/
 
-		inline int convertMsToSample(float time) { int temp = static_cast <int> (48000.f * time); return temp; }
+		inline float convertMsToSample(float time) { 
+			float temp = truncf(48000.f * time); 
+			return temp; }
 	
 		inline int mapValueFloatToInt(float inMin, float inMax, float value, int outMin, int outMax) {
 			float ratio = ((outMax - outMin) / (inMax - inMin));
