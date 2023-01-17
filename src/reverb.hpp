@@ -93,7 +93,8 @@ public:
 		}
 		m_freeze = statut;
 	}
-	inline float process(float input) {
+	inline float * process(float input) {
+		float test_array[2] = {0.f, 0.f};
 		float comb_sum = 0;
 		//process combs
 		if (m_freeze){
@@ -107,9 +108,11 @@ public:
 		comb_sum /= 6.f;
 		//process allpass
 		float output = (m_allpass.process(comb_sum)*m_DryWet);
-		output += (input * (1.f-m_DryWet));
+		//output += (input * (1.f-m_DryWet));
 		//+ (input * (1.f - m_DryWet)); 
-		return output;
+		test_array[0] = output;
+		test_array[1] = input;
+		return test_array;
 	}
 	inline float * processStereo(float inputL, float inputR){
 		float inputs[2] = {inputL, inputR};
@@ -144,7 +147,7 @@ inline float * processStereo(float inputL, float inputR){
 }
 inline float processMono(float input){
 
-	return output;
+	return 0;
 }
 };
 }/*Reverb*/

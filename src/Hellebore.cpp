@@ -88,7 +88,7 @@ struct Hellebore : Module {
 		// 	output = moorer.processStereo(inputL, inputR);
 		// }
 		// else{output[0] = moorer.process(inputL);}
-		output[0] = moorer.process(inputL);
+		output = *moorer.process(inputL);
 		outputs[L_OUTPUT].setVoltage(output[0]);
 		outputs[R_OUTPUT].setVoltage(output[1]);
 		// outputs[R_OUTPUT].setVoltage(test_out2);
