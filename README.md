@@ -1,7 +1,7 @@
 # NOI
+![image](https://user-images.githubusercontent.com/117636251/212931347-b2e9488a-155e-402e-83d6-5c625266b8df.png)
 
-Hello !
-Thanks for using this module !
+Hello and welcome to the NOI Manual !
 
 # Global UI tips
 - Input are circled
