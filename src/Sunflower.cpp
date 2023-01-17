@@ -85,9 +85,11 @@ struct Sunflower : Module {
 		for (int i = 0; i < 12; i++) {
 			configParam(PARAM_A+i, 0.f, 2.f, 1.f, "Amp ");
 		}
-		configParam(PARAM_SELECTION, 6.f, -6.f, 0.f, "selection");
+		configParam(PARAM_SELECTION, 6.f, -6.f, 0.f, "Selection");
 		configParam(PARAM_DIFFUSION, 1.f, 4.f, 1.5f, "Diffusion");
-		configParam(PARAM_AMP, 0.f, 2.f, 1.f, "Amp");
+		configParam(PARAM_AMP, -1.f, 1.f, 0.f, "Selection CV Attenuverter");
+		configInput(INPUT_CONTROL, "Position CV");
+		configParam(PARAM_ONLYCONNECTED, 0.f, 1.f, 0.f, "Only connected");
 		oneIn16.setDivision(16);
 		for (int i = 0; i < 12; i++) {
 			fullMixer.push_back(strip(i));
@@ -172,7 +174,7 @@ struct SunflowerWidget : ModuleWidget {
 		addParam(createParamCentered<RoundHugeBlackKnob>
 			(mm2px(Vec(56.117672, 35.177231)), module, Sunflower::PARAM_DIFFUSION));
 		addParam(createParamCentered<Trimpot>
-			(mm2px(Vec(35.560024, 32.787899)), module, Sunflower::PARAM_AMP));
+			(mm2px(Vec(35.56, 34.87)), module, Sunflower::PARAM_AMP));
 
 		addParam(createParamCentered<Trimpot>
 			(mm2px(Vec(35.56002592289244, 64.43645038308394)), module, Sunflower::PARAM_A));
@@ -227,7 +229,7 @@ struct SunflowerWidget : ModuleWidget {
 			(mm2px(Vec(49.534009811493206, 59.38569569612148)), module, Sunflower::INPUT_L));
 		
 		addInput(createInputCentered<PJ301MPort>
-			(mm2px(Vec(35.442558, 22.659264)), module, Sunflower::INPUT_CONTROL));
+			(mm2px(Vec(35.44, 22.66)), module, Sunflower::INPUT_CONTROL));
 		//
 		//					LIGHT
 		//
@@ -256,7 +258,7 @@ struct SunflowerWidget : ModuleWidget {
 		addChild(createLightCentered<SmallLight<WhiteLight>>
 			(mm2px(Vec(41.795619771947386, 72.78899537884318)), module, Sunflower::LIGHT_L));
 		addParam(createLightParamCentered<VCVLightBezelLatch<>>
-			(mm2px(Vec(35.442558, 42.247971)), module, Sunflower::PARAM_ONLYCONNECTED, Sunflower::LIGHT_ONLYCONNECTED));
+			(mm2px(Vec(35.44, 43.14)), module, Sunflower::PARAM_ONLYCONNECTED, Sunflower::LIGHT_ONLYCONNECTED));
 		//
 		//					OUTPUT
 		//

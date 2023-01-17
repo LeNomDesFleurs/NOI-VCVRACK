@@ -68,14 +68,14 @@ public:
 	Wilt() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 
-		configInput(SIGNAL_INPUT, "");
-		configInput(RM_INPUT, "rm input");
-		configInput(REDUX_MOD_INPUT, "redux mod");
+		configInput(SIGNAL_INPUT, "Audio");
+		configInput(RM_INPUT, "Ring Modulation");
+		configInput(REDUX_MOD_INPUT, "Redux CV");
 		configParam(REDUX_PARAM, 0.f, 100.f, 0.f, "Redux");
-		configParam(REDUX_MOD_PARAM, -1.f, 1.f, 0.f, "Redux CV", "%", 0, 100);
+		configParam(REDUX_MOD_PARAM, -1.f, 1.f, 0.f, "Redux CV Attenuverter", "%");
 		configParam(INTFLOAT_PARAM, 0, 1, 0, "INTFLOAT");
 		configParam(EXP_PARAM, 0, 1, 1, "EXP");
-		configParam(RMTRIM_PARAM, -2.f, 2.f, 0.f, "RM CV");
+		configParam(RMTRIM_PARAM, -2.f, 2.f, 1.f, "RM CV Attenuverter");
 		configParam(TONE_PARAM, 20.f, 10000.f, 10000.f, "Tone");
 		configParam(RT60_PARAM, 0.f, 10.f, 0.f, "RT60", "s");
 		configParam(DW_PARAM, 0, 1, 0.f, "Dry/Wet", "%", 0, 100);

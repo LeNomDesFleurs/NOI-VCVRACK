@@ -44,11 +44,13 @@ public:
 		configParam(PARAM_CONTINUOUS, -5.f, 5.f, 0.f, "Voltage");
 		configInput(INPUT_COMPA, "Comparator A");
 		configInput(INPUT_COMPB, "Comparator B");
+		configOutput(OUTPUT_COMP, "Comparator");
 
-		configInput(INPUT_SWITCHA, "SwitchA");
-		configInput(INPUT_SWITCHB, "SwitchB");
+		configInput(INPUT_SWITCHA, "Switch A");
+		configInput(INPUT_SWITCHB, "Switch B");
 		configInput(INPUT_SWITCH, "Switch Control");
-		configOutput(OUTPUT_SWITCH, "switch a out");
+		configOutput(OUTPUT_SWITCH, "Switch");
+
 	}
 
 

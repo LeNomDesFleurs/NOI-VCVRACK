@@ -52,13 +52,18 @@ public:
 		configParam(BAND_PARAM, 1, 6.0, 3.0, "Number of band");
 		configParam(RATIO_PARAM, 0, 2.f, 1.5, "Ratio");
 
-		configParam(FREQ_CV_PARAM, -200, 200, 0, "Frequence");
-		configParam(RATIO_CV_PARAM, -1, 1, 0, "Ratio");
-		configParam(Q_CV_PARAM, -2, 2, 0, "Q");
-		configParam(BAND_CV_PARAM, -2, 2, 0, "Number of band");
+		configParam(FREQ_CV_PARAM, -200, 200, 0, "Frequence CV Attenuverter");
+		configParam(RATIO_CV_PARAM, -1, 1, 0, "Ratio CV Attenuverter");
+		configParam(Q_CV_PARAM, -2, 2, 0, "Q CV Attenuverter");
+		configParam(BAND_CV_PARAM, -2, 2, 0, "Number of band CV Attenuverter");
 
-		configInput(SIGNAL_INPUT);
-		configOutput(MIX_OUTPUT);
+		configInput(FREQ_CV_INPUT, "Frequence CV");
+		configInput(RATIO_CV_INPUT, "Ratio CV");
+		configInput(Q_CV_INPUT, "Q CV");
+		configInput(BAND_CV_INPUT, "Band CV");
+
+		configInput(SIGNAL_INPUT, "Audio");
+		configOutput(MIX_OUTPUT, "Audio");
 
 		oneInFour.setDivision(4);
 	}
