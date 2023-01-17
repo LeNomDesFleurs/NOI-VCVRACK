@@ -6,8 +6,6 @@
 struct Sinensis : Module {
 private:
 	noi::Filter::Biquad bpf[6]{ {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"} };
-	//io
-	float test_output;
 	//PARAM
 	float frequence, Q, numberOfBand, ratio;
 	float freq_cv;
@@ -39,7 +37,6 @@ public:
 	};
 	enum OutputId {
 		MIX_OUTPUT,
-		TEST_OUTPUT,
 		OUTPUTS_LEN
 	};
 	enum LightId {
@@ -62,7 +59,6 @@ public:
 
 		configInput(SIGNAL_INPUT);
 		configOutput(MIX_OUTPUT);
-		configOutput(TEST_OUTPUT, "test");
 
 		oneInFour.setDivision(4);
 	}
