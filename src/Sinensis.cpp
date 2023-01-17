@@ -150,9 +150,6 @@ struct SinensisWidget : ModuleWidget {
 		auto MIX_OUTPUTpos = Vec(25.613, 95.792);
 
 
-
-
-
 		//PARAM
 		addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(FREQ_PARAMpos), module, Sinensis::FREQ_PARAM));
 		addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(Q_PARAMpos), module, Sinensis::Q_PARAM));
@@ -171,7 +168,6 @@ struct SinensisWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(mm2px(RATIO_CV_INPUTpos), module, Sinensis::RATIO_CV_INPUT));
 		//OUTPUT
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Sinensis::MIX_OUTPUT));
-		//addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Sinensis::TEST_OUTPUT));
 	}
 };
 

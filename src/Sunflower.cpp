@@ -151,7 +151,6 @@ struct Sunflower : Module {
 
 			
 		//}
-			outputs[OUT_TEST].setVoltage(test_out);
 		outputs[OUTPUT].setVoltage(output);
 		//latch light
 		lights[LIGHT_ONLYCONNECTED].setBrightness(params[PARAM_ONLYCONNECTED].getValue());
@@ -165,10 +164,6 @@ struct SunflowerWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Sunflower.svg")));
 
-		//addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
-		//addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		//addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		//addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		//
 		//					PARAM
 		//
@@ -267,9 +262,6 @@ struct SunflowerWidget : ModuleWidget {
 		//
 			addOutput(createOutputCentered<PJ301MPort>
 				(mm2px(Vec(35.572552, 83.596596)), module, Sunflower::OUTPUT));
-			addOutput(createOutputCentered<PJ301MPort>
-				(mm2px(Vec(10, 10)), module, Sunflower::OUT_TEST));
-
 	}
 };
 
