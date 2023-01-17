@@ -3,22 +3,27 @@
 Hello !
 Thanks for using this module !
 
-Global UI
-input are circle
-output are on a black background
-plain lines are audio path
-dotted lines are CV path
-little cross at the end of a line indicate normalisation (replaced by the input if connected)
-Trimpot are almost always Attenuverter for cv input.
+# Global UI tips
+- Input are circled
+
+- Output are on a black background
+
+- Plain lines are audio path
+
+- Dotted lines are CV path
+
+- Little cross at the end of a line indicate normalisation (replaced by the input if connected)
+
+- Trimpot are almost always Attenuverter for cv input.
 
 # Sinensis
 
-Sinensis is a parallel band pass bank (6 of them).
-The two big knobs set the frequency and the Q of all filters (it oscillate at high Q).
-The normal ones set the number of band and the relationship between them (ratio).
-For exemple, if you set the frequency to 2000Hz, ratio to 1.5 and band parameter to 3:
-You'll get 3 bandpassed version of your sound at 2000Hz, 3000Hz and 4500Hz.
-Here with white noise in input.
+Sinensis is a parallel band-pass bank (6 of them).<br>
+The two big knobs set the frequency and the Q of all filters (it oscillate at high Q).<br>
+The normal ones set the number of band and the relationship between them (ratio).<br>
+For exemple, if you set the frequency to 2000Hz, ratio to 1.5 and band parameter to 3:<br>
+You'll get 3 bandpassed version of your sound at 2000Hz, 3000Hz and 4500Hz.<br>
+Here with white noise in input.<br>
 
 ![image](https://user-images.githubusercontent.com/117636251/212921153-b8240dd6-806a-485d-9e3d-f4fb1ce3b8fb.png)
 
