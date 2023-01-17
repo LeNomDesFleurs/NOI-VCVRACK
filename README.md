@@ -14,7 +14,7 @@ Hello and welcome to the NOI Manual !
 
 - Little cross at the end of a line indicate normalisation (replaced by the input if connected)
 
-- Trimpot are almost always Attenuverter for cv input.
+- Trimpot are almost always Attenuverter for CV input.
 
 # Sinensis [filter bank]
 
