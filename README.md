@@ -20,8 +20,9 @@ Hello and welcome to the NOI Manual !
 
 Sinensis is a parallel band-pass bank (6 of them).<br>
 The two big knobs set the frequency and the Q of all filters (it oscillate at high Q).<br>
-The normal ones set the number of band and the relationship between them (ratio).<br>
-For exemple, if you set the frequency to 2000Hz, ratio to 1.5 and band parameter to 3:<br>
+The normal ones set the number of band and the relationship between them ("ratio").<br>
+If a frequency goes beyond 15kHz or 20Hz, it is folded back in audible range.<br>
+If you set the frequency to 2000Hz, ratio to 1.5 and band parameter to 3:<br>
 You'll get 3 bandpassed version of your sound at 2000Hz, 3000Hz and 4500Hz.<br>
 Here with white noise in input.<br>
 
@@ -29,11 +30,9 @@ Here with white noise in input.<br>
 
 
 # Sunflower [Circular Mixer]
-
-all the trimpot are little attenuator for your inputs. 
-Circular mixer, a cross fade between 12 inputs
-The Knobs with an arrow let you choose the input, the diffusion how many nerby input will bleed in
-
+Sunflower cross between 12 input.<br>
+The Knobs with an arrow let you choose the input, the diffusion how nerby input will bleed in.<br>
+The latch let you lock on connected input only.<br>
 
 # Dicotyledon [Logic Processor]
 The upper half is a comparator: <br>
@@ -58,7 +57,10 @@ The signal go through :
 - Ring modulation 
 - One-pole Low-Pass
 - Shroeder reverb
-Redux is a sample and hold being triggered every n sample (n being the value of the redux parameter).
-it does a sort of sampling frequency reduction. 
-The cv is attenuverted, the latch quantize the cv for extra digital steppyness.
-rt60 set the lenght of the reverb, dry/wet set the amount of reverb.
+
+Redux is a sample and hold being triggered every n sample (n being the value of the redux parameter). <br>
+It does a sort of sampling frequency reduction, thus folding frequency. <br>
+The CV is attenuverted, the latch quantize the CV (= cut the fractional part) for extra digital steppyness. <br>
+RT60 set the lenght of the reverb, Dry/Wet set the amount of reverb. <br>
+
+# Have fun ! Feel free to contact me for any information / bug report !
