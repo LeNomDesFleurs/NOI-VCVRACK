@@ -30,7 +30,7 @@ Here with white noise in input.<br>
 
 
 # Sunflower [Circular Mixer]
-Sunflower cross between 12 input.<br>
+Sunflower crossfade between 12 inputs.<br>
 The Knobs with an arrow let you choose the input, the diffusion how nerby input will bleed in.<br>
 The latch let you lock on connected input only.<br>
 
