@@ -71,8 +71,14 @@ class RingBuffer{
 		if (actual_size < (size_goal - 2.f)){
 			m_step = 0.8;
 		}
+		else if (actual_size< (size_goal - 4800.f)){
+			m_step = 0.5;
+		}
 		else if (actual_size > (size_goal + 2.f)){
 			m_step = 1.2;
+		}
+		else if (actual_size > (size_goal + 4800.f)){
+			m_step = 2.f;
 		}
 		else {m_step = 1.f;}
 	}

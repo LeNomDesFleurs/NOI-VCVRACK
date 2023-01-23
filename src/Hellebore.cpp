@@ -1,6 +1,7 @@
 #include "plugin.hpp"
 #include "reverb.hpp"
 #include "outils.hpp"
+#include <array>
 
 struct Hellebore : Module {
 
@@ -57,12 +58,12 @@ struct Hellebore : Module {
 		configOutput(TEST_OUTPUT, "TEST");
 	}
 
-	noi::Reverb::Moorer moorer{};
+	noi::Reverb::StereoMoorer moorer{};
 	noi::Filter::LPF SlewLPF{20};
 	noi::buffer::RingBuffer test_buf {2.f};
 
 	void process(const ProcessArgs& args) override {
-		float output[2] = {0, 0};
+		std::array<float, 2> output = {0, 0};
 		//freeze
 		bool freeze_statut = params[FREEZE_PARAM].getValue() > 0;
 		//buffer size
@@ -88,7 +89,7 @@ struct Hellebore : Module {
 		// 	output = moorer.processStereo(inputL, inputR);
 		// }
 		// else{output[0] = moorer.process(inputL);}
-		output = *moorer.process(inputL);
+		output = moorer.processStereo(inputL, inputR);
 		outputs[L_OUTPUT].setVoltage(output[0]);
 		outputs[R_OUTPUT].setVoltage(output[1]);
 		// outputs[R_OUTPUT].setVoltage(test_out2);
