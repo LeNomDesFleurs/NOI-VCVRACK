@@ -91,7 +91,9 @@ struct Hellebore : Module {
  		signal_inputs[1] = inputs[R_INPUT].getVoltage();
 
 		moorer.updateParameters(m_params);
-	
+		if (!inputs[R_INPUT].isConnected()){
+			signal_inputs[1] = signal_inputs[0];
+		}
 		signal_outputs = moorer.processStereo(signal_inputs);
 		outputs[L_OUTPUT].setVoltage(signal_outputs[0]);
 		outputs[R_OUTPUT].setVoltage(signal_outputs[1]);

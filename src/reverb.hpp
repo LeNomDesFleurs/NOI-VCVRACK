@@ -147,6 +147,8 @@ std::array<noi::Filter::Allpass, 2> m_allpasses{
 			noi::Filter::Allpass(0.006),
 			noi::Filter::Allpass(0.006)};
 noi::Reverb::StereoMoorer::Parameters m_params;
+std::array<std::array<float, 6>, 2> m_combs_status;
+std::array<float, 6> m_pan_coefs;
 public:
 StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
 	updateParameters(params);
@@ -157,8 +159,15 @@ StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
 	setTime();
 	setFreeze();
 	resizeComb();
+	setPan();
 	}
-	
+	inline void setPan(){
+		float variation = m_params.variation;
+		for (int i = 2; i<6; i++){
+			m_pan_coefs[i] = variation;
+			variation *= 2;
+		}
+	}
 	inline void setTime() {
 		float rt60 = m_params.rt60;
 		float variation = m_params.variation + 1.f;
@@ -184,24 +193,38 @@ StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
 			time *= variation;}
 		}			
 	}
+	inline void processCombs(std::array<float, 2> inputs){
+		for (int i = 0; i<2; i++){	
+			//process combs
+			if(m_params.freeze){
+			for (int j = 0; j < 6 ; j++){
+				m_combs_status[i][j] =m_combs[i][j].processFreezed();
+			}}
+			else{
+			for (int j = 0; j < 6 ; j++){
+				m_combs_status[i][j] =m_combs[i][j].process(inputs[i]);
+			}}
+		}
+	}
 
 inline std::array<float, 2> processStereo(std::array<float, 2> inputs){
 	std::array<float, 2> outputs = {0, 0};
-	for (int i = 0; i<2; i++){	
-		float comb_sum = 0;
-		//process combs
-		if (m_params.freeze){
-		for (auto& comb : m_combs[i]){
-			comb_sum +=comb.processFreezed();
-		}}
-		else{
-		for (auto& comb : m_combs[i]){
-			comb_sum +=comb.process(inputs[i]);
-		}}
-		comb_sum /= 6.f;
-		//process allpass
-		float output = (m_allpasses[i].process(comb_sum) * m_params.dry_wet);
-		outputs[i] = output + (inputs[i] * (1.f-m_params.dry_wet));
+	processCombs(inputs);
+	std::array<std::array<float, 6>, 2> temp;
+	for (int i = 0; i<6; i++){
+		//out_left = in_left * pan + in_right * (1 - pan);
+		temp[0][i] = m_combs_status[0][i] * m_pan_coefs[i] + m_combs_status[1][i] * (1.f - m_pan_coefs[i]);
+		temp[1][i] = m_combs_status[1][i] * m_pan_coefs[i] + m_combs_status[0][i] * (1.f - m_pan_coefs[i]);
+
+	}
+	for (int i = 0; i < 2; i++){
+	float comb_sum = 0;
+	for (auto j : temp[i]){
+		comb_sum += j;
+	}
+	comb_sum /= 6;
+	float output = (m_allpasses[i].process(comb_sum) * m_params.dry_wet);
+	outputs[i] = output + (inputs[i] * (1.f-m_params.dry_wet));
 	}
 	return outputs;
 }
