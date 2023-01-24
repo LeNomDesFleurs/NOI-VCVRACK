@@ -2,16 +2,16 @@
     "shellLauncher.shells.windows": [
         // ...
         // Add the MinGW64
-              {
+                {
                     "shell": "C:\\msys64\\usr\\bin\\bash.exe",
-                    "args":  ["--login", "-i"],
-                    "env": 
-                    {
+                    "label": "MSYS2",
+                    "args": ["--login", "-i"],
+                    "env": {
                         "MSYSTEM": "MINGW64",
-                        "CHERE_INVOKING":"1"
-                    },
-                    "label": "MinGW64"
-              }
+                        "CHERE_INVOKING": "1",
+                        "MSYS2_PATH_TYPE": "inherit"
+                    }
+                }
         ],
         "files.associations": {
             "cmath": "cpp",

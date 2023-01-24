@@ -19,6 +19,7 @@ struct Hellebore : Module {
 	PARAMS_LEN
 	};
 	enum InputId {
+	FREEZE_CV_INPUT,
 	VARIATION_CV_INPUT,
 	TIME_CV_INPUT,
 	SIZE_CV_INPUT,
@@ -50,6 +51,7 @@ struct Hellebore : Module {
 		configParam(SIZE_CV_PARAM, -1.f, 1.f, 0.f, "Size CV");
 		configParam(VARIATION_CV_PARAM, -1.f, 1.f, 0.f, "Variation CV");
 
+		configInput(FREEZE_CV_INPUT, "Freeze CV");
 		configInput(VARIATION_CV_INPUT, "Variation CV");
 		configInput(SIZE_CV_INPUT, "Size CV");
 		configInput(TIME_CV_INPUT, "Time CV");
@@ -71,7 +73,7 @@ struct Hellebore : Module {
 	void process(const ProcessArgs& args) override {
 
 		//freeze
-		m_params.freeze = params[FREEZE_PARAM].getValue() > 0;
+		m_params.freeze = (params[FREEZE_PARAM].getValue() > 0) + (inputs[FREEZE_CV_INPUT].getVoltage() > 0);
 		//buffer size
 		float combTime_cv = inputs[SIZE_CV_INPUT].getVoltage()*params[SIZE_CV_PARAM].getValue()*10.f;
 		combTime_cv = SlewLPF.process(combTime_cv);
@@ -106,47 +108,48 @@ struct HelleboreWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Hellebore.svg")));
 
-auto FREEZE_PARAMpos = Vec(38.294, 79.612);
-auto SIZE_PARAMpos = Vec(19.319, 75.356);
-auto VARIATION_CV_PARAMpos = Vec(31.357, 28.627);
-auto TIME_CV_PARAMpos = Vec(43.028, 38.12);
-auto VARIATION_PARAMpos = Vec(24.01, 42.546);
-auto DRYWET_PARAMpos = Vec(8.198, 57.377);
-auto TIME_PARAMpos = Vec(38.094, 62.24);
-auto SIZE_CV_PARAMpos = Vec(38.269, 94.029);
+auto SIZE_PARAMpos = Vec(8.654, 45.984);
+auto FREEZE_PARAMpos = Vec(39.791, 25.73);
+auto VARIATION_CV_PARAMpos = Vec(44.723, 55.755);
+auto DRYWET_PARAMpos = Vec(25.972, 57.377);
+auto SIZE_CV_PARAMpos = Vec(6.651, 58.856);
+auto VARIATION_PARAMpos = Vec(42.341, 70.797);
+auto TIME_PARAMpos = Vec(23.688, 83.942);
+auto TIME_CV_PARAMpos = Vec(23.01, 100.607);
 
-auto VARIATION_CV_INPUTpos =Vec(26.475, 15.843);
-auto L_INPUTpos =Vec(7.445, 16.123);
-auto TIME_CV_INPUTpos =Vec(43.143, 16.691);
-auto R_INPUTpos =Vec(17.361, 28.846);
-auto SIZE_CV_INPUTpos =Vec(29.056, 109.843);
+auto R_INPUTpos =Vec(14.929, 15.936);
+auto L_INPUTpos =Vec(6.323, 25.852);
+auto FREEZE_CV_INPUTpos =Vec(26.624, 38.749);
+auto VARIATION_CV_INPUTpos =Vec(40.999, 42.222);
+auto SIZE_CV_INPUTpos =Vec(7.915, 71.303);
+auto TIME_CV_INPUTpos =Vec(9.28, 107.242);
 
-auto R_OUTPUTpos = Vec(16.739, 95.669);
-auto L_OUTPUTpos = Vec(8.694, 108.391);
-
-
+auto R_OUTPUTpos = Vec(43.867, 96.043);
+auto L_OUTPUTpos = Vec(34.512, 108.765);
 
 
 
 
 addParam(createParamCentered<RoundBlackKnob>(mm2px(SIZE_PARAMpos), module, Hellebore::SIZE_PARAM));
 addParam(createParamCentered<Trimpot>(mm2px(VARIATION_CV_PARAMpos), module, Hellebore::VARIATION_CV_PARAM));
-addParam(createParamCentered<Trimpot>(mm2px(TIME_CV_PARAMpos), module, Hellebore::TIME_CV_PARAM));
-addParam(createParamCentered<RoundBlackKnob>(mm2px(VARIATION_PARAMpos), module, Hellebore::VARIATION_PARAM));
-addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(TIME_PARAMpos), module, Hellebore::TIME_PARAM));
 addParam(createParamCentered<RoundBlackKnob>(mm2px(DRYWET_PARAMpos), module, Hellebore::DRYWET_PARAM));
 addParam(createParamCentered<Trimpot>(mm2px(SIZE_CV_PARAMpos), module, Hellebore::SIZE_CV_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(VARIATION_PARAMpos), module, Hellebore::VARIATION_PARAM));
+addParam(createParamCentered<RoundBlackKnob>(mm2px(TIME_PARAMpos), module, Hellebore::TIME_PARAM));
+addParam(createParamCentered<Trimpot>(mm2px(TIME_CV_PARAMpos), module, Hellebore::TIME_CV_PARAM));
 addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(FREEZE_PARAMpos), module, Hellebore::FREEZE_PARAM, Hellebore::FREEZE_LIGHT));
 
 
-addInput(createInputCentered<PJ301MPort>(mm2px(VARIATION_CV_INPUTpos), module, Hellebore::VARIATION_CV_INPUT));
-addInput(createInputCentered<PJ301MPort>(mm2px(TIME_CV_INPUTpos), module, Hellebore::TIME_CV_INPUT));
-addInput(createInputCentered<PJ301MPort>(mm2px(L_INPUTpos), module, Hellebore::L_INPUT));
 addInput(createInputCentered<PJ301MPort>(mm2px(R_INPUTpos), module, Hellebore::R_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(L_INPUTpos), module, Hellebore::L_INPUT));
 addInput(createInputCentered<PJ301MPort>(mm2px(SIZE_CV_INPUTpos), module, Hellebore::SIZE_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(VARIATION_CV_INPUTpos), module, Hellebore::VARIATION_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(FREEZE_CV_INPUTpos), module, Hellebore::FREEZE_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(TIME_CV_INPUTpos), module, Hellebore::TIME_CV_INPUT));
 
-addOutput(createOutputCentered<PJ301MPort>(mm2px(L_OUTPUTpos), module, Hellebore::L_OUTPUT));
 addOutput(createOutputCentered<PJ301MPort>(mm2px(R_OUTPUTpos), module, Hellebore::R_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(L_OUTPUTpos), module, Hellebore::L_OUTPUT));
+
 //addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10,10)), module, Hellebore::TEST_OUTPUT));
 }
 };
