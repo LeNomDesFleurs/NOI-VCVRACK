@@ -53,48 +53,50 @@ struct Hellebore : Module {
 		configInput(VARIATION_CV_INPUT, "Variation CV");
 		configInput(SIZE_CV_INPUT, "Size CV");
 		configInput(TIME_CV_INPUT, "Time CV");
-		configInput(L_INPUT, "");
-		configOutput(L_OUTPUT, "");
+		configInput(L_INPUT, "Left");
+		configInput(R_INPUT, "Right");
+
+		configOutput(L_OUTPUT, "Left");
+		configOutput(R_OUTPUT, "Right");
 		configOutput(TEST_OUTPUT, "TEST");
 	}
 
-	noi::Reverb::StereoMoorer moorer{};
+	
 	noi::Filter::LPF SlewLPF{20};
-	noi::buffer::RingBuffer test_buf {2.f};
+	noi::Reverb::StereoMoorer::Parameters m_params{false, 1.F, 0.01f, 0.1f, 10.f};
+	noi::Reverb::StereoMoorer moorer = noi::Reverb::StereoMoorer(m_params);
+	std::array<float, 2> signal_outputs = {0, 0};
+	std::array<float, 2> signal_inputs = {0, 0};
 
 	void process(const ProcessArgs& args) override {
-		std::array<float, 2> output = {0, 0};
+
 		//freeze
-		bool freeze_statut = params[FREEZE_PARAM].getValue() > 0;
+		m_params.freeze = params[FREEZE_PARAM].getValue() > 0;
 		//buffer size
 		float combTime_cv = inputs[SIZE_CV_INPUT].getVoltage()*params[SIZE_CV_PARAM].getValue()*10.f;
 		combTime_cv = SlewLPF.process(combTime_cv);
 		float comb_feedback_time = params[SIZE_PARAM].getValue()+combTime_cv;
-		float variation = params[VARIATION_PARAM].getValue();
-		//time
-		float time_cv = inputs[TIME_CV_INPUT].getVoltage()*params[TIME_CV_PARAM].getValue();
-		//float time = params[TIME_PARAM].getValue() + time_cv;
-		float time = params[TIME_PARAM].getValue();
-		//drywet
-		float drywet = params[DRYWET_PARAM].getValue();
-		//input
- 		float inputL = inputs[L_INPUT].getVoltage();
- 		float inputR = inputs[R_INPUT].getVoltage();
+		m_params.comb_time = comb_feedback_time;
 
-		moorer.setFreeze(freeze_statut);
-		moorer.resizeComb(comb_feedback_time, variation);
-		moorer.setTime(time, variation);
-		moorer.setDryWet(drywet);
-		// if (inputs[R_INPUT].isConnected()){
-		// 	output = moorer.processStereo(inputL, inputR);
-		// }
-		// else{output[0] = moorer.process(inputL);}
-		output = moorer.processStereo(inputL, inputR);
-		outputs[L_OUTPUT].setVoltage(output[0]);
-		outputs[R_OUTPUT].setVoltage(output[1]);
+		m_params.variation = params[VARIATION_PARAM].getValue();
+		//time
+		float time_cv = inputs[TIME_CV_INPUT].getVoltage() * params[TIME_CV_PARAM].getValue();
+		m_params.rt60 = params[TIME_PARAM].getValue() + time_cv;
+		//drywet
+		m_params.dry_wet = params[DRYWET_PARAM].getValue();
+		//input
+ 		signal_inputs[0] = inputs[L_INPUT].getVoltage();
+ 		signal_inputs[1] = inputs[R_INPUT].getVoltage();
+
+		moorer.updateParameters(m_params);
+	
+		signal_outputs = moorer.processStereo(signal_inputs);
+		outputs[L_OUTPUT].setVoltage(signal_outputs[0]);
+		outputs[R_OUTPUT].setVoltage(signal_outputs[1]);
+
 		// outputs[R_OUTPUT].setVoltage(test_out2);
 		// outputs[TEST_OUTPUT].setVoltage(test_out);
-		lights[FREEZE_LIGHT].setBrightness(freeze_statut? 1.f: 0.f);
+		lights[FREEZE_LIGHT].setBrightness(m_params.freeze ? 1.f: 0.f);
 	}
 };
 
@@ -145,7 +147,7 @@ addInput(createInputCentered<PJ301MPort>(mm2px(SIZE_CV_INPUTpos), module, Helleb
 
 addOutput(createOutputCentered<PJ301MPort>(mm2px(L_OUTPUTpos), module, Hellebore::L_OUTPUT));
 addOutput(createOutputCentered<PJ301MPort>(mm2px(R_OUTPUTpos), module, Hellebore::R_OUTPUT));
-addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10,10)), module, Hellebore::TEST_OUTPUT));
+//addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10,10)), module, Hellebore::TEST_OUTPUT));
 }
 };
 
