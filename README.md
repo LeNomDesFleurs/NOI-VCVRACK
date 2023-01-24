@@ -1,7 +1,10 @@
 # NOI
+
 ![image](https://user-images.githubusercontent.com/117636251/212931347-b2e9488a-155e-402e-83d6-5c625266b8df.png)
 
-Hello and welcome to the NOI Manual !
+Hello and welcome to the NOI Manual !<br>
+Link to the VCV library :<br>
+https://library.vcvrack.com/NOI
 
 # Global UI tips
 - Input are circled
