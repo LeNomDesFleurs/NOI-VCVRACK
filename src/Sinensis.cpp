@@ -6,8 +6,6 @@
 struct Sinensis : Module {
 private:
 	noi::Filter::Biquad bpf[6]{ {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"} };
-	//io
-	float test_output;
 	//PARAM
 	float frequence, Q, numberOfBand, ratio;
 	float freq_cv;
@@ -39,7 +37,6 @@ public:
 	};
 	enum OutputId {
 		MIX_OUTPUT,
-		TEST_OUTPUT,
 		OUTPUTS_LEN
 	};
 	enum LightId {
@@ -55,14 +52,18 @@ public:
 		configParam(BAND_PARAM, 1, 6.0, 3.0, "Number of band");
 		configParam(RATIO_PARAM, 0, 2.f, 1.5, "Ratio");
 
-		configParam(FREQ_CV_PARAM, -200, 200, 0, "Frequence");
-		configParam(RATIO_CV_PARAM, -1, 1, 0, "Ratio");
-		configParam(Q_CV_PARAM, -2, 2, 0, "Q");
-		configParam(BAND_CV_PARAM, -2, 2, 0, "Number of band");
+		configParam(FREQ_CV_PARAM, -200, 200, 0, "Frequence CV Attenuverter");
+		configParam(RATIO_CV_PARAM, -1, 1, 0, "Ratio CV Attenuverter");
+		configParam(Q_CV_PARAM, -2, 2, 0, "Q CV Attenuverter");
+		configParam(BAND_CV_PARAM, -2, 2, 0, "Number of band CV Attenuverter");
 
-		configInput(SIGNAL_INPUT);
-		configOutput(MIX_OUTPUT);
-		configOutput(TEST_OUTPUT, "test");
+		configInput(FREQ_CV_INPUT, "Frequence CV");
+		configInput(RATIO_CV_INPUT, "Ratio CV");
+		configInput(Q_CV_INPUT, "Q CV");
+		configInput(BAND_CV_INPUT, "Band CV");
+
+		configInput(SIGNAL_INPUT, "Audio");
+		configOutput(MIX_OUTPUT, "Audio");
 
 		oneInFour.setDivision(4);
 	}
@@ -150,9 +151,6 @@ struct SinensisWidget : ModuleWidget {
 		auto MIX_OUTPUTpos = Vec(25.613, 95.792);
 
 
-
-
-
 		//PARAM
 		addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(FREQ_PARAMpos), module, Sinensis::FREQ_PARAM));
 		addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(Q_PARAMpos), module, Sinensis::Q_PARAM));
@@ -171,7 +169,6 @@ struct SinensisWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(mm2px(RATIO_CV_INPUTpos), module, Sinensis::RATIO_CV_INPUT));
 		//OUTPUT
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Sinensis::MIX_OUTPUT));
-		//addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Sinensis::TEST_OUTPUT));
 	}
 };
 

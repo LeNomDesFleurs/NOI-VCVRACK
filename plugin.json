@@ -1,15 +1,5 @@
 {
-  "slug": "NOI",
-  "name": "NOI",
-  "version": "2.0.0",
-  "license": "GPL-3.0-or-later",
-  "brand": "NOI",
-  "author": "Thomas",
-  "authorEmail": "thomasvguillory@gmail.com",
-  "authorUrl": "https://lenomdesfleurs.github.io/Blog/",
-  "pluginUrl": "",
-  "manualUrl": "",
-  "sourceUrl": "https://github.com/LeNomDesFleurs/NOI-VCVRACK",
+  g
   "donateUrl": "",
   "changelogUrl": "",
   "modules": [

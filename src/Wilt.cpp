@@ -10,16 +10,17 @@ private:
 	int counter{};
 	noi::Filter::Biquad lpf{ "LPF", 10000.f, 0.707 };
 	noi::Reverb::Schroeder schroeder;
-	float redux_input;
-	float redux_output;
-	float rm_input;
-	float rm_cv_input;
-	float rm_cv;
-	float rm_output;
-	float filter_input;
-	float filter_output;
-	float rvb_output;
-	float rvb_input;
+	float redux_input,
+	redux_output,
+	rm_input,
+	rm_cv_input,
+	rm_cv,
+	rm_output,
+	filter_input,
+	filter_output,
+	rvb_input,
+	rvb_output;
+
 	float RM;
 	float rt60;
 	float drywet;
@@ -30,7 +31,6 @@ private:
 	float repeats;
 	float frequence;
 	float Q{ 0.707 };
-	//temp
 
 public:
 
@@ -68,14 +68,14 @@ public:
 	Wilt() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 
-		configInput(SIGNAL_INPUT, "");
-		configInput(RM_INPUT, "rm input");
-		configInput(REDUX_MOD_INPUT, "redux mod");
+		configInput(SIGNAL_INPUT, "Audio");
+		configInput(RM_INPUT, "Ring Modulation");
+		configInput(REDUX_MOD_INPUT, "Redux CV");
 		configParam(REDUX_PARAM, 0.f, 100.f, 0.f, "Redux");
-		configParam(REDUX_MOD_PARAM, -1.f, 1.f, 0.f, "Redux CV", "%", 0, 100);
-		configParam(INTFLOAT_PARAM, 0, 1, 1, "INTFLOAT");
+		configParam(REDUX_MOD_PARAM, -1.f, 1.f, 0.f, "Redux CV Attenuverter", "%");
+		configParam(INTFLOAT_PARAM, 0, 1, 0, "INTFLOAT");
 		configParam(EXP_PARAM, 0, 1, 1, "EXP");
-		configParam(RMTRIM_PARAM, -2.f, 2.f, 0.f, "RM CV");
+		configParam(RMTRIM_PARAM, -2.f, 2.f, 1.f, "RM CV Attenuverter");
 		configParam(TONE_PARAM, 20.f, 10000.f, 10000.f, "Tone");
 		configParam(RT60_PARAM, 0.f, 10.f, 0.f, "RT60", "s");
 		configParam(DW_PARAM, 0, 1, 0.f, "Dry/Wet", "%", 0, 100);
@@ -108,7 +108,6 @@ public:
 			rm_cv = inputs[RM_INPUT].getVoltage();
 			rm_cv *= params[RMTRIM_PARAM].getValue();
 			rm_cv *= 0.2;
-			test_out = rm_cv;
 			rm_output *= rm_cv;
 		}
 
@@ -129,7 +128,6 @@ public:
 
 		//set output
 		outputs[MIX_OUTPUT].setVoltage(rack::math::clamp(rvb_output, -5.f, 5.f));
-		outputs[TEST_OUTPUT].setVoltage(test_out);
 	}
 };
 
@@ -138,12 +136,6 @@ struct WiltWidget : ModuleWidget {
 	WiltWidget(Wilt* module) {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Wilt.svg")));
-
-		//addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
-		//addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		//addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		//addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-
 
 		auto REDUX_MOD_PARAMpos = Vec(52.544, 24.405);
 		auto INTFLOAT_PARAMpos = Vec(52.552, 42.065);
@@ -172,7 +164,6 @@ struct WiltWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(mm2px(RM_INPUTpos), module, Wilt::RM_INPUT));
 
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Wilt::MIX_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Wilt::TEST_OUTPUT));
 		addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(INTFLOAT_PARAMpos), module, Wilt::INTFLOAT_PARAM, Wilt::INTFLOAT_LIGHT));
 	}
 };
