@@ -190,7 +190,8 @@ StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
 			float time = m_params.comb_time;
 		for (auto& comb : m_combs[i]){
 			comb.resize(time);
-			time *= variation;}
+			time *= variation;
+			}
 		}			
 	}
 	inline void processCombs(std::array<float, 2> inputs){
@@ -210,21 +211,24 @@ StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
 inline std::array<float, 2> processStereo(std::array<float, 2> inputs){
 	std::array<float, 2> outputs = {0, 0};
 	processCombs(inputs);
-	std::array<std::array<float, 6>, 2> temp;
 	for (int i = 0; i<6; i++){
+		//pan combs output, mix the two channels
+		float in_left =  m_combs_status[0][i];
+		float in_right =  m_combs_status[1][i];
 		//out_left = in_left * pan + in_right * (1 - pan);
-		temp[0][i] = m_combs_status[0][i] * m_pan_coefs[i] + m_combs_status[1][i] * (1.f - m_pan_coefs[i]);
-		temp[1][i] = m_combs_status[1][i] * m_pan_coefs[i] + m_combs_status[0][i] * (1.f - m_pan_coefs[i]);
-
+		m_combs_status[0][i] = in_left * m_pan_coefs[i] + in_right * (1.f - m_pan_coefs[i]);
+		m_combs_status[1][i] = in_left * m_pan_coefs[i] + in_right * (1.f - m_pan_coefs[i]);
 	}
 	for (int i = 0; i < 2; i++){
-	float comb_sum = 0;
-	for (auto j : temp[i]){
-		comb_sum += j;
-	}
-	comb_sum /= 6;
-	float output = (m_allpasses[i].process(comb_sum) * m_params.dry_wet);
-	outputs[i] = output + (inputs[i] * (1.f-m_params.dry_wet));
+		float comb_sum = 0.f;
+		for (auto j : m_combs_status[i]){
+			comb_sum += j;
+		}
+		comb_sum /= 6.f;
+		comb_sum *= m_params.dry_wet;
+		comb_sum += (inputs[i] * (1.f - m_params.dry_wet));
+		outputs[i] = comb_sum;
+		outputs[i] = m_allpasses[i].process(comb_sum);
 	}
 	return outputs;
 }

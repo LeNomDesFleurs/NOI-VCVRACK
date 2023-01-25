@@ -236,6 +236,7 @@ namespace Filter {
 		}
 		inline float process(float input) {
 			float delay = m_buffer.read();
+			delay = rack::math::clamp(delay, -5.f, 5.f);
 			float y = ((input + delay * m_gain) * (-m_gain)) + delay;
 			m_buffer.write(y);
 			return y;
@@ -259,6 +260,7 @@ namespace Filter {
 		}
 		inline float process(float input) {
 			float delay = m_buffer.read();
+			delay = rack::math::clamp(delay, -5.f, 5.f);
 			float y = delay * m_gain + input;
 			m_buffer.write(y);
 			return y;
