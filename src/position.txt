@@ -6,7 +6,7 @@ auto VARIATION_PARAMpos = Vec(-43.222, 46.133);
 auto TIME_CV_PARAMpos = Vec(25.4, 46.192);
 auto VARIATION_CV_PARAMpos = Vec(-40.906, 62.362);
 auto SIZE_CV_PARAMpos = Vec(10.174, 62.362);
-auto DRYWET_PARAMpos = Vec(25.4, 109.792);
+auto DRYWET_PARAMpos = Vec(25.4, 103.039);
 
 auto TIME_CV_INPUTpos =Vec(25.4, 60.556);
 auto VARIATION_CV_INPUTpos =Vec(-41.88, 80.539);

@@ -73,7 +73,10 @@ struct Hellebore : Module {
 	void process(const ProcessArgs& args) override {
 
 		//freeze
-		m_params.freeze = (params[FREEZE_PARAM].getValue() > 0) + (inputs[FREEZE_CV_INPUT].getVoltage() > 0);
+		m_params.freeze = (params[FREEZE_PARAM].getValue() > 0);
+		if (inputs[FREEZE_CV_INPUT].isConnected()){
+		m_params.freeze = (inputs[FREEZE_CV_INPUT].getVoltage()>0);
+		}
 		//buffer size
 		float combTime_cv = inputs[SIZE_CV_INPUT].getVoltage()*params[SIZE_CV_PARAM].getValue()*10.f;
 		combTime_cv = SlewLPF.process(combTime_cv);
@@ -115,7 +118,7 @@ auto VARIATION_PARAMpos = Vec(43.222, 46.133);
 auto TIME_CV_PARAMpos = Vec(25.4, 46.192);
 auto VARIATION_CV_PARAMpos = Vec(40.906, 62.362);
 auto SIZE_CV_PARAMpos = Vec(10.174, 62.362);
-auto DRYWET_PARAMpos = Vec(25.4, 109.792);
+auto DRYWET_PARAMpos = Vec(25.4, 103.039);
 
 auto TIME_CV_INPUTpos =Vec(25.4, 60.556);
 auto VARIATION_CV_INPUTpos =Vec(41.88, 80.539);
