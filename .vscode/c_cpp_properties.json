@@ -1,23 +1,56 @@
 {
-  "configurations": [
-    {
-      "name": "windows-gcc-x64",
-      "includePath": [
-        "${workspaceFolder}/**",
-        "D:/VCV/Rack-SDK/dep/**",
-        "D:/VCV/Rack-SDK/include/**"
-      ],
-      "defines": [
-        "_DEBUG",
-        "UNICODE",
-        "_UNICODE"
-      ],
-      "compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
-      "cStandard": "${default}",
-      "cppStandard": "${default}",
-      "intelliSenseMode": "windows-gcc-x64",
-      "configurationProvider": "ms-vscode.makefile-tools"
-    }
-  ],
-  "version": 4
+    "configurations": [
+        // {
+        //     "name": "windows-gcc-x64",
+        //     "includePath": [
+        //         "${workspaceFolder}/**",
+        //         "D:/VCV/Rack-SDK/dep/**",
+        //         "D:/VCV/Rack-SDK/include/**",
+        //         "D:/VCV/Rack-SDK/**"
+        //     ],
+        //     "defines": [
+        //         "_DEBUG",
+        //         "UNICODE",
+        //         "_UNICODE"
+        //     ],
+        //     "windowsSdkVersion": "10.0.18362.0",
+        //     "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+        //     "cStandard": "c11",
+        //     "cppStandard": "c++17",
+        //     "intelliSenseMode": "msvc-x64",
+        //     "configurationProvider": "ms-vscode.makefile-tools"
+        // },
+        // {
+        //     "name": "Win32",
+        //     "includePath": [
+        //         "${workspaceFolder}/**",
+        //         "D:/VCV/Rack-SDK/dep/**",
+        //         "D:/VCV/Rack-SDK/include/**"
+        //     ],
+        //     "defines": [
+        //         "_DEBUG",
+        //         "UNICODE",
+        //         "_UNICODE"
+        //     ],
+        //     "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+        //     "cStandard": "gnu17",
+        //     "cppStandard": "gnu++17",
+        //     "intelliSenseMode": "windows-gcc-x64"
+        // },
+        {
+            "name": "GCC",
+            "includePath": ["${workspaceFolder}/**",
+            "D:/VCV/Rack-SDK/dep/**",
+            "D:/VCV/Rack-SDK/include/**",
+            "D:/VCV/Rack-SDK/**"],
+            "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
+            "windowsSdkVersion": "10.0.18362.0",
+            "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+       
+        }
+    ],
+    "version": 4
 }
