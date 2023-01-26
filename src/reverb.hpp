@@ -35,89 +35,14 @@ namespace Reverb {
 			m_b0 = input;
 			m_b0 = ap1.process(m_b0);
 			m_b0 = ap2.process(m_b0);
-			float c1 = cb1.process(input);
-			float c2 = cb2.process(input);
-			float c3 = cb3.process(input);
-			float c4 = cb4.process(input);
-			return (input * (1 - m_DryWet) + m_DryWet * (c1 + c2 + c3 + c4) / 4);
+			float c1 = cb1.process(m_b0);
+			float c2 = cb2.process(m_b0);
+			float c3 = cb3.process(m_b0);
+			float c4 = cb4.process(m_b0);
+			float comb_sum = (c1+c2+c3+c4)/4.f;
+			return noi::Outils::dryWet(input, comb_sum, m_DryWet);
 		}
 	};/*Schroeder*/
-	
-class Moorer{
-private:
-std::array<noi::Filter::Comb, 6> m_comb = {
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02)
-};
-noi::Filter::Allpass m_allpass{ 0.006 };
-		float m_DryWet{1.f},
-				m_RT60{5.f}, 
-				m_variation{0.5}, 
-				m_combTime{0.01};
-		bool m_freeze {false};
-
-public:
-
-	inline Moorer(){}
-	inline void setTime(float rt60, float variation) {
-		//if (m_RT60 == rt60 && variation == m_variation) { return; }
-		m_RT60 = rt60;
-		m_variation = variation;
-		variation += 1.f;
-		m_allpass.setGain(rt60);
-		for (auto& comb:m_comb){
-			comb.setGain(rt60);
-			rt60*=variation;
-		}
-
-	}
-	inline void setDryWet(float DryWet) { m_DryWet = DryWet; }
-	inline float getDryWet(){return m_DryWet;}
-	inline void resizeComb(float time, float variation) {
-		//if (m_combTime == time && m_variation==variation) { return; }
-		m_combTime = time;
-		m_variation = variation;
-		variation += 1.f;
-		for (auto& comb : m_comb){
-			comb.resize(time);
-			time *= variation;
-		}			
-	}
-
-	inline void setFreeze(bool statut){
-		for (auto& comb : m_comb){
-			comb.setFreeze(statut);
-		}
-		m_freeze = statut;
-	}
-	inline float process(float input) {
-		std::array<float, 2> test_array = {0.f, 0.f};
-		float comb_sum = 0;
-		//process combs
-		if (m_freeze){
-		for (auto& comb : m_comb){
-			comb_sum +=comb.processFreezed();
-		}}
-		else{
-		for (auto& comb : m_comb){
-			comb_sum +=comb.process(input);
-		}}
-		comb_sum /= 6.f;
-		//process allpass
-		float output = (m_allpass.process(comb_sum)*m_DryWet);
-		//output += ());
-		//+ (input * (1.f - m_DryWet)); 
-		test_array[0] = output;
-		test_array[1] = input * (1.f-m_DryWet);
-		float dW = test_array[0] +test_array[1];
-		return dW;
-	}
-		
-};
 class StereoMoorer{
 public:
 struct Parameters{
@@ -153,7 +78,6 @@ public:
 StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
 	updateParameters(params);
 };
-
 	inline void updateParameters(noi::Reverb::StereoMoorer::Parameters params){
 	m_params = params;
 	setTime();
@@ -213,11 +137,11 @@ inline std::array<float, 2> processStereo(std::array<float, 2> inputs){
 	processCombs(inputs);
 	for (int i = 0; i<6; i++){
 		//pan combs output, mix the two channels
-		float in_left =  m_combs_status[0][i];
-		float in_right =  m_combs_status[1][i];
+		float in_left = m_combs_status[0][i];
+		float in_right = m_combs_status[1][i];
 		//out_left = in_left * pan + in_right * (1 - pan);
-		m_combs_status[0][i] = in_left * m_pan_coefs[i] + in_right * (1.f - m_pan_coefs[i]);
-		m_combs_status[1][i] = in_left * m_pan_coefs[i] + in_right * (1.f - m_pan_coefs[i]);
+		m_combs_status[0][i] = noi::Outils::dryWet(in_left, in_right, m_pan_coefs[i]);
+		m_combs_status[1][i] = noi::Outils::dryWet(in_left, in_right, (1.f - m_pan_coefs[i]));
 	}
 	for (int i = 0; i < 2; i++){
 		float comb_sum = 0.f;
@@ -225,10 +149,8 @@ inline std::array<float, 2> processStereo(std::array<float, 2> inputs){
 			comb_sum += j;
 		}
 		comb_sum /= 6.f;
-		comb_sum *= m_params.dry_wet;
-		comb_sum += (inputs[i] * (1.f - m_params.dry_wet));
-		outputs[i] = comb_sum;
-		outputs[i] = m_allpasses[i].process(comb_sum);
+		float to_allpass = noi::Outils::dryWet(inputs[i], comb_sum, m_params.dry_wet);
+		outputs[i] = m_allpasses[i].process(to_allpass);
 	}
 	return outputs;
 }

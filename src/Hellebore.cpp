@@ -91,9 +91,6 @@ struct Hellebore : Module {
  		signal_inputs[1] = inputs[R_INPUT].getVoltage();
 
 		moorer.updateParameters(m_params);
-		if (!inputs[R_INPUT].isConnected()){
-			signal_inputs[1] = signal_inputs[0];
-		}
 		signal_outputs = moorer.processStereo(signal_inputs);
 		outputs[L_OUTPUT].setVoltage(signal_outputs[0]);
 		outputs[R_OUTPUT].setVoltage(signal_outputs[1]);
@@ -110,24 +107,25 @@ struct HelleboreWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Hellebore.svg")));
 
-auto SIZE_PARAMpos = Vec(8.654, 45.984);
-auto FREEZE_PARAMpos = Vec(39.791, 25.73);
-auto VARIATION_CV_PARAMpos = Vec(44.723, 55.755);
-auto DRYWET_PARAMpos = Vec(25.972, 57.377);
-auto SIZE_CV_PARAMpos = Vec(6.651, 58.856);
-auto VARIATION_PARAMpos = Vec(42.341, 70.797);
-auto TIME_PARAMpos = Vec(23.688, 83.942);
-auto TIME_CV_PARAMpos = Vec(23.01, 100.607);
 
-auto R_INPUTpos =Vec(14.929, 15.936);
-auto L_INPUTpos =Vec(6.323, 25.852);
-auto FREEZE_CV_INPUTpos =Vec(26.624, 38.749);
-auto VARIATION_CV_INPUTpos =Vec(40.999, 42.222);
-auto SIZE_CV_INPUTpos =Vec(7.915, 71.303);
-auto TIME_CV_INPUTpos =Vec(9.28, 107.242);
+auto FREEZE_PARAMpos = Vec(25.4, 75.939);
+auto SIZE_PARAMpos = Vec(8.214, 46.133);
+auto TIME_PARAMpos = Vec(25.4, 28.742);
+auto VARIATION_PARAMpos = Vec(43.222, 46.133);
+auto TIME_CV_PARAMpos = Vec(25.4, 46.192);
+auto VARIATION_CV_PARAMpos = Vec(40.906, 62.362);
+auto SIZE_CV_PARAMpos = Vec(10.174, 62.362);
+auto DRYWET_PARAMpos = Vec(25.4, 109.792);
 
-auto R_OUTPUTpos = Vec(43.867, 96.043);
-auto L_OUTPUTpos = Vec(34.512, 108.765);
+auto TIME_CV_INPUTpos =Vec(25.4, 60.556);
+auto VARIATION_CV_INPUTpos =Vec(41.88, 80.539);
+auto SIZE_CV_INPUTpos =Vec(8.796, 80.539);
+auto FREEZE_CV_INPUTpos =Vec(25.4, 87.49);
+auto R_INPUTpos =Vec(6.956, 95.456);
+auto L_INPUTpos =Vec(6.956, 109.792);
+
+auto R_OUTPUTpos = Vec(44.202, 95.749);
+auto L_OUTPUTpos = Vec(44.202, 109.792);
 
 
 
