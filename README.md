@@ -54,16 +54,23 @@ The lower half is a switch:<br>
   - The Switch output give switch input B
 
 
-# Wilt [Multi-Effect]
-The signal go through :
-- Frequency Folding
-- Ring modulation 
-- One-pole Low-Pass
-- Shroeder reverb
-
+# Wilt [Digital Glitch]
+The signal go through Frequency folding and buffer mess.<br>
 Redux is a sample and hold being triggered every n sample (n being the value of the redux parameter). <br>
 It does a sort of sampling frequency reduction, thus folding frequency. <br>
 The CV is attenuverted, the latch quantize the CV (= cut the fractional part) for extra digital steppyness. <br>
-RT60 set the lenght of the reverb, Dry/Wet set the amount of reverb. <br>
+Next is a Buffer which is being write at a steady pace but read at a variable rate (set by the speed knob).<br>
+It may read in reverse for extreme digital glitch (Try very slow speed for interesting rhythm !).<br>
+The other knob set the feedback of the buffer.
+
+# Hellebore [Reverb]
+It uses a Moorer reverb implementation with resizable buffers (which repitch !)<br>
+The size knob set the size of all delays lines.<br>
+The variation is a macro parameter that sets a lot of things :
+- Bleeding of one channel to an other
+- Disparity of buffer sizes (thus repitching)
+- Dispartity of feedback of each delays lines
+
+The freeze latch lets you switch to read only mode, the buffers stays the same and you can freely slow down or speed up their contents.<br>
 
 # Have fun ! Feel free to contact me for any information / bug report !
