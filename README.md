@@ -1,6 +1,7 @@
 # NOI
 
-![image](https://user-images.githubusercontent.com/117636251/212931347-b2e9488a-155e-402e-83d6-5c625266b8df.png)
+![image](https://user-images.githubusercontent.com/117636251/217655019-26ec1503-4786-42ff-ae39-2ef6c800d689.png)
+
 
 Hello and welcome to the NOI Manual !<br>
 Link to the VCV library :<br>
