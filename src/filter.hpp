@@ -226,13 +226,19 @@ namespace Filter {
 
 	class Allpass {
 	private:
-		noi::buffer::RingBuffer m_buffer{0.2f};
+		noi::buffer::RingBuffer m_buffer{0.2};
 		float m_gain;
 		float m_looptime;
 	public:
+		inline void setReadSpeed(float ratio){
+			m_buffer.setStep(ratio);
+		} 
 		inline void setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
 			m_gain = pow(10, (m_gain / 20));
+		}
+		inline void overrideFeedback(float feedback){
+			m_gain = feedback;
 		}
 		inline float process(float input) {
 			float delay = m_buffer.read();
@@ -245,7 +251,9 @@ namespace Filter {
 			m_buffer.setSize(time);
 			m_looptime = time;
 		}
-		inline 	Allpass(float time) {resize(time);}
+		inline 	Allpass(float time) {
+			m_buffer = noi::buffer::RingBuffer(time);
+		}
 	};
 
 	class Comb {
@@ -254,9 +262,15 @@ namespace Filter {
 		float m_looptime;
 		noi::buffer::RingBuffer m_buffer{2.f};
 	public:
+		inline void setReadSpeed(float ratio){
+			m_buffer.setStep(ratio);
+		} 
 		inline void setGain(float rt60) {
 			m_gain = -60.f * m_looptime / rt60;
 			m_gain = pow(10.f, (m_gain / 20.f));
+		}
+		inline void overrideFeedback(float feedback){
+			m_gain = feedback;
 		}
 		inline float process(float input) {
 			float delay = m_buffer.read();
@@ -276,7 +290,9 @@ namespace Filter {
 		inline void setFreeze(bool statut){
 			m_buffer.setFreeze(statut);
 		}
-		inline Comb(float time) {resize(time);}
+		inline Comb(float time) {
+			m_buffer = noi::buffer::RingBuffer(time);
+		}
 	};/*Comb*/
 
 

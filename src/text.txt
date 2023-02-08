@@ -1,0 +1,45 @@
+		#include "plugin.hpp"
+		using simd::float_4;
+
+		
+		configParam(FREQ_PARAM, -54.f, 54.f, 0.f, "Frequency", " Hz", 1, 218);
+
+			// Get frequency
+			float pitch = freqParam + freqCVInput;
+			float freq;
+			if (!linear) {
+				pitch += inputs[FM_INPUT].getVoltage(c) * fmParam;
+				freq = 218 * dsp::approxExp2_taylor5(pitch + 30.f) / 2^30;
+			}
+			else {
+				freq = dsp::FREQ_C4 * dsp::approxExp2_taylor5(pitch + 30.f) / std::pow(2.f, 30.f);
+				freq += dsp::FREQ_C4 * inputs[FM_INPUT].getPolyVoltageSimd<float_4>(c) * fmParam;
+			}
+			freq = clamp(freq, 0.f, args.sampleRate / 2.f);
+			oscillator.freq = freq;
+
+
+			I still not quite understand how it's done...
+			He config his param like this :
+			configParam(FREQ_PARAM, -54.f, 54.f, 0.f, "Frequency", " Hz", dsp::FREQ_SEMITONE, dsp::FREQ_C4);
+			where dsp::FREQ_SEMITONE = 1.0594630943592953f is the DisplayBase
+			and dsp::FREQ_C4 = 261.6256f is the displayMultiplier
+			taken from the API : 
+
+			The formula is displayValue=f(value)∗displayMultiplier+displayOffset where f(value) is
+   			displayBase^value for displayBase>0.
+			(despite the param going to -54, which I find strange but math seems to say it's work)
+
+			so the equation for the display is 
+			218 * (1.059^[param -54 to 54])
+
+			but the equation for the dsp is (without the cv involve)
+			freq = dsp::FREQ_C4 * dsp::approxExp2_taylor5(pitch + 30.f) / std::pow(2.f, 30.f);
+			simplified : 218 * (2 ^ [param -54 to 54] + 30) / (2 ^ 30)
+			why is (2^30) not using a constant ? or even the taylor approximation which is used just before
+			why is there a 30 offset ?
+			Is this some kind of math trick for optimization ?
+			I've look a the graph of the two function and the curves seems really differents
+			I'm a bit lost
+
+

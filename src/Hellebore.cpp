@@ -42,14 +42,14 @@ struct Hellebore : Module {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 
 		configParam(VARIATION_PARAM, 0.f, 0.2f, 0.1, "Variation");
-		configParam(SIZE_PARAM, 0.010f, 1.00f, 0.01f, "Size");
-		configParam(TIME_PARAM, 0.050f, 20.f, 10.f, "Time");
-		configParam(DRYWET_PARAM, 0.f, 1.f, 1.f, "Drywet");
+		configParam(SIZE_PARAM, 0.010f, 1.00f, 0.01f, "Size", "s", 4, 0.3, -0.3);
+		configParam(TIME_PARAM, 0.1f, 20.f, 10.f, "Time", "s");
+		configParam(DRYWET_PARAM, 0.f, 1.f, 1.f, "Drywet", "%", 0.f, 100.f);
 		configParam(FREEZE_PARAM, 0, 1, 0, "Freeze");
 
-		configParam(TIME_CV_PARAM, -1.f, 1.f, 0.f, "Time CV");
-		configParam(SIZE_CV_PARAM, -1.f, 1.f, 0.f, "Size CV");
-		configParam(VARIATION_CV_PARAM, -1.f, 1.f, 0.f, "Variation CV");
+		configParam(TIME_CV_PARAM, -1.f, 1.f, 0.f, "Time CV", "%", 0,-100.f, 100.f);
+		configParam(SIZE_CV_PARAM, -0.01f, 0.01f, 0.f, "Size CV", "%", 0, 10000.f);
+		configParam(VARIATION_CV_PARAM, -0.1f, 0.1f, 0.f, "Variation CV", "%",0, 1000.f);
 
 		configInput(FREEZE_CV_INPUT, "Freeze CV");
 		configInput(VARIATION_CV_INPUT, "Variation CV");
@@ -80,13 +80,15 @@ struct Hellebore : Module {
 		//buffer size
 		float combTime_cv = inputs[SIZE_CV_INPUT].getVoltage()*params[SIZE_CV_PARAM].getValue()*10.f;
 		combTime_cv = SlewLPF.process(combTime_cv);
-		float comb_feedback_time = params[SIZE_PARAM].getValue()+combTime_cv;
-		m_params.comb_time = comb_feedback_time;
-
-		m_params.variation = params[VARIATION_PARAM].getValue();
+		float comb_feedback_time = 0.3 * pow(3.f, params[SIZE_PARAM].getValue()) - 0.3;
+		comb_feedback_time += combTime_cv;
+		m_params.comb_time = rack::math::clamp(comb_feedback_time, 0.010f, 1.f);
+		//variation
+		float variation_cv = inputs[VARIATION_CV_INPUT].getVoltage() * params[VARIATION_CV_PARAM].getValue();
+		m_params.variation = params[VARIATION_PARAM].getValue() + variation_cv;
 		//time
 		float time_cv = inputs[TIME_CV_INPUT].getVoltage() * params[TIME_CV_PARAM].getValue();
-		m_params.rt60 = params[TIME_PARAM].getValue() + time_cv;
+		m_params.rt60 = rack::math::clamp(params[TIME_PARAM].getValue() + time_cv, 0.1f, 20.f);
 		//drywet
 		m_params.dry_wet = params[DRYWET_PARAM].getValue();
 		//input
@@ -95,6 +97,7 @@ struct Hellebore : Module {
 
 		moorer.updateParameters(m_params);
 		signal_outputs = moorer.processStereo(signal_inputs);
+
 		outputs[L_OUTPUT].setVoltage(signal_outputs[0]);
 		outputs[R_OUTPUT].setVoltage(signal_outputs[1]);
 
@@ -156,6 +159,5 @@ addOutput(createOutputCentered<PJ301MPort>(mm2px(L_OUTPUTpos), module, Hellebore
 //addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10,10)), module, Hellebore::TEST_OUTPUT));
 }
 };
-
 
 Model* modelHellebore = createModel<Hellebore, HelleboreWidget>("Hellebore");

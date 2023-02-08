@@ -8,10 +8,10 @@ namespace Reverb {
 
 	class Schroeder{
 	private:
-		float m_RT60;
+		float m_rt60;
 		float m_DryWet;
-		float m_b0;
-		noi::Filter::Allpass ap1{ 0.0017 };
+		float m_step;
+		noi::Filter::Allpass ap1{0.0017};
 		noi::Filter::Allpass ap2{ 0.005 };
 		noi::Filter::Comb cb1{ 0.0297 };
 		noi::Filter::Comb cb2{ 0.0371 };
@@ -19,32 +19,54 @@ namespace Reverb {
 		noi::Filter::Comb cb4{ 0.0437 };
 		
 	public:
-		Schroeder(){}
-		void setParam(float rt60) {
-			if (m_RT60 == rt60) { return; }
-			m_RT60 = rt60;
-			ap1.setGain(rt60);
-			ap2.setGain(rt60);
-			cb1.setGain(rt60);
-			cb2.setGain(rt60);
-			cb3.setGain(rt60);
-			cb4.setGain(rt60);
+		Schroeder(){
+			ap1.setReadSpeed(1.0);
+			ap2.setReadSpeed(1.0);
+			cb1.setReadSpeed(1.0);
+			cb2.setReadSpeed(1.0);
+			cb3.setReadSpeed(1.0);
+			cb4.setReadSpeed(1.0);
+		}
+		inline void setStep(float speed){
+			ap1.setReadSpeed(speed);
+			ap2.setReadSpeed(speed);
+			cb1.setReadSpeed(speed);
+			cb2.setReadSpeed(speed);
+			cb3.setReadSpeed(speed);
+			cb4.setReadSpeed(speed);
+		}
+		void setTime(float rt60) {
+			//if (m_rt60 == rt60) { return; }
+			m_rt60 = rt60;
+			ap1.overrideFeedback(rt60);
+			ap2.overrideFeedback(rt60);
+			cb1.overrideFeedback(rt60);
+			cb2.overrideFeedback(rt60);
+			cb3.overrideFeedback(rt60);
+			cb4.overrideFeedback(rt60);
 		}
 		void setDryWet(float DryWet) { m_DryWet = DryWet; }
 		float process(float input) {
-			m_b0 = input;
-			m_b0 = ap1.process(m_b0);
-			m_b0 = ap2.process(m_b0);
-			float c1 = cb1.process(m_b0);
-			float c2 = cb2.process(m_b0);
-			float c3 = cb3.process(m_b0);
-			float c4 = cb4.process(m_b0);
+			float b0 = input;
+			float c1 = cb1.process(b0);
+			float c2 = cb2.process(b0);
+			float c3 = cb3.process(b0);
+			float c4 = cb4.process(b0);
 			float comb_sum = (c1+c2+c3+c4)/4.f;
+			comb_sum = ap1.process(comb_sum);
+			comb_sum = ap2.process(comb_sum);
 			return noi::Outils::dryWet(input, comb_sum, m_DryWet);
 		}
 	};/*Schroeder*/
+	
 class StereoMoorer{
 public:
+/// @brief Parameters of a stereoMoorer Reverb
+/// @param freeze 
+/// @param drywet from 0 to 1
+/// @param comb_time
+/// @param variation
+/// @param rt60
 struct Parameters{
 	bool freeze;
 	float dry_wet,
@@ -54,19 +76,18 @@ struct Parameters{
 };
 private:
 std::array<std::array<noi::Filter::Comb, 6>, 2> m_combs = {{{
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02)},
-
-			{noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02),
-			noi::Filter::Comb(0.02)}}
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f)},
+			{noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f)}}
 };
 std::array<noi::Filter::Allpass, 2> m_allpasses{
 			noi::Filter::Allpass(0.006),

@@ -23,7 +23,7 @@ class RingBuffer{
 		m_write = m_buffer_size/2.f;
 		m_step = 1.f;
 	}
-	 inline float read(){
+	inline float read(){
 		m_read += m_step;
 		m_read = fmod(m_read, m_buffer_size);
 		float tmp;
@@ -37,11 +37,6 @@ class RingBuffer{
 		float output = ((sample2 - sample1) * fractional) + sample1;
 		return output;
 	}
-	// inline float read(){
-	// 	m_read = std::fmod((m_read + 1), m_buffer_end);
-	// 	int int_read = static_cast<int> (m_read);
-	// 	return m_buffer[int_read];
-	// }
 	inline void write(float new_sample){
 		m_write += 1.f;
 		m_write = fmod(m_write , m_buffer_size);
@@ -55,7 +50,11 @@ class RingBuffer{
 		}
 		return size;
 	}
-
+	inline void setStep(float step){m_step = step;}
+	inline void setSizeWoRepitch(float size){
+		m_read = 0;
+		m_write = noi::Outils::convertMsToSample(size);
+	}
 	inline void setSize(float new_time){
 		if (m_freeze){
 			m_step = m_time / new_time;
@@ -82,17 +81,6 @@ class RingBuffer{
 		}
 		else {m_step = 1.f;}
 	}
-	// inline void setSize(float new_time){
-	// 	float m_size = noi::Outils::convertMsToSample(new_time);
-	// 	float actual_size = getSize();
-	// 	if (actual_size < (m_size - 2.f)){
-	// 		m_step = 0.8;
-	// 	}
-	// 	else if(actual_size > (m_size + 2.f)){
-	// 		m_step = 1.2;
-	// 	}
-	// 	else {m_step = 1.f;}
-	// 	}
 	inline float getActualSize(){
 		return m_actual_size;
 	}

@@ -47,12 +47,12 @@ public:
 
 	Sinensis() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(FREQ_PARAM, 20.f, 8000.F, 260.f, "Cutoff frequency", " Hz");
+		configParam(FREQ_PARAM, -54.f, 54.F, 0.f, "Cutoff frequency", " Hz", dsp::FREQ_SEMITONE, dsp::FREQ_C4);
 		configParam(Q_PARAM, 1.f, 40.f, 20.f, "Q");
 		configParam(BAND_PARAM, 1, 6.0, 3.0, "Number of band");
 		configParam(RATIO_PARAM, 0, 2.f, 1.5, "Ratio");
 
-		configParam(FREQ_CV_PARAM, -200, 200, 0, "Frequence CV Attenuverter");
+		configParam(FREQ_CV_PARAM, -200, 200, 0, "Frequence CV Attenuverter", "%", 0, 0.5);
 		configParam(RATIO_CV_PARAM, -1, 1, 0, "Ratio CV Attenuverter");
 		configParam(Q_CV_PARAM, -2, 2, 0, "Q CV Attenuverter");
 		configParam(BAND_CV_PARAM, -2, 2, 0, "Number of band CV Attenuverter");
@@ -89,9 +89,9 @@ public:
 			ratio += params[RATIO_CV_PARAM].getValue() * inputs[RATIO_CV_INPUT].getVoltage();
 			ratio = rack::math::clamp(ratio, 0.f, 2.f);
 			//frequence
-			frequence = params[FREQ_PARAM].getValue();
-			frequence += (freq_cv * inputs[FREQ_CV_INPUT].getVoltage());
+			frequence = dsp::FREQ_C4 * pow(dsp::FREQ_SEMITONE,params[FREQ_PARAM].getValue());
 			freq_cv = params[FREQ_CV_PARAM].getValue();
+			frequence += (freq_cv * inputs[FREQ_CV_INPUT].getVoltage());
 			
 			if (ratio < 0) { ratio = 1 / -ratio; }
 			for (int i = 0; i < numberOfBand; i++) {
@@ -123,6 +123,7 @@ public:
 		
 		//set output
 		outputs[MIX_OUTPUT].setVoltage(rack::math::clamp(output, -5.f, 5.f));
+
 
 	}
 };
