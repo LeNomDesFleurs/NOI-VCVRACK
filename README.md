@@ -67,7 +67,7 @@ The other knob set the feedback of the buffer.
 # Hellebore [Reverb]
 It uses a Moorer reverb implementation with resizable buffers (which repitch !)<br>
 The size knob set the size of all delays lines.<br>
-The variation is a macro parameter that sets a lot of things :
+The variation is a macro parameter that sets multiple things :
 - Bleeding of one channel to an other
 - Disparity of buffer sizes (thus repitching)
 - Dispartity of feedback of each delays lines
