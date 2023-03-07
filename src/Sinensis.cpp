@@ -93,6 +93,8 @@ public:
 			freq_cv = params[FREQ_CV_PARAM].getValue();
 			frequence += (freq_cv * inputs[FREQ_CV_INPUT].getVoltage());
 			
+
+			
 			if (ratio < 0) { ratio = 1 / -ratio; }
 			for (int i = 0; i < numberOfBand; i++) {
 				//multiply frequence by ratio
