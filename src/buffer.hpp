@@ -22,6 +22,7 @@ class RingBuffer{
 		m_read = 0.f;
 		m_write = m_buffer_size/2.f;
 		m_step = 1.f;
+		std::fill(m_buffer.begin(), m_buffer.end(), 0);
 	}
 	inline float read(){
 		m_read += m_step;

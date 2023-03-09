@@ -4,8 +4,8 @@
       "name": "windows-gcc-x64",
       "includePath": [
         "${workspaceFolder}/**",
-        "D:/VCV/Rack-SDK/include/**",
-        "D:/VCV/Rack-SDK/dep/**"
+        "D:/GITHUB/NOI-VCVRACK/Rack-SDK/include/**",
+        "D:/GITHUB/NOI-VCVRACK/Rack-SDK/dep/**"
       ],
       "defines": [
         "_DEBUG",
@@ -21,8 +21,8 @@
     {
       "name": "GCC",
       "includePath": ["${workspaceFolder}/**",
-      "D:/VCV/Rack-SDK/include/**",
-      "D:/VCV/Rack-SDK/dep/**"
+      "D:/GITHUB/NOI-VCVRACK/Rack-SDK/include/**",
+      "D:/GITHUB/NOI-VCVRACK/Rack-SDK/dep/**"
     ],
       "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
       "windowsSdkVersion": "10.0.18362.0",

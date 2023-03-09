@@ -52,8 +52,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "e:/GITHUB/NOI-VCVRACK/.vscode",
-      "program": "e:/GITHUB/NOI-VCVRACK/.vscode/build/Debug/outDebug",
+      "cwd": "d:/GITHUB/NOI-VCVRACK/.vscode",
+      "program": "d:/GITHUB/NOI-VCVRACK/.vscode/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

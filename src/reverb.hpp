@@ -74,28 +74,7 @@ struct Parameters{
 		variation,
 		rt60;
 };
-private:
-std::array<std::array<noi::Filter::Comb, 6>, 2> m_combs = {{{
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f)},
-			{noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f)}}
-};
-std::array<noi::Filter::Allpass, 2> m_allpasses{
-			noi::Filter::Allpass(0.006),
-			noi::Filter::Allpass(0.006)};
-noi::Reverb::StereoMoorer::Parameters m_params;
-std::array<std::array<float, 6>, 2> m_combs_status;
-std::array<float, 6> m_pan_coefs;
-public:
+
 StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
 	updateParameters(params);
 };
@@ -174,8 +153,30 @@ inline std::array<float, 2> processStereo(std::array<float, 2> inputs){
 		outputs[i] = m_allpasses[i].process(to_allpass);
 	}
 	return outputs;
-}
 
+	
+}
+private:
+std::array<std::array<noi::Filter::Comb, 6>, 2> m_combs = {{{
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f)},
+			{noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f),
+			noi::Filter::Comb(2.f)}}
+};
+	std::array<noi::Filter::Allpass, 2> m_allpasses{
+			noi::Filter::Allpass(0.006),
+			noi::Filter::Allpass(0.006)};
+	noi::Reverb::StereoMoorer::Parameters m_params;
+	std::array<std::array<float, 6>, 2> m_combs_status;
+	std::array<float, 6> m_pan_coefs;
 };/*StereoMoorer*/
 }/*Reverb*/
 }/*noi*/

@@ -11,7 +11,7 @@
           "cwd": "${workspaceRoot}",
           "env":{
               "PATH": "C:/msys64/usr/bin/;C:/msys64/mingw64/bin",
-              "RACK_DIR": "D:/VCV/Rack-SDK"
+              "RACK_DIR": "D:/GITHUB/VCV-SDK/Rack-SDK"
           }
         },
         "group": {
@@ -45,7 +45,7 @@
           "cwd": "${workspaceRoot}",
           "env":{
               "PATH": "C:/msys64/usr/bin/;C:/msys64/mingw64/bin",
-              "RACK_DIR": "D:/VCV/Rack-SDK"
+              "RACK_DIR": "D:/GITHUB/VCV-SDK/Rack-SDK"
           }
         },
         "group": {
