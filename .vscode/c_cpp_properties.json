@@ -4,8 +4,8 @@
       "name": "windows-gcc-x64",
       "includePath": [
         "${workspaceFolder}/**",
-        "D:/GITHUB/NOI-VCVRACK/Rack-SDK/include/**",
-        "D:/GITHUB/NOI-VCVRACK/Rack-SDK/dep/**"
+        "${workspaceFolder}/Rack-SDK/include/**",
+        "${workspaceFolder}/Rack-SDK/dep/**"
       ],
       "defines": [
         "_DEBUG",
@@ -21,12 +21,12 @@
     {
       "name": "GCC",
       "includePath": ["${workspaceFolder}/**",
-      "D:/GITHUB/NOI-VCVRACK/Rack-SDK/include/**",
-      "D:/GITHUB/NOI-VCVRACK/Rack-SDK/dep/**"
+      "${workspaceFolder}/Rack-SDK/include/**",
+      "${workspaceFolder}/Rack-SDK/dep/**"
     ],
       "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
       "windowsSdkVersion": "10.0.18362.0",
-      "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+      "compilerPath": "C:/tools/msys64/mingw64/bin/g++.exe",
       "cStandard": "c17",
       "cppStandard": "c++17",
       "intelliSenseMode": "windows-gcc-x64"
