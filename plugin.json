@@ -1,9 +1,9 @@
 {
-  "slug": "NOI",
-  "name": "NOI",
+  "slug": "NOI-beta",
+  "name": "NOI-beta",
   "version": "2.0.3",
   "license": "GPL-3.0-or-later",
-  "brand": "NOI",
+  "brand": "NOI-beta",
   "author": "Thomas Guillory",
   "authorEmail": "thomasvguillory@gmail.com",
   "authorUrl": "https://lenomdesfleurs.github.io/Blog/",

@@ -19,4 +19,5 @@ extern Model* modelDicotyledon;
 extern Model* modelSunflower;
 extern Model* modelSinensis;
 extern Model* modelHellebore;
+extern Model* modelBufferInterpolation;
 #endif /*PLUGIN*/
