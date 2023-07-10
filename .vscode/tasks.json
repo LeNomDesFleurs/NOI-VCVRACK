@@ -10,8 +10,8 @@
         "options": {
           "cwd": "${workspaceRoot}",
           "env":{
-              "PATH": "C:/msys64/usr/bin/;C:/msys64/mingw64/bin",
-              "RACK_DIR": "D:/GITHUB/VCV-SDK/Rack-SDK"
+              "PATH": "C:/tools/msys64/usr/bin/;C:/tools/msys64/mingw64/bin",
+              "RACK_DIR": "${workspaceRoot}/Rack-SDK"
           }
         },
         "group": {
