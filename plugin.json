@@ -54,6 +54,12 @@
       "tags": [
         "VCF"
       ]
+    },
+    {
+      "slug" : "BufferInterpolation",
+      "name" : "BufferInterpolation",
+      "description" : "beta",
+      "tags":[]
     }
   ]
 }
