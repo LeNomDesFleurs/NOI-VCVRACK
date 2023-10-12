@@ -6,11 +6,11 @@ namespace noi{
 namespace buffer{
 class RingBuffer{
 	private:
- 	float m_read;
-	float m_write;
-	float m_buffer_size;
-	float m_step;
-	float m_time;
+ 	float m_read=0.;
+	float m_write=0.1;
+	float m_buffer_size=0.;
+	float m_step=0.;
+	float m_time=0.;
 	bool m_freeze{false};
 	float m_actual_size;
 	std::vector<float> m_buffer;

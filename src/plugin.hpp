@@ -13,11 +13,11 @@ using namespace rack;
 extern Plugin* pluginInstance;
 
 // Declare each Model, defined in each module source file
-// extern Model* modelMyModule;
+extern Model* modelMyModule;
 extern Model* modelWilt;
 extern Model* modelDicotyledon;
 extern Model* modelSunflower;
 extern Model* modelSinensis;
 extern Model* modelHellebore;
-extern Model* modelBufferInterpolation;
+extern Model* modelPruners;
 #endif /*PLUGIN*/

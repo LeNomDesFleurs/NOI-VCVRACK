@@ -56,9 +56,9 @@
       ]
     },
     {
-      "slug" : "BufferInterpolation",
-      "name" : "BufferInterpolation",
-      "description" : "beta",
+      "slug" : "Pruners",
+      "name" : "Pruners",
+      "description" : "Sampler",
       "tags":[]
     }
   ]

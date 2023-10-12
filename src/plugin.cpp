@@ -16,6 +16,6 @@ void init(Plugin* p) {
 	p->addModel(modelSunflower);
 	p->addModel(modelSinensis);
 	p->addModel(modelHellebore);
-	p->addModel(modelBufferInterpolation);
 	// p->addModel(modelMyModule);
+	p->addModel(modelPruners);
 }

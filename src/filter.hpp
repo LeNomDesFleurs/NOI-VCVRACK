@@ -20,10 +20,10 @@ namespace Filter {
 	//alpass biquad
 	class BPF {
 	private:
-		float m_b1;
-		float xh[2];
+		float m_b1=0.;
+		float xh[2]={0., 0.};
 		float m_fs{ 48000 };
-		float m_c, m_d;
+		float m_c=0., m_d=0.;
 		float m_fc{ 320 }, m_fb{ 100 };
 	public:
 		inline float process(float b0) {
@@ -46,8 +46,8 @@ namespace Filter {
 	//first order LPF
 	class LPF {
 	private:
-		float alpha;
-		float yz;
+		float alpha=0;
+		float yz=0;
 		float m_freq{ 8000 };
 	public:
 		inline void setParam(float freq) {
@@ -72,10 +72,10 @@ namespace Filter {
 
 	private:
 		std::string m_type;
-		float m_b[3];
-		float m_a[3];
-		float m_b_gain[3];
-		float m_a_gain[3];
+		float m_b[3]={0., 0., 0.};
+		float m_a[3]={0., 0., 0.};
+		float m_b_gain[3]={0., 0., 0.};
+		float m_a_gain[3]={0., 0., 0.};
 		float m_fc;
 		float m_Q;
 		float m_omega;
@@ -227,8 +227,8 @@ namespace Filter {
 	class Allpass {
 	private:
 		noi::buffer::RingBuffer m_buffer{0.2};
-		float m_gain;
-		float m_looptime;
+		float m_gain=0.;
+		float m_looptime=0.;
 	public:
 		inline void setReadSpeed(float ratio){
 			m_buffer.setStep(ratio);
@@ -258,8 +258,8 @@ namespace Filter {
 
 	class Comb {
 	private:
-		float m_gain;
-		float m_looptime;
+		float m_gain=0.;
+		float m_looptime=0.;
 		noi::buffer::RingBuffer m_buffer{2.f};
 	public:
 		inline void setReadSpeed(float ratio){
