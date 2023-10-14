@@ -10,13 +10,14 @@ private:
 
     std::vector <float> RingBuffer;
 	float buffer_size;
+	bool rec = false;
 
 
 float readSample(float index){
-	float prev_sample=noi::Outils::modulo(noi::Outils::truncate(index), buffer_size-1);
-	float next_sample=noi::Outils::modulo((prev_sample+1), buffer_size-1);
+	float prev_sample=noi::Outils::modulo(noi::Outils::truncate(index), buffer_size-1.);
+	float next_sample=noi::Outils::modulo((prev_sample+1.), buffer_size-1.);
 	float coef= noi::Outils::decimal(index);
-    float out=(RingBuffer[prev_sample]*coef) + (RingBuffer[next_sample]*(1.-coef));
+    float out=(RingBuffer[next_sample]*coef) + (RingBuffer[prev_sample]*(1.-coef));
 	return out;
 }
 
@@ -64,15 +65,17 @@ public:
 
 
 	void process(const ProcessArgs& args) override {
-		bool clear_param = params[CLEAR_PARAM].getValue();
-		bool play_param = params[PLAY_PARAM].getValue();
-		bool loop_param = params[LOOP_PARAM].getValue();
 		bool rec_param = params[REC_PARAM].getValue();
+		bool clear_param = params[CLEAR_PARAM].getValue();
+		bool loop_param = params[LOOP_PARAM].getValue();
+		bool play_param = params[PLAY_PARAM].getValue();
+
 		float play_speed= params[PLAYSPEED_PARAM].getValue();
 		float output = 0;
 		float debug =0.;
 
 		buffer_size=static_cast<float>(RingBuffer.size());
+
 
 		if (buffer_size<1){
 			output = inputs[AUDIO_INPUT].getVoltage();
@@ -80,10 +83,20 @@ public:
 
 		if (not (clear_param||play_param||rec_param)){
 			counter = 0;
-			
+		}
+
+		if (rec==true && rec_param==false && buffer_size > 1000){
+		 	float fade_time = 1000;
+			for (int i = fade_time; i >= 0; i--){
+				RingBuffer[i]=RingBuffer[i]*(i/fade_time)+RingBuffer[buffer_size-(fade_time-i)]*(1-(i/fade_time));
+				RingBuffer.pop_back();
+			}
+
+			rec=false;
 		}
 
 		if (rec_param){
+			rec=true;
 			params[PLAY_PARAM].setValue(0);
 			if (counter == 0){
 			RingBuffer.clear();
@@ -91,29 +104,25 @@ public:
 			counter++;
 			RingBuffer.push_back(inputs[AUDIO_INPUT].getVoltage());
 		}
-
+		
 		if (play_param){
 			params[REC_PARAM].setValue(0);
-			float prev_sample=noi::Outils::modulo(noi::Outils::truncate(counter), buffer_size-1.);
-			float next_sample=noi::Outils::modulo((prev_sample+1.), buffer_size-1.);
-			float coef= noi::Outils::decimal(counter);
-			debug = counter;
-    		float out=(RingBuffer[next_sample]*coef) + (RingBuffer[prev_sample]*(1.-coef));
-			output=out;
-
+    		output=readSample(counter);
 			counter+=play_speed;
-			if (counter > buffer_size){
-				if (loop_param){
-					counter = 0;
-				}
-				else {
+			if (counter > buffer_size && not loop_param){
 					params[PLAY_PARAM].setValue(0);
-
-				}
 			}
+			counter=noi::Outils::modulo(counter, buffer_size);
 		}
+
+		else {output = inputs[AUDIO_INPUT].getVoltage();}
+
 			outputs[AUDIO_OUTPUT].setVoltage(output);
 			outputs[DEBUG_OUTPUT].setVoltage(debug);
+			lights[PLAY_LIGHT].setBrightness(play_param);
+			lights[REC_LIGHT].setBrightness(rec_param);
+			lights[LOOP_LIGHT].setBrightness(loop_param);
+			lights[CLEAR_LIGHT].setBrightness(clear_param);
 
 	}
 };
