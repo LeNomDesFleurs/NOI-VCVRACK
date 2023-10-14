@@ -1,12 +1,24 @@
 #include "plugin.hpp"
 #include <vector>
+#include <cmath>
+#include "outils.hpp"
 
 struct Pruners : Module {
 private:
     // float input, read_speed;
-	int counter=0;
+	float counter=0;
 
     std::vector <float> RingBuffer;
+	float buffer_size;
+
+
+float readSample(float index){
+	float prev_sample=noi::Outils::modulo(noi::Outils::truncate(index), buffer_size-1);
+	float next_sample=noi::Outils::modulo((prev_sample+1), buffer_size-1);
+	float coef= noi::Outils::decimal(index);
+    float out=(RingBuffer[prev_sample]*coef) + (RingBuffer[next_sample]*(1.-coef));
+	return out;
+}
 
 public:
 
@@ -25,6 +37,7 @@ public:
 	};
 	enum OutputId {
 		AUDIO_OUTPUT,
+		DEBUG_OUTPUT,
 		OUTPUTS_LEN
 	};
 	enum LightId {
@@ -37,7 +50,7 @@ public:
 
 	Pruners() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(PLAYSPEED_PARAM, -4.f, 4.f, 0.f, "Play");
+		configParam(PLAYSPEED_PARAM, -4.f, 4.f, 1.f, "Playspeed");
 		configParam(REC_PARAM, 0, 1, 0, "Rec");
 		configParam(CLEAR_PARAM, 0, 1, 0, "Clear");
 		configParam(LOOP_PARAM, 0, 1, 0, "Loop");
@@ -55,12 +68,23 @@ public:
 		bool play_param = params[PLAY_PARAM].getValue();
 		bool loop_param = params[LOOP_PARAM].getValue();
 		bool rec_param = params[REC_PARAM].getValue();
+		float play_speed= params[PLAYSPEED_PARAM].getValue();
+		float output = 0;
+		float debug =0.;
 
-		if (not (clear_param||play_param||loop_param||rec_param)){
+		buffer_size=static_cast<float>(RingBuffer.size());
+
+		if (buffer_size<1){
+			output = inputs[AUDIO_INPUT].getVoltage();
+		}
+
+		if (not (clear_param||play_param||rec_param)){
 			counter = 0;
+			
 		}
 
 		if (rec_param){
+			params[PLAY_PARAM].setValue(0);
 			if (counter == 0){
 			RingBuffer.clear();
 			}
@@ -69,9 +93,28 @@ public:
 		}
 
 		if (play_param){
-			outputs[AUDIO_OUTPUT].setVoltage(RingBuffer[counter]);
-			counter++;
+			params[REC_PARAM].setValue(0);
+			float prev_sample=noi::Outils::modulo(noi::Outils::truncate(counter), buffer_size-1.);
+			float next_sample=noi::Outils::modulo((prev_sample+1.), buffer_size-1.);
+			float coef= noi::Outils::decimal(counter);
+			debug = counter;
+    		float out=(RingBuffer[next_sample]*coef) + (RingBuffer[prev_sample]*(1.-coef));
+			output=out;
+
+			counter+=play_speed;
+			if (counter > buffer_size){
+				if (loop_param){
+					counter = 0;
+				}
+				else {
+					params[PLAY_PARAM].setValue(0);
+
+				}
+			}
 		}
+			outputs[AUDIO_OUTPUT].setVoltage(output);
+			outputs[DEBUG_OUTPUT].setVoltage(debug);
+
 	}
 };
 
@@ -87,14 +130,19 @@ struct PrunersWidget : ModuleWidget {
 		auto LOOP_PARAMpos = Vec(20.824, 55.361);
 		auto AUDIO_INPUTpos = Vec(5, 5);
 		auto AUDIO_OUTPUTpos = Vec(20, 100);
-
+		auto DEBUG_OUTPUTpos = Vec(30, 110);
+		auto PLAYSPEED_PARAMpos = Vec(30, 10);
 		//
 		//			INPUT
 		//
 	addInput(createInputCentered<PJ301MPort>(mm2px(AUDIO_INPUTpos), module, Pruners::AUDIO_INPUT));
+
+	//OUTPUT
+	addOutput(createOutputCentered<PJ301MPort>(mm2px(DEBUG_OUTPUTpos), module, Pruners::DEBUG_OUTPUT));
 	addOutput(createOutputCentered<PJ301MPort>(mm2px(AUDIO_OUTPUTpos), module, Pruners::AUDIO_OUTPUT));
 		
-
+	//PARAM
+	addParam(createParamCentered<RoundBlackKnob>(mm2px(PLAYSPEED_PARAMpos), module, Pruners::PLAYSPEED_PARAM));
 	addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(REC_PARAMpos), module, Pruners::REC_PARAM, Pruners::REC_LIGHT));
 	addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(PLAY_PARAMpos), module, Pruners::PLAY_PARAM, Pruners::PLAY_LIGHT));
 	addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(CLEAR_PARAMpos), module, Pruners::CLEAR_PARAM, Pruners::CLEAR_LIGHT));

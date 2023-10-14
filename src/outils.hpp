@@ -32,6 +32,22 @@ namespace noi {
 
 	};/*LPF*/
 
+	inline float truncate(float input){
+		int x = (int)input;
+		float output = (float)x;
+		return output;
+	}
+
+	inline float modulo(float input, float max){
+		if (input>max) input = input - max;
+		if (input<0.) input = max+input;
+		return input;
+	}
+
+	inline float decimal(float input){
+		return input - truncate(input);
+	}
+
 		inline float convertMsToSample(float time) { 
 			float temp = truncf(48000.f * time); 
 			return temp; }
