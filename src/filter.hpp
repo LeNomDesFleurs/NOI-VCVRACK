@@ -205,11 +205,17 @@ namespace Filter {
 			feedback = rack::math::clamp(feedback, -5.f, 5.f);
 			b0 += feedback;
 			//shift new value in
-			m_b[2] = m_b[1];
-			m_b[1] = m_b[0];
+			m_b[2] = rack::math::clamp(m_b[1], -100.f, 100.f);
+			m_b[1] = rack::math::clamp(m_b[0], -100.f, 100.f);
 			m_b[0] = b0;
-			m_a[2] = m_a[1];
-			m_a[1] = m_a[0];
+			m_a[2] = rack::math::clamp(m_a[1], -100.f, 100.f);
+			m_a[1] = rack::math::clamp(m_a[0], -100.f, 100.f);
+
+			// m_b[2] = m_b[1];
+			// m_b[1] = m_b[0];
+			// m_b[0] = b0;
+			// m_a[2] = m_a[1];
+			// m_a[1] = m_a[0];
 
 			m_a[0] = m_b[0] * m_b_gain[0]
 				+ m_b[1] * m_b_gain[1]

@@ -10,6 +10,8 @@ private:
 	float frequence, Q, numberOfBand, ratio;
 	float freq_cv;
 	dsp::ClockDivider oneInFour;
+		float debug=1000;
+
 
 public:
 
@@ -37,6 +39,7 @@ public:
 	};
 	enum OutputId {
 		MIX_OUTPUT,
+		// DEBUG,
 		OUTPUTS_LEN
 	};
 	enum LightId {
@@ -72,7 +75,6 @@ public:
 		float output = 0;
 		float input = inputs[SIGNAL_INPUT].getVoltage();
 
-		
 		//update param 1 in 4 sample
 		if (oneInFour.process()) {
 			//retrieve param
@@ -92,9 +94,9 @@ public:
 			frequence = dsp::FREQ_C4 * pow(dsp::FREQ_SEMITONE,params[FREQ_PARAM].getValue());
 			freq_cv = params[FREQ_CV_PARAM].getValue();
 			frequence += (freq_cv * inputs[FREQ_CV_INPUT].getVoltage());
-			
+			if (frequence > debug)
+				debug = frequence;
 
-			
 			if (ratio < 0) { ratio = 1 / -ratio; }
 			for (int i = 0; i < numberOfBand; i++) {
 				//multiply frequence by ratio
@@ -125,8 +127,7 @@ public:
 		
 		//set output
 		outputs[MIX_OUTPUT].setVoltage(rack::math::clamp(output, -5.f, 5.f));
-
-
+		// outputs[DEBUG].setVoltage(debug);
 	}
 };
 
@@ -172,6 +173,7 @@ struct SinensisWidget : ModuleWidget {
 		addInput(createInputCentered<PJ301MPort>(mm2px(RATIO_CV_INPUTpos), module, Sinensis::RATIO_CV_INPUT));
 		//OUTPUT
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Sinensis::MIX_OUTPUT));
+		// addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(10, 10)), module, Sinensis::DEBUG));
 	}
 };
 
