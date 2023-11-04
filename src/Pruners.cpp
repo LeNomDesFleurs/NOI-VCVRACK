@@ -8,18 +8,21 @@ private:
     // float input, read_speed;
 	float counter[4]={0.,0.,0.,0.};
 
-    std::vector <float> RingBuffer;
-	float buffer_size;
-	bool rec = false;
+    std::vector <float> RingBuffer = {0.};
+	float buffer_size = 0;
 
-
-float readSample(float index){
-	float prev_sample=noi::Outils::modulo(noi::Outils::truncate(index), buffer_size-1.);
-	float next_sample=noi::Outils::modulo((prev_sample+1.), buffer_size-1.);
-	float coef= noi::Outils::decimal(index);
-    float out=(RingBuffer[next_sample]*coef) + (RingBuffer[prev_sample]*(1.-coef));
-	return out;
+	float readSample(float index)
+	{
+		float prev_sample = noi::Outils::modulo(noi::Outils::truncate(index), buffer_size - 1.);
+		float next_sample = noi::Outils::modulo((prev_sample + 1.), buffer_size - 1.);
+		float coef = noi::Outils::decimal(index);
+		float out = (RingBuffer[next_sample] * coef) + (RingBuffer[prev_sample] * (1. - coef));
+		return out;
 }
+		bool recording;
+		bool rec_end;
+		bool playing;
+		bool thru;
 
 public:
 
@@ -87,14 +90,33 @@ public:
 
 
 	void process(const ProcessArgs& args) override {
+
+
 		if (inputs[REC_CV_INPUT].isConnected())
 			params[REC_PARAM].setValue(inputs[REC_CV_INPUT].getVoltage() > 2.5);
 		if (inputs[PLAY_CV_INPUT].isConnected())
 			params[PLAY_PARAM].setValue(inputs[PLAY_CV_INPUT].getVoltage() > 2.5);
-		bool rec_param = params[REC_PARAM].getValue();
+		
+		//cut rec and start playing
+		if (recording and params[PLAY_PARAM].getValue())
+			params[REC_PARAM].setValue(0);
+
+		//Cut play and start recording
+		if (playing and params[REC_PARAM].getValue())
+			params[PLAY_PARAM].setValue(0);
+
+		//Cut play if buffer is not large enough
+		if(params[PLAY_PARAM].getValue() && (buffer_size < 10)){
+			params[PLAY_PARAM].setValue(0);
+		}
+		
+		if (recording && not params[REC_PARAM].getValue())
+			rec_end = true;
+		
+		recording = params[REC_PARAM].getValue();
 		// bool clear_param = params[CLEAR_PARAM].getValue();
 		// bool loop_param = params[LOOP_PARAM].getValue();
-		bool play_param = params[PLAY_PARAM].getValue();
+		playing = params[PLAY_PARAM].getValue();
 		float ratio_param = params[RATIO_PARAM].getValue();
 		float head_param = params[HEAD_PARAM].getValue();
 		float head_cv_param = params[HEAD_CV_PARAM].getValue();
@@ -116,18 +138,18 @@ public:
 
 		buffer_size=static_cast<float>(RingBuffer.size());
 
-
+		
 		if (buffer_size<1){
 			output = inputs[AUDIO_INPUT].getVoltage();
 		}
-
-		if (not (play_param||rec_param)){
+		//reset counter
+		if (not (playing||recording)){
 			counter[0] = 0;
 		}
 
 
 		//Fade end of buffer on beginning of bugger
-		if (rec==true && rec_param==false && buffer_size > 1000){
+		if (rec_end && buffer_size > 1000){
 		 	float fade_time = 1000;
 			for (int i = fade_time; i >= 0; i--){
 				RingBuffer[i]=RingBuffer[i]*(i/fade_time)+RingBuffer[buffer_size-(fade_time-i)]*(1-(i/fade_time));
@@ -136,12 +158,10 @@ public:
 			for (int i = 0; i < 4; i++){
 			counter[i]=0;
 			}
-			rec=false;
+			rec_end=false;
 		}
 		//rec
-		if (rec_param){
-			rec=true;
-			params[PLAY_PARAM].setValue(0);
+		if (recording){
 			if (counter[0] == 0){
 			RingBuffer.clear();
 			}
@@ -150,8 +170,7 @@ public:
 			output = inputs[AUDIO_INPUT].getVoltage();
 		}
 		//play
-		if (play_param && (buffer_size > 10)){
-			params[REC_PARAM].setValue(0);
+		if (playing && (buffer_size > 10)){
 			for(int i = 0; i < 4 ; i++){
 			float sample = readSample(counter[i]);
 			output += sample * (i <= head_param);
@@ -161,18 +180,20 @@ public:
 			}
 			output /= 4.;
 		}
-		else if(play_param && (buffer_size < 10)){
-			params[PLAY_PARAM].setValue(false);
+		
+
+		if(not playing)
+		{
+			output = inputs[AUDIO_INPUT].getVoltage();
 		}
-		else {output = inputs[AUDIO_INPUT].getVoltage();}
-
-
-			outputs[MIX_OUTPUT].setVoltage(output);
-			outputs[DEBUG_OUTPUT].setVoltage(debug);
-			lights[PLAY_LIGHT].setBrightness(play_param);
-			lights[REC_LIGHT].setBrightness(rec_param);
-			// lights[LOOP_LIGHT].setBrightness(loop_param);
-			// lights[CLEAR_LIGHT].setBrightness(clear_param);
+		outputs[0].setVoltage(recording);
+		outputs[1].setVoltage(playing);
+		outputs[MIX_OUTPUT].setVoltage(output);
+		outputs[DEBUG_OUTPUT].setVoltage(debug);
+		lights[PLAY_LIGHT].setBrightness(playing);
+		lights[REC_LIGHT].setBrightness(recording);
+		// lights[LOOP_LIGHT].setBrightness(loop_param);
+		// lights[CLEAR_LIGHT].setBrightness(clear_param);
 
 	}
 };
