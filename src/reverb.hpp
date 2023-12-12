@@ -76,8 +76,18 @@ struct Parameters{
 };
 
 StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
+	printf("moorer \n");
+	for (int i = 0; i < 2; i++)
+	{
+		m_allpasses[i].clearBuffer();
+		for (int j = 0; j < 6; j++)
+		{
+			m_combs[i][j].clearBuffer();
+		}
+	}
 	updateParameters(params);
 };
+
 	inline void updateParameters(noi::Reverb::StereoMoorer::Parameters params){
 	m_params = params;
 	setTime();

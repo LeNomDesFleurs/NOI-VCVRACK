@@ -20,7 +20,7 @@ namespace Filter {
 	//alpass biquad
 	class BPF {
 	private:
-		float m_b1=0.;
+		// float m_b1=0.;
 		float xh[2]={0., 0.};
 		float m_fs{ 48000 };
 		float m_c=0., m_d=0.;
@@ -82,7 +82,7 @@ namespace Filter {
 		float m_cosomega;
 		float m_sinomega;
 		float m_alpha;
-		float m_Fe;
+		// float m_Fe;
 		float m_G;
 		float m_fS{ 48000 };
 
@@ -236,9 +236,13 @@ namespace Filter {
 		float m_gain=0.;
 		float m_looptime=0.;
 	public:
-		inline void setReadSpeed(float ratio){
-			m_buffer.setStep(ratio);
-		} 
+	inline void clearBuffer(){
+			m_buffer.clearBuffer();
+			}
+			inline void setReadSpeed(float ratio)
+			{
+				m_buffer.setStep(ratio);
+			}
 		inline void setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
 			m_gain = pow(10, (m_gain / 20));
@@ -258,7 +262,8 @@ namespace Filter {
 			m_looptime = time;
 		}
 		inline 	Allpass(float time) {
-			m_buffer = noi::buffer::RingBuffer(time);
+			printf("allpass \n");
+			// m_buffer = noi::buffer::RingBuffer(time);
 		}
 	};
 
@@ -268,6 +273,9 @@ namespace Filter {
 		float m_looptime=0.;
 		noi::buffer::RingBuffer m_buffer{2.f};
 	public:
+	inline void clearBuffer(){
+			m_buffer.clearBuffer();
+			}
 		inline void setReadSpeed(float ratio){
 			m_buffer.setStep(ratio);
 		} 
@@ -297,7 +305,8 @@ namespace Filter {
 			m_buffer.setFreeze(statut);
 		}
 		inline Comb(float time) {
-			m_buffer = noi::buffer::RingBuffer(time);
+			printf("comb \n");
+			// m_buffer = noi::buffer::RingBuffer(time);
 		}
 	};/*Comb*/
 

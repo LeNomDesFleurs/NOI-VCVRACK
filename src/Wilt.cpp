@@ -13,8 +13,8 @@ private:
 	noi::Reverb::Schroeder schroeder;
 	float redux_input,
 	redux_output,
-	rm_input,
-	rm_cv_input,
+	// rm_input,
+	// rm_cv_input,
 	rm_cv,
 	rm_output,
 	filter_input,
@@ -22,16 +22,16 @@ private:
 	rvb_input,
 	rvb_output;
 
-	float RM;
-	float rt60;
-	float drywet;
-	bool clip;
-	bool intFloat;
+	// float RM;
+	// float rt60;
+	// float drywet;
+	// bool clip;
+	// bool intFloat;
 	float redux_mod;
-	float redux;
+	// float redux;
 	float repeats;
-	float frequence;
-	float Q{ 0.707 };
+	// float frequence;
+	// float Q{ 0.707 };
 
 public:
 

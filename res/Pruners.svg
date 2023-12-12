@@ -122,11 +122,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.9561876"
-     inkscape:cx="69.522984"
-     inkscape:cy="227.48329"
+     inkscape:zoom="2.1701131"
+     inkscape:cx="86.861832"
+     inkscape:cy="179.71414"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      units="mm"
      inkscape:snap-bbox="true"
@@ -182,9 +182,9 @@
        style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect16734);display:inline"><tspan
          x="-201.01953"
          y="223.37212"
-         id="tspan3"><tspan
+         id="tspan6"><tspan
            dx="0 30.820312 25.292969"
-           id="tspan2">DEL</tspan></tspan></text>
+           id="tspan4">DEL</tspan></tspan></text>
     <circle
        style="display:inline;fill:#f9f9f9;fill-opacity:0;stroke:#000000;stroke-width:0.284"
        id="circle40"
@@ -453,6 +453,42 @@
            id="path2305" />
       </g>
     </g>
+    <path
+       style="display:inline;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.2272"
+       id="path975-9"
+       sodipodi:type="arc"
+       sodipodi:cx="149.31693"
+       sodipodi:cy="-138.52982"
+       sodipodi:rx="3.8864"
+       sodipodi:ry="3.8864"
+       sodipodi:start="0"
+       sodipodi:end="5.2359878"
+       sodipodi:arc-type="slice"
+       d="m 153.20333,-138.52982 a 3.8864,3.8864 0 0 1 -2.88053,3.75398 3.8864,3.8864 0 0 1 -4.3716,-1.81078 3.8864,3.8864 0 0 1 0.61763,-4.6913 3.8864,3.8864 0 0 1 4.6913,-0.61762 l -1.9432,3.36572 z"
+       transform="rotate(120)" />
+    <g
+       id="g2309-4"
+       transform="translate(21.702288,-41.033956)"
+       style="display:inline">
+      <g
+         aria-label="+ "
+         transform="matrix(0.12849465,0,0,0.12865093,34.082199,208.45769)"
+         id="g2303-1"
+         style="font-size:40px;font-family:'Eras Light ITC';-inkscape-font-specification:'Eras Light ITC';white-space:pre">
+        <path
+           d="m -77.15625,203.84491 q 0.09766,-0.76172 0.09766,-1.28906 1.914063,0.0586 4.863282,0.0781 l 2.910156,0.0195 0.09766,-4.47266 q 0.07813,-2.59766 0.07813,-3.49609 0.351563,0.0391 0.683594,0.0391 0.371094,0 0.703125,-0.0391 -0.07813,1.52343 -0.371094,7.96875 h 1.953125 l 5.996094,-0.0977 q -0.09766,0.68359 -0.09766,1.28906 -1.933594,-0.0586 -4.941407,-0.0976 l -2.949218,-0.0195 -0.136719,5.625 q -0.03906,1.54296 -0.03906,2.36328 -0.371093,-0.0391 -0.703125,-0.0391 -0.351562,0 -0.703125,0.0391 0.09766,-1.25 0.390625,-7.98828 l -2.246093,0.0195 -1.933594,0.0195 z"
+           id="path2301-3" />
+      </g>
+      <g
+         aria-label="-"
+         transform="matrix(0.21900454,0,0,0.16339744,34.086068,210.83881)"
+         id="g2307-7"
+         style="font-size:40px;font-family:'Eras Light ITC';-inkscape-font-specification:'Eras Light ITC';white-space:pre">
+        <path
+           d="m -71.558594,146.11054 q 0.09766,-0.80078 0.09766,-1.38672 2.128906,0.0977 4.6875,0.0977 2.480468,0 4.707031,-0.0977 -0.09766,0.78125 -0.09766,1.38672 -2.128907,-0.11719 -4.746094,-0.11719 -2.421875,0 -4.648437,0.11719 z"
+           id="path2305-8" />
+      </g>
+    </g>
     <g
        id="g2319"
        transform="translate(-6.1872567,21.345246)"
@@ -588,6 +624,10 @@
        style="display:inline;fill:none;stroke:#000000;stroke-width:0.308999;stroke-dasharray:0.618001, 0.308999"
        d="m 43.084076,189.53143 2.248958,8.80618"
        id="path3-0" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:0.308999;stroke-dasharray:0.618001, 0.308999"
+       d="m 45.533253,198.95363 -2.248958,8.80618"
+       id="path3-0-8" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -614,7 +654,7 @@
        cx="45.333035"
        cy="29.90588"
        r="2.2489583"
-       inkscape:label="PLAY" />
+       inkscape:label="BUFFER_SIZE_CV" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3485"
@@ -629,6 +669,26 @@
        cy="76.122604"
        r="2.2489583"
        inkscape:label="RATIO" />
+    <path
+       style="display:inline;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.224;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       id="path1743-7"
+       transform="rotate(120.04771)"
+       sodipodi:type="arc"
+       sodipodi:arc-type="slice"
+       sodipodi:start="0"
+       sodipodi:end="5.2359878"
+       sodipodi:ry="6"
+       sodipodi:rx="6"
+       sodipodi:cy="-56.74329"
+       sodipodi:cx="14.326754"
+       d="m 20.326754,-56.74329 a 6,6 0 0 1 -4.447086,5.795555 6,6 0 0 1 -6.7490669,-2.795555 6,6 0 0 1 0.9535119,-7.242641 6,6 0 0 1 7.242641,-0.953511 l -3,5.196152 z" />
+    <circle
+       style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
+       id="circle3487-9"
+       cx="41.943783"
+       cy="40.413216"
+       r="2.2489583"
+       inkscape:label="BUFFER_SIZE" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3491"
@@ -657,6 +717,14 @@
        cy="29.90589"
        r="2.2489583"
        inkscape:label="REC"
+       transform="scale(-1,1)" />
+    <circle
+       style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
+       id="circle3483-7-3"
+       cx="-42.857349"
+       cy="58.902332"
+       r="2.2489583"
+       inkscape:label="LOCK_PARAM"
        transform="scale(-1,1)" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;paint-order:normal"

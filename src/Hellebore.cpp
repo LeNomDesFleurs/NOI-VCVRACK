@@ -63,16 +63,15 @@ struct Hellebore : Module {
 		configOutput(TEST_OUTPUT, "TEST");
 	}
 
-	
 	noi::Filter::LPF SlewLPF{20};
 	noi::Reverb::StereoMoorer::Parameters m_params{false, 1.F, 0.01f, 0.1f, 10.f};
-	noi::Reverb::StereoMoorer moorer = noi::Reverb::StereoMoorer(m_params);
+	noi::Reverb::StereoMoorer moorer {m_params};
 	std::array<float, 2> signal_outputs = {0, 0};
 	std::array<float, 2> signal_inputs = {0, 0};
 
 	void process(const ProcessArgs& args) override {
-
-		//freeze
+		// printf("test");
+		// freeze
 		m_params.freeze = (params[FREEZE_PARAM].getValue() > 0);
 		if (inputs[FREEZE_CV_INPUT].isConnected()){
 		m_params.freeze = (inputs[FREEZE_CV_INPUT].getVoltage()>0);

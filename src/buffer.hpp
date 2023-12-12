@@ -5,7 +5,8 @@
 namespace noi{
 namespace buffer{
 class RingBuffer{
-	private:
+
+private:
  	float m_read=0.;
 	float m_write=0.1;
 	float m_buffer_size=0.;
@@ -14,7 +15,7 @@ class RingBuffer{
 	bool m_freeze{false};
 	float m_actual_size;
 	std::vector<float> m_buffer;
-	public:
+public:
 	inline RingBuffer(float max_time){
 		m_buffer_size = noi::Outils::convertMsToSample(max_time);
 		size_t buffer_int = static_cast<size_t> (m_buffer_size);
@@ -22,7 +23,12 @@ class RingBuffer{
 		m_read = 0.f;
 		m_write = m_buffer_size/2.f;
 		m_step = 1.f;
-		std::fill(m_buffer.begin(), m_buffer.end(), 0);
+		printf("buffer \n");
+		printf("%f", m_buffer[2]);
+		std::fill(m_buffer.begin(), m_buffer.end(), 0.);
+	}
+	inline void clearBuffer(){
+		m_buffer.clear();
 	}
 	inline float read(){
 		m_read += m_step;
@@ -66,8 +72,8 @@ class RingBuffer{
 		size_goal = rack::math::clamp(size_goal, 0.f,  (m_buffer_size-2.f));
 		float actual_size = getSize();
 		m_actual_size = actual_size;
-		//ralenti si le buffer doit être plus petit
-		//accelere si le buffer doit être plus grand
+		//slows down if the buffer is supposed to be smaller
+		//speeds up if the buffer is suppoed to be bigger
 		if (actual_size < (size_goal - 2.f)){
 			m_step = 0.8;
 		}

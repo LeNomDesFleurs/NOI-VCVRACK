@@ -44,6 +44,12 @@ namespace noi {
 		return input;
 	}
 
+	// inline float modulo(float input, float max, float min = 0.){
+	// 	if (input>max) input = input - max;
+	// 	if (input<min) input = max+input;
+	// 	return input;
+	// }
+
 	inline float decimal(float input){
 		return input - truncate(input);
 	}
@@ -102,7 +108,7 @@ namespace noi {
 		float m_actual_duration;
 		float m_max_duration;
 		int m_read;
-		float m_pitch_read;
+		// float m_pitch_read;
 		int m_pitch_step{4};
 		int m_write;
 		int m_buffer_end;
