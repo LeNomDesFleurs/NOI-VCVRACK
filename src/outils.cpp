@@ -56,7 +56,7 @@ namespace noi {
 	}
 
 		float convertMsToSample(float time) { 
-			float temp = truncf(48000.f * time); 
+			float temp = truncate(48000.f * time); 
 			return temp; }
 	
 		int mapValueFloatToInt(float inMin, float inMax, float value, int outMin, int outMax) {
