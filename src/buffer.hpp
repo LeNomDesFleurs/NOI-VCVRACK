@@ -1,6 +1,8 @@
+#pragma once
+
 #include "outils.hpp"
-#include "filter.hpp"
 #include <math.h>
+#include <rack.hpp>
 
 namespace noi{
 namespace buffer{

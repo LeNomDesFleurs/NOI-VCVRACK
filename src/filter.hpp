@@ -1,10 +1,6 @@
 #pragma once
 
 
-
-#ifndef FILTER
-#define FILTER
-
 #include <string>
 #include <math.h>
 #include <vector>
@@ -76,7 +72,7 @@ namespace Filter {
 
 	class Allpass {
 	private:
-		noi::buffer::RingBuffer m_buffer{0.2};
+		noi::buffer::RingBuffer m_buffer{2.f};
 		float m_gain=0.;
 		float m_looptime=0.;
 	public:
@@ -109,5 +105,3 @@ namespace Filter {
 }/*Filter*/
 
 }/*noi*/
-
-#endif /*FILTER*/

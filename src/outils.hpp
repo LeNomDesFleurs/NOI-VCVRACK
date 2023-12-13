@@ -1,7 +1,6 @@
 #pragma once
 
-#ifndef OUTILS
-#define OUTILS
+
 #include <vector>
 const float cheappi{ 3.14159265359 };
 
@@ -57,5 +56,3 @@ namespace noi {
 
 	}/*Outils*/
 }/*noi*/
-
-#endif /*OUTILS*/

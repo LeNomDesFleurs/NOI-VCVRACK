@@ -102,7 +102,7 @@ public:
 				//multiply frequence by ratio
 				float thisBandFreq = frequence;
 				for (int j = 1; j <= i; j++) { thisBandFreq *= ratio; }
-				thisBandFreq = truncate(thisBandFreq);
+				thisBandFreq = noi::Outils::truncate(thisBandFreq);
 				//frequency folding
 				while (thisBandFreq > 15000.f || thisBandFreq < 30.f) {
 					if (thisBandFreq > 15000.F) { thisBandFreq = 15000.f - (thisBandFreq - 15000.f); }

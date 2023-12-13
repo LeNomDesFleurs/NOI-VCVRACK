@@ -1,6 +1,5 @@
 #include "reverb.hpp"
-#include <vector>
-#include <array>
+
 
 namespace noi {
 

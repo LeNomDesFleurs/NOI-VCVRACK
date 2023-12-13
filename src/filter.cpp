@@ -1,39 +1,18 @@
-#pragma once
 
-
-
-#ifndef FILTER
-#define FILTER
-
-#include <string>
-#include <math.h>
-#include <vector>
-#include "outils.hpp"
-#include <rack.hpp>
-#include "buffer.hpp"
-
-
+#include "filter.hpp"
 
 namespace noi {
 
 namespace Filter {
 	//alpass biquad
-	class BPF {
-	private:
-		// float m_b1=0.;
-		float xh[2]={0., 0.};
-		float m_fs{ 48000 };
-		float m_c=0., m_d=0.;
-		float m_fc{ 320 }, m_fb{ 100 };
-	public:
-		float process(float b0) {
+		float BPF::process(float b0) {
 			float xh_new = b0 - m_d * (1 - m_c) * xh[0] + m_c * xh[1];
 			float ap_y = -m_c * xh_new + m_d * (1 - m_c) * xh[0] + xh[1];
 			xh[1] = xh[0];
 			xh[0] = xh_new;
 			return 0.5 * (b0 - ap_y);
 		}
-		void setParam(float fc, float fb) {
+		void BPF::setParam(float fc, float fb) {
 			if (m_fc == fc && m_fb == fb) { return; }
 			m_fc = fc;
 			m_fb = fb;
@@ -42,52 +21,27 @@ namespace Filter {
 			m_c = (tanf(cheappi * Wb / 2) - 1) / (tanf(cheappi * Wb / 2) + 1);
 			m_d = -cosf(cheappi * Wc);
 		}
-	};
+
 	//first order LPF
-	class LPF {
-	private:
-		float alpha=0;
-		float yz=0;
-		float m_freq{ 8000 };
-	public:
-		void setParam(float freq) {
+
+		void LPF::setParam(float freq) {
 			if (m_freq == freq) { return; }
 			m_freq = freq;
 			float omega = 2 * cheappi * freq;
 			alpha = 1 / ((48000 / omega) + 1);
 		}
 
-		float process(float x) {
+		float LPF::process(float x) {
 			float y = x * alpha + yz * (1 - alpha);
 			yz = y;
 			return y;
 		}
 
-		LPF(float freq) { setParam(freq); }
-
-	};/*LPF*/
+		LPF::LPF(float freq) { setParam(freq); }
 
 
-	 class Biquad {
 
-	private:
-		std::string m_type;
-		float m_b[3]={0., 0., 0.};
-		float m_a[3]={0., 0., 0.};
-		float m_b_gain[3]={0., 0., 0.};
-		float m_a_gain[3]={0., 0., 0.};
-		float m_fc;
-		float m_Q;
-		float m_omega;
-		float m_cosomega;
-		float m_sinomega;
-		float m_alpha;
-		// float m_Fe;
-		float m_G;
-		float m_fS{ 48000 };
-
-	public:
-		void computeLPFCoef(){
+		void Biquad::computeLPFCoef(){
 			m_a_gain[0] = 1 + m_alpha;
 
 			m_b_gain[0] = (1 - m_cosomega) / 2;
@@ -106,7 +60,7 @@ namespace Filter {
 			m_a_gain[2] /= m_a_gain[0];
 
 		}
-		void computeHPFCoef(){
+		void Biquad::computeHPFCoef(){
 			m_a_gain[0] = 1 + m_alpha;
 
 			m_b_gain[0] = (1 + m_cosomega) / 2;
@@ -124,7 +78,7 @@ namespace Filter {
 			m_a_gain[2] = 1 - m_alpha;
 			m_a_gain[2] /= m_a_gain[0];
 		}
-		void computeBPFCoef() {
+		void Biquad::computeBPFCoef() {
 			m_a_gain[0] = 1 + m_alpha;
 
 			m_b_gain[0] = m_alpha * m_Q;
@@ -142,7 +96,7 @@ namespace Filter {
 			m_a_gain[2] = 1 - m_alpha;
 			m_a_gain[2] /= m_a_gain[0];
 		}
-		void computePEAKCoef() {
+		void Biquad::computePEAKCoef() {
 			float V0 = powf(10, m_G / 20);
 			float K = tanf(cheappi * m_fc / m_fS);
 			float k2 = K * K;
@@ -160,7 +114,7 @@ namespace Filter {
 
 		}
 
-		void setParam(float fc, float Q, float G) {
+		void Biquad::setParam(float fc, float Q, float G) {
 			if (m_fc == fc && m_Q == Q && m_G == G) { return; }
 			m_fc = fc;
 			m_G = G;
@@ -168,7 +122,7 @@ namespace Filter {
 			if (m_type == "PEAK") { computePEAKCoef();}
 		}
 	
-		void setParam(float frequence, float Q) {
+		void Biquad::setParam(float frequence, float Q) {
 			if (m_fc == frequence && m_Q == Q) { return; }
 			m_fc = frequence;
 			m_Q = Q;
@@ -180,7 +134,7 @@ namespace Filter {
 			else if (m_type == "HPF") { computeHPFCoef(); }
 			else if (m_type == "BPF") { computeBPFCoef(); }
 		}
-		void setParam(float frequence) {
+		void Biquad::setParam(float frequence) {
 			if (m_fc == frequence) { return; }
 			m_fc = frequence;
 			m_omega = 2.f * cheappi * (m_fc / 48000.f);
@@ -192,9 +146,9 @@ namespace Filter {
 			else if (m_type == "BPF") { computeBPFCoef(); }
 			else if (m_type == "PEAK") { computePEAKCoef(); }
 		}
-		std::string getType() { return m_type; }
+		std::string Biquad::getType() { return m_type; }
 
-		float process(float b0) {
+		float Biquad::process(float b0) {
 			//feedback & clipping
 			float feedback = m_a[0];
 			//1500 chosed by experimentation w/ sinensis, self osc around Q = 38
@@ -225,94 +179,81 @@ namespace Filter {
 
 			return m_a[0];
 		}
-		void setType(std::string type) { m_type = type; }
-		Biquad(std::string type, float freq, float Q) { setType(type); setParam(freq, Q); }
-		Biquad(std::string type) { setType(type); }
-	};/*Biquad*/
+		void Biquad::setType(std::string type) { m_type = type; }
+		Biquad::Biquad(std::string type, float freq, float Q) { setType(type); setParam(freq, Q); }
+		Biquad::Biquad(std::string type) { setType(type); }
 
-	class Allpass {
-	private:
-		noi::buffer::RingBuffer m_buffer{0.2};
-		float m_gain=0.;
-		float m_looptime=0.;
-	public:
-	void clearBuffer(){
+
+	void Allpass::clearBuffer(){
 			m_buffer.clearBuffer();
 			}
-			void setReadSpeed(float ratio)
+			void Allpass::setReadSpeed(float ratio)
 			{
 				m_buffer.setStep(ratio);
 			}
-		void setGain(float rt60) {
+		void Allpass::setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
 			m_gain = pow(10, (m_gain / 20));
 		}
-		void overrideFeedback(float feedback){
+		void Allpass::overrideFeedback(float feedback){
 			m_gain = feedback;
 		}
-		float process(float input) {
+		float Allpass::process(float input) {
 			float delay = m_buffer.read();
 			delay = rack::math::clamp(delay, -5.f, 5.f);
 			float y = ((input + delay * m_gain) * (-m_gain)) + delay;
 			m_buffer.write(y);
 			return y;
 		}
-		void resize (float time){
+		void Allpass::resize (float time){
 			m_buffer.setSize(time);
 			m_looptime = time;
 		}
-		Allpass(float time) {
+		Allpass::Allpass(float time) {
 			printf("allpass \n");
 			// m_buffer = noi::buffer::RingBuffer(time);
 		}
-	};
 
-	class Comb {
-	private:
-		float m_gain=0.;
-		float m_looptime=0.;
-		noi::buffer::RingBuffer m_buffer{2.f};
-	public:
-	void clearBuffer(){
+
+
+	void Comb::clearBuffer(){
 			m_buffer.clearBuffer();
 			}
-		void setReadSpeed(float ratio){
+		void Comb::setReadSpeed(float ratio){
 			m_buffer.setStep(ratio);
 		} 
-		void setGain(float rt60) {
+		void Comb::setGain(float rt60) {
 			m_gain = -60.f * m_looptime / rt60;
 			m_gain = pow(10.f, (m_gain / 20.f));
 		}
-		void overrideFeedback(float feedback){
+		void Comb::overrideFeedback(float feedback){
 			m_gain = feedback;
 		}
-		float process(float input) {
+		float Comb::process(float input) {
 			float delay = m_buffer.read();
 			delay = rack::math::clamp(delay, -5.f, 5.f);
 			float y = delay * m_gain + input;
 			m_buffer.write(y);
 			return y;
 		}
-		float processFreezed(){
+		float Comb::processFreezed(){
 			return m_buffer.read();
 		}
-		void resize(float time){
+		void Comb::resize(float time){
 			//if (m_looptime == time){return;}
 			m_buffer.setSize(time);
 			m_looptime = time;
 		}
-		void setFreeze(bool statut){
+		void Comb::setFreeze(bool statut){
 			m_buffer.setFreeze(statut);
 		}
-		Comb(float time) {
+		Comb::Comb(float time) {
 			printf("comb \n");
 			// m_buffer = noi::buffer::RingBuffer(time);
 		}
-	};/*Comb*/
 
 
 }/*Filter*/
 
 }/*noi*/
 
-#endif /*FILTER*/

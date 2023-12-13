@@ -1,6 +1,4 @@
-#include "outils.hpp"
-#include "filter.hpp"
-#include <math.h>
+#include "buffer.hpp"
 
 namespace noi{
 namespace buffer{

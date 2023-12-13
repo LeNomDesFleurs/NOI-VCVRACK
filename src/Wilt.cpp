@@ -100,7 +100,7 @@ public:
 		redux_mod = inputs[REDUX_CV_INPUT].getVoltage();
 		redux_mod *= params[REDUX_CV_PARAM].getValue();
 		if (params[INTFLOAT_PARAM].getValue()) {
-			redux_mod = truncate(redux_mod);
+			redux_mod = noi::Outils::truncate(redux_mod);
 		}
 		redux_mod = noi::Outils::mapValue(redux_mod, -5, 5, -50, 50);
 		repeats = params[REDUX_PARAM].getValue() + redux_mod;

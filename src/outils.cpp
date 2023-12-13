@@ -1,37 +1,10 @@
-#pragma once
 
-#ifndef OUTILS
-#define OUTILS
-#include <vector>
-const float cheappi{ 3.14159265359 };
+
 #include "outils.hpp"
 
 namespace noi {
 
 	namespace Outils {
-
-			class LPF {
-	private:
-		float alpha;
-		float yz;
-		float m_freq{ 8000 };
-	public:
-		void setParam(float freq) {
-			if (m_freq == freq) { return; }
-			m_freq = freq;
-			float omega = 2 * cheappi * freq;
-			alpha = 1 / ((48000 / omega) + 1);
-		}
-
-		float process(float x) {
-			float y = x * alpha + yz * (1 - alpha);
-			yz = y;
-			return y;
-		}
-
-		LPF(float freq) { setParam(freq); }
-
-	};/*LPF*/
 
 	float truncate(float input){
 		int x = (int)input;
@@ -108,4 +81,3 @@ namespace noi {
 	}/*Outils*/
 }/*noi*/
 
-#endif /*OUTILS*/
