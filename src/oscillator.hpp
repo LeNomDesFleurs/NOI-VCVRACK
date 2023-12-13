@@ -15,7 +15,7 @@ namespace noi{
 			float m_statut{0};
 			std::string m_type;
 		public:
-			inline float Process(float freq, float sampleRate) {
+			float Process(float freq, float sampleRate) {
 				m_statut += 10 / (sampleRate / freq);
 				if (m_statut > 5) { m_statut = -5; }
 				if (m_type == "SAW") { return m_statut; }
@@ -39,15 +39,15 @@ namespace noi{
 			float m_time{2};
 
 		public:
-			inline float getUpOrDown() {return m_up_or_down;}
-			inline void SetTime(float time) {
+			float getUpOrDown() {return m_up_or_down;}
+			void SetTime(float time) {
 				m_time = time;
 			}
-			inline void setParam(float coef, float size) {
+			void setParam(float coef, float size) {
 				m_coef = coef;
 				m_size = size;
 			}
-			inline void NewLine() {
+			void NewLine() {
 				//invert direction
 				m_up_or_down = (m_up_or_down > 0) ? -1 : 1;
 				//genere une nouvelle fin
@@ -59,7 +59,7 @@ namespace noi{
 				float difference = (m_up_or_down > 0) ? m_line_goal - m_statut : m_statut - m_line_goal;
 				m_step = difference / (m_time * 48000);
 			}
-			inline float Process() {
+			float Process() {
 				//avance sur la ligne actuelle
 
 				m_statut += m_step * m_up_or_down;
@@ -67,7 +67,7 @@ namespace noi{
 				if (m_up_or_down < 0 && m_statut < m_line_goal) { NewLine(); }
 				return m_statut;
 			}
-			inline Wind() { m_max_limit = +5; m_max_limit = -5; NewLine(); }
+			Wind() { m_max_limit = +5; m_max_limit = -5; NewLine(); }
 
 		};
 
