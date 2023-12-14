@@ -9,7 +9,8 @@ namespace buffer{
 class RingBuffer{
 
 private:
- 	float m_read=0.;
+	float m_sample_rate{48000};
+	float m_read = 0.;
 	float m_write=0.1;
 	float m_buffer_size=0.;
 	float m_step=0.;
@@ -23,7 +24,7 @@ public:
 	float read();
 	void write(float new_sample);
 	void setStep(float step);
-
+	void setSampleRate(int sample_rate);
 	void setSizeWoRepitch(float size);
 	void setSize(float new_time);
 	float getActualSize();

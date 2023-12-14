@@ -4,7 +4,7 @@ namespace noi{
 namespace buffer{
 
 	RingBuffer::RingBuffer(float max_time){
-		m_buffer_size = noi::Outils::convertMsToSample(max_time);
+		m_buffer_size = noi::Outils::convertMsToSample(max_time, m_sample_rate);
 		size_t buffer_int = static_cast<size_t> (m_buffer_size);
 		m_buffer.resize(buffer_int);
 		m_read = 0.f;
@@ -16,6 +16,9 @@ namespace buffer{
 	}
 	void RingBuffer::clearBuffer(){
 		m_buffer.clear();
+	}
+	void RingBuffer::setSampleRate(int sample_rate){
+		m_sample_rate = (float) sample_rate;
 	}
 	float RingBuffer::read(){
 		m_read += m_step;
@@ -49,7 +52,7 @@ namespace buffer{
 	
 	void RingBuffer::setSizeWoRepitch(float size){
 		m_read = 0;
-		m_write = noi::Outils::convertMsToSample(size);
+		m_write = noi::Outils::convertMsToSample(size, m_sample_rate);
 	}
 	void RingBuffer::setSize(float new_time){
 		if (m_freeze){
@@ -57,7 +60,7 @@ namespace buffer{
 			return;
 		}
 		m_time = new_time;
-		float size_goal = noi::Outils::convertMsToSample(new_time);
+		float size_goal = noi::Outils::convertMsToSample(new_time, m_sample_rate);
 		size_goal = rack::math::clamp(size_goal, 0.f,  (m_buffer_size-2.f));
 		float actual_size = getSize();
 		m_actual_size = actual_size;

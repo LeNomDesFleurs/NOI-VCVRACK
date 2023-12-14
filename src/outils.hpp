@@ -32,7 +32,7 @@ namespace noi {
 
 			float decimal(float input);
 
-			float convertMsToSample(float time);
+			float convertMsToSample(float time, float m_sampling_rate);
 
 			int mapValueFloatToInt(float inMin, float inMax, float value, int outMin, int outMax);
 

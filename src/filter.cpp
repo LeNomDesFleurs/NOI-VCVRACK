@@ -98,7 +98,7 @@ namespace Filter {
 		}
 		void Biquad::computePEAKCoef() {
 			float V0 = powf(10, m_G / 20);
-			float K = tanf(cheappi * m_fc / m_fS);
+			float K = tanf(cheappi * m_fc / m_sample_rate);
 			float k2 = K * K;
 			float divide = (1 + (1 / m_Q) * K + k2);
 
@@ -113,40 +113,42 @@ namespace Filter {
 			m_a_gain[2] /= divide;
 
 		}
-
+		
+		void Biquad::computeCoef() {
+			m_omega = 2.f * cheappi * (m_fc / m_sample_rate);
+			m_cosomega = cos(m_omega);
+			m_sinomega = sin(m_omega);
+			m_alpha = m_sinomega / (2 * m_Q);
+			if (m_type == "PEAK") { computePEAKCoef();}
+			else if (m_type == "LPF") { computeLPFCoef(); }
+			else if (m_type == "HPF") { computeHPFCoef(); }
+			else if (m_type == "BPF") { computeBPFCoef(); }
+		}
+		
 		void Biquad::setParam(float fc, float Q, float G) {
 			if (m_fc == fc && m_Q == Q && m_G == G) { return; }
 			m_fc = fc;
 			m_G = G;
 			m_Q = Q;
-			if (m_type == "PEAK") { computePEAKCoef();}
+			computeCoef();
 		}
-	
+
 		void Biquad::setParam(float frequence, float Q) {
 			if (m_fc == frequence && m_Q == Q) { return; }
 			m_fc = frequence;
 			m_Q = Q;
-			m_omega = 2.f * cheappi * (m_fc / 48000.f);
-			m_cosomega = cos(m_omega);
-			m_sinomega = sin(m_omega);
-			m_alpha = m_sinomega / (2 * m_Q);
-			if (m_type == "LPF") { computeLPFCoef(); }
-			else if (m_type == "HPF") { computeHPFCoef(); }
-			else if (m_type == "BPF") { computeBPFCoef(); }
+			computeCoef();
 		}
 		void Biquad::setParam(float frequence) {
 			if (m_fc == frequence) { return; }
-			m_fc = frequence;
-			m_omega = 2.f * cheappi * (m_fc / 48000.f);
-			m_cosomega = cos(m_omega);
-			m_sinomega = sin(m_omega);
-			m_alpha = m_sinomega / (2.f * m_Q);
-			if (m_type == "LPF") { computeLPFCoef(); }
-			else if (m_type == "HPF") { computeHPFCoef(); }
-			else if (m_type == "BPF") { computeBPFCoef(); }
-			else if (m_type == "PEAK") { computePEAKCoef(); }
+			computeCoef();
 		}
 		std::string Biquad::getType() { return m_type; }
+
+		void Biquad::setSampleRate(int sample_rate){
+			m_sample_rate = sample_rate;
+			computeCoef();
+		}
 
 		float Biquad::process(float b0) {
 			//feedback & clipping
@@ -214,9 +216,11 @@ namespace Filter {
 			// m_buffer = noi::buffer::RingBuffer(time);
 		}
 
+	void Allpass::setSampleRate(int sample_rate){
+		m_buffer.setSampleRate(sample_rate);
+	}
 
-
-	void Comb::clearBuffer(){
+		void Comb::clearBuffer(){
 			m_buffer.clearBuffer();
 			}
 		void Comb::setReadSpeed(float ratio){
@@ -236,6 +240,7 @@ namespace Filter {
 			m_buffer.write(y);
 			return y;
 		}
+
 		float Comb::processFreezed(){
 			return m_buffer.read();
 		}

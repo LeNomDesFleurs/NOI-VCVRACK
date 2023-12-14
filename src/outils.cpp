@@ -28,8 +28,8 @@ namespace noi {
 		return input - truncate(input);
 	}
 
-		float convertMsToSample(float time) { 
-			float temp = truncate(48000.f * time); 
+		float convertMsToSample(float time, float sampling_rate) { 
+			float temp = truncate(sampling_rate * time); 
 			return temp; }
 	
 		int mapValueFloatToInt(float inMin, float inMax, float value, int outMin, int outMax) {
