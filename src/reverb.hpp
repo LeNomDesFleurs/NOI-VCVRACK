@@ -11,12 +11,12 @@ namespace Reverb {
 		float m_rt60;
 		float m_DryWet;
 		float m_step;
-		noi::Filter::Allpass ap1{0.0017};
-		noi::Filter::Allpass ap2{ 0.005 };
-		noi::Filter::Comb cb1{ 0.0297 };
-		noi::Filter::Comb cb2{ 0.0371 };
-		noi::Filter::Comb cb3{ 0.0411 };
-		noi::Filter::Comb cb4{ 0.0437 };
+		noi::Filter::Allpass ap1;
+		noi::Filter::Allpass ap2;
+		noi::Filter::Comb cb1;
+		noi::Filter::Comb cb2;
+		noi::Filter::Comb cb3;
+		noi::Filter::Comb cb4;
 		
 	public:
 		Schroeder();
@@ -54,22 +54,22 @@ std::array<float, 2> processStereo(std::array<float, 2> inputs);
 
 private:
 std::array<std::array<noi::Filter::Comb, 6>, 2> m_combs = {{{
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f)},
-			{noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f),
-			noi::Filter::Comb(2.f)}}
+			noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb()},
+			{noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb(),
+			noi::Filter::Comb()}}
 };
 	std::array<noi::Filter::Allpass, 2> m_allpasses{
-			noi::Filter::Allpass(0.006),
-			noi::Filter::Allpass(0.006)};
+			noi::Filter::Allpass(),
+			noi::Filter::Allpass()};
 	noi::Reverb::StereoMoorer::Parameters m_params;
 	std::array<std::array<float, 6>, 2> m_combs_status;
 	std::array<float, 6> m_pan_coefs;

@@ -186,20 +186,31 @@ namespace Filter {
 		Biquad::Biquad(std::string type) { setType(type); }
 
 
-	void Allpass::clearBuffer(){
+	void FeedbackFilter::clearBuffer(){
 			m_buffer.clearBuffer();
 			}
-			void Allpass::setReadSpeed(float ratio)
+			void FeedbackFilter::setReadSpeed(float ratio)
 			{
 				m_buffer.setStep(ratio);
 			}
-		void Allpass::setGain(float rt60) {
+		void FeedbackFilter::setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
 			m_gain = pow(10, (m_gain / 20));
 		}
-		void Allpass::overrideFeedback(float feedback){
+		void FeedbackFilter::overrideFeedback(float feedback){
 			m_gain = feedback;
 		}
+
+		void FeedbackFilter::resize (float time){
+			m_buffer.setSize(time);
+			m_looptime = time;
+		}
+
+			void FeedbackFilter::setSampleRate(int sample_rate){
+			m_buffer.setSampleRate(sample_rate);
+		}
+
+
 		float Allpass::process(float input) {
 			float delay = m_buffer.read();
 			delay = rack::math::clamp(delay, -5.f, 5.f);
@@ -207,32 +218,8 @@ namespace Filter {
 			m_buffer.write(y);
 			return y;
 		}
-		void Allpass::resize (float time){
-			m_buffer.setSize(time);
-			m_looptime = time;
-		}
-		Allpass::Allpass(float time) {
-			printf("allpass \n");
-			// m_buffer = noi::buffer::RingBuffer(time);
-		}
 
-	void Allpass::setSampleRate(int sample_rate){
-		m_buffer.setSampleRate(sample_rate);
-	}
 
-		void Comb::clearBuffer(){
-			m_buffer.clearBuffer();
-			}
-		void Comb::setReadSpeed(float ratio){
-			m_buffer.setStep(ratio);
-		} 
-		void Comb::setGain(float rt60) {
-			m_gain = -60.f * m_looptime / rt60;
-			m_gain = pow(10.f, (m_gain / 20.f));
-		}
-		void Comb::overrideFeedback(float feedback){
-			m_gain = feedback;
-		}
 		float Comb::process(float input) {
 			float delay = m_buffer.read();
 			delay = rack::math::clamp(delay, -5.f, 5.f);
@@ -244,17 +231,9 @@ namespace Filter {
 		float Comb::processFreezed(){
 			return m_buffer.read();
 		}
-		void Comb::resize(float time){
-			//if (m_looptime == time){return;}
-			m_buffer.setSize(time);
-			m_looptime = time;
-		}
+
 		void Comb::setFreeze(bool statut){
 			m_buffer.setFreeze(statut);
-		}
-		Comb::Comb(float time) {
-			printf("comb \n");
-			// m_buffer = noi::buffer::RingBuffer(time);
 		}
 
 

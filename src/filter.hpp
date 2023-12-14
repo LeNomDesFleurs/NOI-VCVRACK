@@ -72,10 +72,8 @@ namespace Filter {
 		Biquad(std::string type);
 	 }; /*Biquad*/
 
-
-
-	class Allpass {
-	private:
+	class FeedbackFilter {
+		protected:
 		noi::buffer::RingBuffer m_buffer{2.f};
 		float m_gain=0.;
 		float m_looptime=0.;
@@ -85,27 +83,24 @@ namespace Filter {
 		void setReadSpeed(float ratio);
 		void setGain(float rt60);
 		void overrideFeedback(float feedback);
-		float process(float input);
 		void resize(float time);
-		Allpass(float time);
+		FeedbackFilter()=default;
+		// FeedbackFilter() : FeedbackFilter(){};
 	};
 
-	class Comb {
-	private:
-		float m_gain=0.;
-		float m_looptime=0.;
-		noi::buffer::RingBuffer m_buffer{2.f};
+	class Allpass : public FeedbackFilter{
+		public:
+		float process(float input);
+		Allpass()=default;
+	};
+
+	class Comb : public FeedbackFilter{
+
 	public:
-		void setSampleRate(int sample_rate);
-		void clearBuffer();
-		void setReadSpeed(float ratio);
-		void setGain(float rt60);
-		void overrideFeedback(float feedback);
 		float process(float input);
 		float processFreezed();
-		void resize(float time);
 		void setFreeze(bool statut);
-		Comb(float time);
+		Comb()=default;
 	}; /*Comb*/
 
 }/*Filter*/
