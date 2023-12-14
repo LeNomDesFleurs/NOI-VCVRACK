@@ -140,7 +140,7 @@ std::array<float, 2> StereoMoorer::processStereo(std::array<float, 2> inputs){
 	
 }
 
-void StereoMoorer::SetSampleRate(int sample_rate){
+void StereoMoorer::SetSampleRate(float sample_rate){
 		for(int i=0; i<2; i++){
 		m_allpasses[i].setGain(sample_rate);
 		for (auto& comb:m_combs[i]){

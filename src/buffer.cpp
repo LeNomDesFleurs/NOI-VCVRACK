@@ -17,8 +17,8 @@ namespace buffer{
 	void RingBuffer::clearBuffer(){
 		m_buffer.clear();
 	}
-	void RingBuffer::setSampleRate(int sample_rate){
-		m_sample_rate = (float) sample_rate;
+	void RingBuffer::setSampleRate(float sample_rate){
+		m_sample_rate = sample_rate;
 	}
 	float RingBuffer::read(){
 		m_read += m_step;

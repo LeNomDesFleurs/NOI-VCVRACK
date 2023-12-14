@@ -44,8 +44,8 @@ struct Hellebore : Module {
 	std::array<float, 2> signal_outputs = {0, 0};
 	std::array<float, 2> signal_inputs = {0, 0};
 
-	void OnSampleRateChanged(const SampleRateChangeEvent & 	e){
-	moorer.SetSampleRate(APP->engine->getSampleRate());
+	void onSampleRateChange(const SampleRateChangeEvent & e) override{
+	moorer.SetSampleRate(e.sampleRate);
 	}
 
 	Hellebore() {

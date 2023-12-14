@@ -145,7 +145,7 @@ namespace Filter {
 		}
 		std::string Biquad::getType() { return m_type; }
 
-		void Biquad::setSampleRate(int sample_rate){
+		void Biquad::setSampleRate(float sample_rate){
 			m_sample_rate = sample_rate;
 			computeCoef();
 		}
@@ -180,6 +180,7 @@ namespace Filter {
 				- m_a[2] * m_a_gain[2];
 
 			return m_a[0];
+			// return m_sample_rate;
 		}
 		void Biquad::setType(std::string type) { m_type = type; }
 		Biquad::Biquad(std::string type, float freq, float Q) { setType(type); setParam(freq, Q); }
@@ -206,7 +207,7 @@ namespace Filter {
 			m_looptime = time;
 		}
 
-			void FeedbackFilter::setSampleRate(int sample_rate){
+			void FeedbackFilter::setSampleRate(float sample_rate){
 			m_buffer.setSampleRate(sample_rate);
 		}
 

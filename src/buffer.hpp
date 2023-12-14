@@ -24,7 +24,7 @@ public:
 	float read();
 	void write(float new_sample);
 	void setStep(float step);
-	void setSampleRate(int sample_rate);
+	void setSampleRate(float sample_rate);
 	void setSizeWoRepitch(float size);
 	void setSize(float new_time);
 	float getActualSize();

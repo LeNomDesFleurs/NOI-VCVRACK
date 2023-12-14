@@ -15,6 +15,25 @@ private:
 
 public:
 
+	// void onSampleRateChange(const SampleRateChangeEvent & e) override{
+	// 	float sample_rate = e.sampleRate;
+	// 	for (auto filter : bpf)
+	// 	{
+	// 		filter.setSampleRate(sample_rate);
+	// 	}
+	// 	printf("%f", e.sampleRate);
+	// }
+
+	// void onSampleRateChange() override{
+		
+	// 	float sample_rate = APP->engine->getSampleRate();;
+	// 	for (auto filter : bpf)
+	// 	{
+	// 		filter.setSampleRate(sample_rate);
+		
+	// 	}
+	// }
+
 	enum ParamId {
 		FREQ_PARAM,
 		Q_PARAM,
@@ -49,6 +68,7 @@ public:
 
 
 	Sinensis() {
+		
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configParam(FREQ_PARAM, -54.f, 54.F, 0.f, "Cutoff frequency", " Hz", dsp::FREQ_SEMITONE, dsp::FREQ_C4);
 		configParam(Q_PARAM, 1.f, 40.f, 20.f, "Q");
@@ -69,6 +89,15 @@ public:
 		configOutput(MIX_OUTPUT, "Audio");
 
 		oneInFour.setDivision(4);
+	}
+
+		void onSampleRateChange(const SampleRateChangeEvent & e) override{
+
+		float sample_rate = e.sampleRate;
+		for (auto &filter : bpf)
+		{
+			filter.setSampleRate(sample_rate);
+		}
 	}
 
 	void process(const ProcessArgs& args) override {
@@ -94,6 +123,7 @@ public:
 			frequence = dsp::FREQ_C4 * pow(dsp::FREQ_SEMITONE,params[FREQ_PARAM].getValue());
 			freq_cv = params[FREQ_CV_PARAM].getValue();
 			frequence += (freq_cv * inputs[FREQ_CV_INPUT].getVoltage());
+
 			if (frequence > debug)
 				debug = frequence;
 
@@ -124,9 +154,10 @@ public:
 				output += bpf[i].process(input) / (numberOfBand);
 			}
 		}
-		
-		//set output
+	
+		// set output
 		outputs[MIX_OUTPUT].setVoltage(rack::math::clamp(output, -5.f, 5.f));
+		// outputs[MIX_OUTPUT].setVoltage(bpf[0].process(0));
 		// outputs[DEBUG].setVoltage(debug);
 	}
 };

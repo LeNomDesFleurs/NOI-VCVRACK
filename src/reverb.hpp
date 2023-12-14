@@ -49,7 +49,7 @@ void setTime();
 void setFreeze();
 void resizeComb();
 void processCombs(std::array<float, 2> inputs);
-void SetSampleRate(int sample_rate);
+void SetSampleRate(float sample_rate);
 std::array<float, 2> processStereo(std::array<float, 2> inputs);
 
 private:

@@ -53,7 +53,8 @@ namespace Filter {
 		float m_alpha;
 		// float m_Fe;
 		float m_G;
-		float m_sample_rate{ 48000 };
+		float m_sample_rate = 48000;
+		float test;
 
 	public:
 		void computeLPFCoef();
@@ -61,7 +62,7 @@ namespace Filter {
 		void computeBPFCoef();
 		void computePEAKCoef();
 		void computeCoef();
-		void setSampleRate(int sample_rate);
+		void setSampleRate(float sample_rate);
 		void setParam(float fc, float Q, float G);
 		void setParam(float frequence, float Q);
 		void setParam(float frequence);
@@ -79,7 +80,7 @@ namespace Filter {
 		float m_looptime=0.;
 	public:
 		void clearBuffer();
-		void setSampleRate(int sample_rate);
+		void setSampleRate(float sample_rate);
 		void setReadSpeed(float ratio);
 		void setGain(float rt60);
 		void overrideFeedback(float feedback);
