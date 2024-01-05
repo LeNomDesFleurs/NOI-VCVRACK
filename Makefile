@@ -1,7 +1,7 @@
 # If RACK_DIR is not defined when calling the Makefile, default to two directories above
 # RACK_DIR ?= ../..
 
-RACK_DIR = /Users/thomas/PROJETS/NOI-VCVRACK/Rack-SDK/
+# RACK_DIR = /Users/thomas/PROJETS/NOI-VCVRACK/Rack-SDK/
 # FLAGS will be passed to both the C and C++ compiler
 FLAGS +=
 CFLAGS +=
