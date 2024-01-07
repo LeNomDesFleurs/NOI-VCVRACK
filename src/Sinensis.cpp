@@ -21,7 +21,6 @@ public:
 	// 	{
 	// 		filter.setSampleRate(sample_rate);
 	// 	}
-	// 	printf("%f", e.sampleRate);
 	// }
 
 	// void onSampleRateChange() override{

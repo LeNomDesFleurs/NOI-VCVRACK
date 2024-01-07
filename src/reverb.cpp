@@ -49,7 +49,6 @@ namespace Reverb {
 
 
 StereoMoorer::StereoMoorer(noi::Reverb::StereoMoorer::Parameters params){
-	printf("moorer \n");
 	for (int i = 0; i < 2; i++)
 	{
 		m_allpasses[i].clearBuffer();

@@ -10,8 +10,6 @@ namespace buffer{
 		m_read = 0.f;
 		m_write = m_buffer_size/2.f;
 		m_step = 1.f;
-		printf("buffer \n");
-		printf("%f", m_buffer[2]);
 		std::fill(m_buffer.begin(), m_buffer.end(), 0.);
 	}
 	void RingBuffer::clearBuffer(){

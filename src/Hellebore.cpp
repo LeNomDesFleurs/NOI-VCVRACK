@@ -78,7 +78,6 @@ struct Hellebore : Module {
 
 
 	void process(const ProcessArgs& args) override {
-		// printf("test");
 		// freeze
 		m_params.freeze = (params[FREEZE_PARAM].getValue() > 0);
 		if (inputs[FREEZE_CV_INPUT].isConnected()){
