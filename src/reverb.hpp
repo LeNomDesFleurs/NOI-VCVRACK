@@ -8,9 +8,9 @@ namespace Reverb {
 
 	class Schroeder{
 	private:
-		float m_rt60;
-		float m_DryWet;
-		float m_step;
+		float m_rt60 = 4.;
+		float m_DryWet = 1.0;
+		float m_step = 1.0;
 		noi::Filter::Allpass ap1;
 		noi::Filter::Allpass ap2;
 		noi::Filter::Comb cb1;
@@ -70,9 +70,9 @@ std::array<std::array<noi::Filter::Comb, 6>, 2> m_combs = {{{
 	std::array<noi::Filter::Allpass, 2> m_allpasses{
 			noi::Filter::Allpass(),
 			noi::Filter::Allpass()};
-	noi::Reverb::StereoMoorer::Parameters m_params;
-	std::array<std::array<float, 6>, 2> m_combs_status;
-	std::array<float, 6> m_pan_coefs;
+	noi::Reverb::StereoMoorer::Parameters m_params = {false, 1.0, 0.01, 0.1, 10.0};
+	std::array<std::array<float, 6>, 2> m_combs_status = {{{0., 0., 0., 0., 0., 0.},{0., 0., 0., 0., 0., 0.}}} ;
+	std::array<float, 6> m_pan_coefs = {{0., 0., 0., 0., 0., 0.}};
 };/*StereoMoorer*/
 }/*Reverb*/
 }/*noi*/

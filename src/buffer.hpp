@@ -16,7 +16,7 @@ private:
 	float m_step=0.;
 	float m_time=0.;
 	bool m_freeze{false};
-	float m_actual_size;
+	float m_actual_size = 0.;
 	std::vector<float> m_buffer;
 public:
 	RingBuffer(float max_time);

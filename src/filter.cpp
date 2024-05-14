@@ -197,6 +197,7 @@ namespace Filter {
 		void FeedbackFilter::setGain(float rt60) {
 			m_gain = -60 * m_looptime / rt60;
 			m_gain = pow(10, (m_gain / 20));
+			m_gain = m_gain > 1. ? 0.99 : m_gain;
 		}
 		void FeedbackFilter::overrideFeedback(float feedback){
 			m_gain = feedback;

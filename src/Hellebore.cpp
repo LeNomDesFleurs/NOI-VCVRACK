@@ -103,6 +103,11 @@ struct Hellebore : Module {
 
 		moorer.updateParameters(m_params);
 		signal_outputs = moorer.processStereo(signal_inputs);
+		
+		for(int i = 0; i < 2; i++){
+			signal_outputs[i] = signal_outputs[i] < -6.f ? -6.f : signal_outputs[i];
+			signal_outputs[i] = signal_outputs[i] > 6.f ? 6.f : signal_outputs[i];
+		}
 
 		outputs[L_OUTPUT].setVoltage(signal_outputs[0]);
 		outputs[R_OUTPUT].setVoltage(signal_outputs[1]);
