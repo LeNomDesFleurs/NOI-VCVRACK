@@ -1,6 +1,7 @@
 #include "filter.hpp"
 #include <vector>
 #include <array>
+#include <math.h>
 
 namespace noi {
 

@@ -69,6 +69,10 @@
         "concepts": "cpp",
         "numeric": "cpp",
         "random": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp",
+        "iostream": "cpp",
+        "stack": "cpp"
     }
 }

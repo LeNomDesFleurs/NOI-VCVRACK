@@ -77,6 +77,7 @@ namespace Filter {
 		protected:
 		noi::buffer::RingBuffer m_buffer{2.f};
 		float m_gain=0.;
+		/// @brief time in seconds
 		float m_looptime=0.;
 	public:
 		void clearBuffer();

@@ -8,7 +8,7 @@
             "name": "Launch",
             "type" :"cppdbg",
             "request": "launch",
-            "program": "C:\\Program Files\\VCV\\Rack\\Rack.exe",
+            "program": "/Applications/VCV Rack 2 Free.app/Contents/MacOS/Rack",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -2,7 +2,7 @@
 #include "reverb.hpp"
 #include "outils.hpp"
 #include <array>
-
+#include <math.h>
 struct Hellebore : Module {
 
 	enum ParamId {
@@ -25,6 +25,7 @@ struct Hellebore : Module {
 	SIZE_CV_INPUT,
 	L_INPUT,
 	R_INPUT,
+	DRYWET_INPUT,
 	INPUTS_LEN
 	};
 	enum OutputId {
@@ -68,6 +69,7 @@ struct Hellebore : Module {
 		configInput(TIME_CV_INPUT, "Time CV");
 		configInput(L_INPUT, "Left");
 		configInput(R_INPUT, "Right");
+		configInput(DRYWET_INPUT, "Dry/Wet");
 
 		configOutput(L_OUTPUT, "Left");
 		configOutput(R_OUTPUT, "Right");
@@ -96,9 +98,10 @@ struct Hellebore : Module {
 		float time_cv = inputs[TIME_CV_INPUT].getVoltage() * params[TIME_CV_PARAM].getValue();
 		m_params.rt60 = rack::math::clamp(params[TIME_PARAM].getValue() + time_cv, 0.1f, 20.f);
 		//drywet
-		m_params.dry_wet = params[DRYWET_PARAM].getValue();
-		//input
- 		signal_inputs[0] = inputs[L_INPUT].getVoltage();
+		float dry_wet = params[DRYWET_PARAM].getValue() + (inputs[DRYWET_INPUT].getVoltage()/5);
+		m_params.dry_wet = std::max(0.0f, std::min(dry_wet, 1.0f));
+		// input
+		signal_inputs[0] = inputs[L_INPUT].getVoltage();
  		signal_inputs[1] = inputs[R_INPUT].getVoltage();
 
 		moorer.updateParameters(m_params);
@@ -125,21 +128,22 @@ struct HelleboreWidget : ModuleWidget {
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Hellebore.svg")));
 
 
-auto FREEZE_PARAMpos = Vec(25.4, 75.939);
+auto FREEZE_PARAMpos = Vec(25.4, 71.18);
 auto SIZE_PARAMpos = Vec(8.214, 46.133);
 auto TIME_PARAMpos = Vec(25.4, 28.742);
 auto VARIATION_PARAMpos = Vec(43.222, 46.133);
 auto TIME_CV_PARAMpos = Vec(25.4, 46.192);
 auto VARIATION_CV_PARAMpos = Vec(40.906, 62.362);
 auto SIZE_CV_PARAMpos = Vec(10.174, 62.362);
-auto DRYWET_PARAMpos = Vec(25.4, 103.039);
+auto DRYWET_PARAMpos = Vec(25.4, 96.69);
 
 auto TIME_CV_INPUTpos =Vec(25.4, 60.556);
 auto VARIATION_CV_INPUTpos =Vec(41.88, 80.539);
 auto SIZE_CV_INPUTpos =Vec(8.796, 80.539);
-auto FREEZE_CV_INPUTpos =Vec(25.4, 87.49);
+auto FREEZE_CV_INPUTpos =Vec(25.4, 82.72);
 auto R_INPUTpos =Vec(6.956, 95.456);
 auto L_INPUTpos =Vec(6.956, 109.792);
+auto DRYWET_INPUTpos =Vec(25.40, 110.72);
 
 auto R_OUTPUTpos = Vec(44.202, 95.749);
 auto L_OUTPUTpos = Vec(44.202, 109.792);
@@ -163,6 +167,7 @@ addInput(createInputCentered<PJ301MPort>(mm2px(SIZE_CV_INPUTpos), module, Helleb
 addInput(createInputCentered<PJ301MPort>(mm2px(VARIATION_CV_INPUTpos), module, Hellebore::VARIATION_CV_INPUT));
 addInput(createInputCentered<PJ301MPort>(mm2px(FREEZE_CV_INPUTpos), module, Hellebore::FREEZE_CV_INPUT));
 addInput(createInputCentered<PJ301MPort>(mm2px(TIME_CV_INPUTpos), module, Hellebore::TIME_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(DRYWET_INPUTpos), module, Hellebore::DRYWET_INPUT));
 
 addOutput(createOutputCentered<PJ301MPort>(mm2px(R_OUTPUTpos), module, Hellebore::R_OUTPUT));
 addOutput(createOutputCentered<PJ301MPort>(mm2px(L_OUTPUTpos), module, Hellebore::L_OUTPUT));
