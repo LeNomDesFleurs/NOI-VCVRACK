@@ -54,7 +54,6 @@ namespace Filter {
 		// float m_Fe;
 		float m_G;
 		float m_sample_rate = 48000;
-		float test;
 
 	public:
 		void computeLPFCoef();

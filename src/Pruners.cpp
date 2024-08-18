@@ -11,7 +11,6 @@ private:
 	float counter = 0;
 
     // std::vector <float> RingBuffer = {0.};
-	float buffer_size = 0;
 	PrunersRingBuffer ring_buffer = PrunersRingBuffer(20 * 48000);
 
 	// void fadeBuffer(){
@@ -25,7 +24,6 @@ private:
 	// 	}
 	// }
 enum Statut{recording, playing, thru};
-Statut statut = thru;
 bool rec_end;
 
 

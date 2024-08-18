@@ -11,7 +11,6 @@ namespace Reverb {
 	private:
 		float m_rt60 = 4.;
 		float m_DryWet = 1.0;
-		float m_step = 1.0;
 		noi::Filter::Allpass ap1;
 		noi::Filter::Allpass ap2;
 		noi::Filter::Comb cb1;

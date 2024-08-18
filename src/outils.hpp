@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <cmath>
 #include <vector>
 const float cheappi{ 3.14159265359 };
 
