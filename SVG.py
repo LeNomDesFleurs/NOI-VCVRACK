@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# usage : py SVG.py createmodule Philodendron res/Philodendron.svg position.txt  
+#                    function      slug            panel              output
+
 import sys
 import os
 import re
@@ -58,9 +61,9 @@ def create_module(slug, panel_filename=None, source_filename=None):
 		if not os.path.exists(panel_filename):
 			raise UserException(f"Panel not found at {panel_filename}.")
 
-		if source_filename and os.path.exists(source_filename):
-			if input_default(f"{source_filename} already exists. Overwrite? (y/n)", "n").lower() != "y":
-				return
+		# if source_filename and os.path.exists(source_filename):
+		# 	if input_default(f"{source_filename} already exists. Overwrite? (y/n)", "n").lower() != "y":
+		# 		return
 
 		# Read SVG XML
 		tree = xml.etree.ElementTree.parse(panel_filename)

@@ -74,4 +74,13 @@ The variation is a macro parameter that sets multiple things :
 
 The freeze latch lets you switch to read only mode, the buffers stays the same and you can freely slow down or speed up their contents.<br>
 
+# Pruners [Sampler]
+A ring buffer is an audio container that keeps rewriting itself (think ouroboros type stuff, but that stocks samples).
+Pruners gives you four reading heads that samples a part of this ring buffer. Each head has a dedicated output, plus a global mix output that you control with the `Head` parameter
+- `Position` offsets the part you're sampling
+- `Size` resizes the sampled part, from oscillation to granular type sounds
+- You can freeze the content of the ring buffer if you crank `Feedback` to its maximum.
+- Each head read speed is determined by previous heads, you set the `Speed` of the first one, and then the `Ratio` of one to another.
+
+
 # Have fun ! Feel free to contact me for any information / bug report !

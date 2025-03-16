@@ -3,55 +3,60 @@
 #include <string>
 #include <cmath>                     
 #include "outils.hpp"
-#include "Pruners.hpp"
+#include "Philodendron.h"
+
+
+
+
+
 
 struct Pruners : Module {
 private:
-    // float input, read_speed;
-	float counter = 0;
-
-    // std::vector <float> RingBuffer = {0.};
-	PrunersRingBuffer ring_buffer = PrunersRingBuffer(20 * 48000);
-
-	// void fadeBuffer(){
-	// 	float fade_time = 1000;
-	// 	for (int i = fade_time; i >= 0; i--){
-	// 		RingBuffer[i]=RingBuffer[i]*(i/fade_time)+RingBuffer[buffer_size-(fade_time-i)]*(1-(i/fade_time));
-	// 		RingBuffer.pop_back();
-	// 	}
-	// 	for (int i = 0; i < 4; i++){
-	// 	counter[i]=0;
-	// 	}
-	// }
-enum Statut{recording, playing, thru};
-bool rec_end;
-
+	noi::Philodendron::Parameters settings{
+		false, // freeze
+		0.5F,  // drywet
+		0.01f, // comb time
+		0.1f,  // read_speed
+		0.1f,  // feedback
+		1.f,   // nb_head
+		1.f,   // head_ratio
+		0.f	   // read_offset
+	};
+	noi::Philodendron philodendron;
+	// float prev_offset{};
+	std::array<float, 5> m_outputs{0., 0., 0., 0., 0.};
 
 public:
 
 	enum ParamId {
 		HEAD_PARAM,
-		RATIO_PARAM,
 		HEAD_CV_PARAM,
-		RATIO_CV_PARAM,
-		PLAYSPEED_PARAM,
-		PLAYSPEED_CV_PARAM,
-		REC_PARAM,
+
 		BUFFER_SIZE_PARAM,
 		BUFFER_SIZE_CV_PARAM,
-		LOCK_PARAM,
-		// CLEAR_PARAM,
-		// LOOP_PARAM,
-		PLAY_PARAM,
+
+		RATIO_PARAM,
+		RATIO_CV_PARAM,
+
+		PLAYSPEED_PARAM,
+		PLAYSPEED_CV_PARAM,
+
+		FEEDBACK_PARAM,
+		FEEDBACK_CV_PARAM,
+
+		POSITION_PARAM,
+		POSITION_CV_PARAM,
+
 		PARAMS_LEN
 	};
 	enum InputId {
 		HEAD_CV_INPUT,
-		REC_CV_INPUT,
 		BUFFER_SIZE_CV_INPUT,
 		RATIO_CV_INPUT,
-		AUDIO_INPUT,
 		PLAYSPEED_CV_INPUT,
+		FEEDBACK_CV_INPUT,
+		POSITION_CV_INPUT,
+		AUDIO_INPUT,
 		INPUTS_LEN
 	};
 	enum OutputId {
@@ -64,96 +69,111 @@ public:
 		OUTPUTS_LEN
 	};
 	enum LightId {
-		REC_LIGHT,
-		LOCK_LIGHT,
-		// CLEAR_LIGHT,
-		// LOOP_LIGHT,
-		PLAY_LIGHT,
+		FREEZE_LIGHT,
 		LIGHTS_LEN
 	};
 
-	Pruners() {
-		ring_buffer.clearBuffer();
-		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-		configParam(HEAD_PARAM, 1.f, 4.f, 1.f, "number of head in mix");
-		configParam(HEAD_CV_PARAM, -2.f, 2.f, 0.f, "Head CV Attenuverter");
-		configParam(BUFFER_SIZE_CV_PARAM, -2.f, 2.f, 0.f, "Buffer Size CV Attenuverter");
-		configParam(RATIO_CV_PARAM, -2.f, 2.f, 0.f, "Ratio CV Attenuverter");
-		configParam(RATIO_PARAM, -4.f, 4.f, 1.f, "ratio");
-		configParam(PLAYSPEED_PARAM, -4.f, 4.f, 1.f, "Playspeed");
-		configParam(PLAYSPEED_CV_PARAM, -1.f, 1.f, 1.f, "Playspeed CV Attenuverter");
-		configParam(REC_PARAM, 0, 1, 0, "Freeze");
-		configParam(BUFFER_SIZE_PARAM, 1, 19, 2, "Buffer Size");
-		// configParam(CLEAR_PARAM, 0, 1, 0, "Clear");
-		// configParam(LOOP_PARAM, 0, 1, 0, "Loop");
-		// configParam(PLAY_PARAM, 0, 1, 0, "Play");
-
-		configInput(AUDIO_INPUT, "Audio");
-		configInput(PLAYSPEED_CV_INPUT, "Play speed cv");
-		configParam(LOCK_PARAM, 0, 1, 0, "Lock");
-
-		configOutput(MIX_OUTPUT, "Audio");
-		configOutput(HEAD1_OUTPUT, "head 1");
-		configOutput(HEAD2_OUTPUT, "head 2");
-		configOutput(HEAD3_OUTPUT, "head 3");
-		configOutput(HEAD4_OUTPUT, "head 4");
-
+	void onSampleRateChange(const SampleRateChangeEvent &e)override{
+		// TODO
+		philodendron.reset(settings, e.sampleRate);
 	}
 
+		Pruners() : philodendron{settings, 48000}
+	{
+
+		philodendron.reset(settings, APP->engine->getSampleRate());
+
+		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
+		configParam(HEAD_PARAM, 1.f, 4.f, 1.f, "Heads");
+		configParam(RATIO_PARAM, -4.f, 4.f, 0.f, "Ratio");
+		configParam(PLAYSPEED_PARAM, -4.f, 4.f, 1.f, "Speed");
+		configParam(BUFFER_SIZE_PARAM, 0.0001f, 3.9f, 1.f, "Size");
+		configParam(FEEDBACK_PARAM, 0.f, 1.f, 0.f, "Feedback");
+		configParam(POSITION_PARAM, -1., 1.f, 0.f, "Position");
+		
+		configParam(RATIO_CV_PARAM, -2.f, 2.f, 0.f, "Ratio CV Attenuverter");
+		configParam(HEAD_CV_PARAM, -1.f, 1.f, 0.f, "Head CV Attenuverter");
+		configParam(PLAYSPEED_CV_PARAM, -2.f, 2.f, 0.f, "Speed CV Attenuverter");
+		configParam(BUFFER_SIZE_CV_PARAM, -1.4f, 1.4f, 0.f, "Size CV Attenuverter");
+		configParam(FEEDBACK_CV_PARAM, -2.f, 2.f, 0.f, "Feedback CV Attenuverter");
+		configParam(POSITION_CV_PARAM, -0.5, 0.5f, 0.f, "Position CV Attenuverter");
+
+		configInput(PLAYSPEED_CV_INPUT, "Play speed CV");
+		configInput(RATIO_CV_INPUT, "Ratio CV");
+		configInput(BUFFER_SIZE_CV_INPUT, "Size CV");
+		configInput(FEEDBACK_CV_INPUT, "Feedback CV");
+		configInput(HEAD_CV_INPUT, "Head CV");
+		configInput(POSITION_CV_INPUT, "Position CV");
+
+		configInput(AUDIO_INPUT, "Audio In");
+		
+
+		configOutput(MIX_OUTPUT, "Mix");
+		configOutput(HEAD1_OUTPUT, "Head 1");
+		configOutput(HEAD2_OUTPUT, "Head 2");
+		configOutput(HEAD3_OUTPUT, "Head 3");
+		configOutput(HEAD4_OUTPUT, "Head 4");
+	}
 
 	void process(const ProcessArgs& args) override {
 
-		
-		float ratio_param = params[RATIO_PARAM].getValue();
-		float head_param = params[HEAD_PARAM].getValue();
-		float head_cv_param = params[HEAD_CV_PARAM].getValue();
-		float head_cv = inputs[HEAD_CV_INPUT].getVoltage();
+ float ratio_param = params[RATIO_PARAM].getValue();
+ float ratio_cv = inputs[RATIO_CV_INPUT].getVoltage() * params[RATIO_CV_PARAM].getValue();
+ ratio_param += ratio_cv;
+ ratio_param = noi::Outils::clipValue(ratio_param, -4.f, 4.f);
 
-		head_param += head_cv * head_cv_param;
+ float head_param = params[HEAD_PARAM].getValue();
+ float head_cv = inputs[HEAD_CV_INPUT].getVoltage() * params[HEAD_CV_PARAM].getValue();
+ head_param += head_cv;
+ head_param = noi::Outils::clipValue(head_param, 0.f, 4.f);
 
-		float ratio_value = ratio_param + (inputs[RATIO_CV_INPUT].getVoltage() * params[RATIO_CV_PARAM].getValue());
+ float play_speed_param = params[PLAYSPEED_PARAM].getValue();
+ float play_speed_cv = inputs[PLAYSPEED_CV_INPUT].getVoltage() * params[PLAYSPEED_CV_PARAM].getValue();
+ play_speed_param += play_speed_cv;
+ play_speed_param = noi::Outils::clipValue(play_speed_param, -4.f, 4.f);
 
-		float play_speed_value = params[PLAYSPEED_PARAM].getValue() + (inputs[PLAYSPEED_CV_INPUT].getVoltage() * params[PLAYSPEED_CV_PARAM].getValue());
+ float buffer_size = params[BUFFER_SIZE_PARAM].getValue();
+ float buffer_cv = params[BUFFER_SIZE_CV_PARAM].getValue() * inputs[BUFFER_SIZE_CV_INPUT].getVoltage();
+ buffer_size += buffer_cv;
+ buffer_size = noi::Outils::clipValue(buffer_size, 0.0001f, 3.9f);
 
-		float buffer_size = params[BUFFER_SIZE_PARAM].getValue() * 48000;
-		float buffer_cv = params[BUFFER_SIZE_CV_PARAM].getValue() * inputs[BUFFER_SIZE_CV_INPUT].getVoltage();
-		buffer_size += buffer_cv;
-		// buffer_size = noi::Outils::clip(buffer_size, 1.f, 20.f);
+ float feedback = params[FEEDBACK_PARAM].getValue();
+ float feedback_cv = params[FEEDBACK_CV_PARAM].getValue() * inputs[FEEDBACK_CV_INPUT].getVoltage();
+ feedback += feedback_cv;
+ feedback = noi::Outils::clipValue(feedback, 0.f, 1.f);
 
-		ring_buffer.setParameters(play_speed_value, ratio_value, buffer_size, params[LOCK_PARAM].getValue());
+ float position = params[POSITION_PARAM].getValue();
+ float position_cv = params[POSITION_CV_PARAM].getValue() * inputs[POSITION_CV_INPUT].getVoltage();
+ position += position_cv;
+ position = noi::Outils::clipValue(position, -1.f, 1.f);
 
-		float output = 0;
-		float debug = 0.;
+ settings.comb_time = buffer_size;
+ settings.read_speed = play_speed_param - 1.f; //dirty fix
+ settings.feedback = feedback;
+ settings.head_ratio = ratio_param;
+ settings.nb_head = head_param;
+ settings.read_offset = position;
+ settings.freeze = settings.feedback >= 1.0;
 
-		// buffer_size=static_cast<float>(RingBuffer.size());
+ philodendron.updateParameters(settings);
 
-		//reset counter
-		if (not params[REC_PARAM].getValue()){
-			counter = 0;
-			ring_buffer.writeSample(inputs[AUDIO_INPUT].getVoltage());
-		}
-			for(int i = 0; i < 4 ; i++){
-			float sample = ring_buffer.readHead(i);
-			output += sample * (i <= head_param);
-			outputs[i].setVoltage(sample);
-			}
-			output /= 4.;
+ float input_sample = inputs[AUDIO_INPUT].getVoltage();
 
-		//Fade end of buffer on beginning of buffer
-		//executer a chaque sample ???
-		if (rec_end && buffer_size > 1000){
-			rec_end=false;
-		}		
+ m_outputs = philodendron.process(input_sample);
+ float mix = m_outputs[0];
+ float output1 = m_outputs[1];
+ float output2 = m_outputs[2];
+ float output3 = m_outputs[3];
+ float output4 = m_outputs[4];
 
-		// outputs[0].setVoltage(recording);
-		// outputs[1].setVoltage(playing);
-		outputs[MIX_OUTPUT].setVoltage(output);
-		outputs[DEBUG_OUTPUT].setVoltage(debug);
-		// lights[PLAY_LIGHT].setBrightness(playing);
-		lights[REC_LIGHT].setBrightness(params[REC_PARAM].getValue());
-		lights[LOCK_LIGHT].setBrightness(params[LOCK_PARAM].getValue());
-		// lights[LOOP_LIGHT].setBrightness(loop_param);
-		// lights[CLEAR_LIGHT].setBrightness(clear_param);
+ outputs[MIX_OUTPUT].setVoltage(mix);
+ outputs[HEAD1_OUTPUT].setVoltage(output1);
+ outputs[HEAD2_OUTPUT].setVoltage(output2);
+ outputs[HEAD3_OUTPUT].setVoltage(output3);
+ outputs[HEAD4_OUTPUT].setVoltage(output4);
+
+ lights[FREEZE_LIGHT].setBrightness(settings.freeze);
+
 
 	}
 };
@@ -165,61 +185,69 @@ struct PrunersWidget :
 						setModule(module);
 				setPanel(createPanel(asset::plugin(pluginInstance, "res/Pruners.svg")));
 //      ./SVG.py createmodule position res/Pruners.svg  
-				
+		
+auto POSITION_CV_PARAMpos = Vec(8.871, 17.076);
+auto PLAYSPEED_CV_PARAMpos = Vec(77.848, 17.076);
+auto POSITION_PARAMpos = Vec(25.445, 26.868);
+auto PLAYSPEED_PARAMpos = Vec(60.551, 26.733);
+auto FEEDBACK_CV_PARAMpos = Vec(52.743, 44.965);
+auto BUFFER_SIZE_CV_PARAMpos = Vec(32.931, 44.965);
+auto BUFFER_SIZE_PARAMpos = Vec(14.281, 53.654);
+auto FEEDBACK_PARAMpos = Vec(72.773, 54.417);
+auto RATIO_CV_PARAMpos = Vec(6.666, 77.953);
+auto HEAD_CV_PARAMpos = Vec(79.365, 77.483);
+auto RATIO_PARAMpos = Vec(28.275, 84.119);
+auto HEAD_PARAMpos = Vec(57.748, 84.069);
 
-auto REC_PARAMpos = Vec(5.189, 29.906);
-auto BUFFER_SIZE_CV_PARAMpos = Vec(45.333, 29.906);
-auto PLAYSPEED_CV_PARAMpos = Vec(25.302, 34.404);
-auto BUFFER_SIZE_PARAMpos = Vec(41.944, 40.413);
-auto PLAYSPEED_PARAMpos = Vec(25.302, 50.361);
-auto HEAD_PARAMpos = Vec(9.98, 76.123);
-auto RATIO_PARAMpos = Vec(40.608, 76.123);
-auto HEAD_CV_PARAMpos = Vec(16.242, 92.089);
-auto RATIO_CV_PARAMpos = Vec(34.349, 92.089);
+auto FEEDBACK_CV_INPUTpos =Vec(52.886, 60.367);
+auto BUFFER_SIZE_CV_INPUTpos =Vec(33.153, 60.367);
+auto AUDIO_INPUTpos =Vec(43.159, 17.338);
+auto POSITION_CV_INPUTpos =Vec(7.3, 32.178);
+auto PLAYSPEED_CV_INPUTpos =Vec(79.026, 32.178);
+auto RATIO_CV_INPUTpos =Vec(6.666, 91.777);
+auto HEAD_CV_INPUTpos =Vec(79.365, 91.308);
 
-auto REC_CV_INPUTpos =Vec(9.458, 16.861);
-auto PLAY_CV_INPUTpos =Vec(41.064, 16.861);
-auto PLAYSPEED_CV_INPUTpos =Vec(25.261, 20.415);
-auto AUDIO_INPUTpos =Vec(25.375, 67.609);
-auto HEAD_CV_INPUTpos =Vec(5.817, 100.242);
-auto RATIO_CV_INPUTpos =Vec(44.934, 100.242);
+auto HEAD1_OUTPUTpos = Vec(8.02, 108.341);
+auto HEAD4_OUTPUTpos = Vec(78.613, 108.153);
+auto HEAD2_OUTPUTpos = Vec(24.521, 111.569);
+auto HEAD3_OUTPUTpos = Vec(62.484, 111.51);
+auto MIX_OUTPUTpos = Vec(43.18, 112.301);
 
-auto HEAD1_OUTPUTpos = Vec(5.817, 112.03);
-auto HEAD2_OUTPUTpos = Vec(15.596, 112.03);
-auto MIX_OUTPUTpos = Vec(25.375, 112.03);
-auto HEAD3_OUTPUTpos = Vec(35.155, 112.03);
-auto HEAD4_OUTPUTpos = Vec(44.934, 112.03);
+auto FREEZE_LIGHTpos = Vec(78.714, 65.004);
 
-auto LOCK_PARAM_PARAMpos = Vec(42.857, 58.902);
 
-				addParam(createParamCentered<Trimpot>(mm2px(PLAYSPEED_CV_PARAMpos), module, Pruners::PLAYSPEED_CV_PARAM));
-				addParam(createParamCentered<Trimpot>(mm2px(RATIO_CV_PARAMpos), module, Pruners::RATIO_CV_PARAM));
-				addParam(createParamCentered<Trimpot>(mm2px(HEAD_CV_PARAMpos), module, Pruners::HEAD_CV_PARAM));
 
-				addParam(createParamCentered<Trimpot>(mm2px(BUFFER_SIZE_CV_PARAMpos), module, Pruners::BUFFER_SIZE_CV_PARAM));
-				addParam(createParamCentered<RoundBlackKnob>(mm2px(BUFFER_SIZE_PARAMpos), module, Pruners::BUFFER_SIZE_PARAM));
+addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(POSITION_PARAMpos), module, Pruners::POSITION_PARAM));
+addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(PLAYSPEED_PARAMpos), module, Pruners::PLAYSPEED_PARAM));
+addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(FEEDBACK_PARAMpos), module, Pruners::FEEDBACK_PARAM));
+addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(RATIO_PARAMpos), module, Pruners::RATIO_PARAM));
+addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(HEAD_PARAMpos), module, Pruners::HEAD_PARAM));
+addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(BUFFER_SIZE_PARAMpos), module, Pruners::BUFFER_SIZE_PARAM));
 
-				addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(PLAYSPEED_PARAMpos), module, Pruners::PLAYSPEED_PARAM));
-				addParam(createParamCentered<RoundBlackKnob>(mm2px(HEAD_PARAMpos), module, Pruners::HEAD_PARAM));
-				addParam(createParamCentered<RoundBlackKnob>(mm2px(RATIO_PARAMpos), module, Pruners::RATIO_PARAM));
-				addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(REC_PARAMpos), module, Pruners::REC_PARAM, Pruners::REC_LIGHT));
-				addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(LOCK_PARAM_PARAMpos), module, Pruners::LOCK_PARAM, Pruners::LOCK_LIGHT));
-				// addParam(createLightParamCentered<VCVLightBezelLatch<>>(mm2px(PLAY_PARAMpos), module, Pruners::PLAY_PARAM, Pruners::PLAY_LIGHT));
+addParam(createParamCentered<Trimpot>(mm2px(POSITION_CV_PARAMpos), module, Pruners::POSITION_CV_PARAM));
+addParam(createParamCentered<Trimpot>(mm2px(PLAYSPEED_CV_PARAMpos), module, Pruners::PLAYSPEED_CV_PARAM));
+addParam(createParamCentered<Trimpot>(mm2px(FEEDBACK_CV_PARAMpos), module, Pruners::FEEDBACK_CV_PARAM));
+addParam(createParamCentered<Trimpot>(mm2px(BUFFER_SIZE_CV_PARAMpos), module, Pruners::BUFFER_SIZE_CV_PARAM));
+addParam(createParamCentered<Trimpot>(mm2px(RATIO_CV_PARAMpos), module, Pruners::RATIO_CV_PARAM));
+addParam(createParamCentered<Trimpot>(mm2px(HEAD_CV_PARAMpos), module, Pruners::HEAD_CV_PARAM));
 
-				// addInput(createInputCentered<PJ301MPort>(mm2px(Q_CV_INPUTpos), module, Pruners::Q_CV_INPUT));
-				// addInput(createInputCentered<PJ301MPort>(mm2px(Q_CV_INPUTpos), module, Pruners::Q_CV_INPUT));
-				addInput(createInputCentered<PJ301MPort>(mm2px(PLAYSPEED_CV_INPUTpos), module, Pruners::PLAYSPEED_CV_INPUT));
-				addInput(createInputCentered<PJ301MPort>(mm2px(AUDIO_INPUTpos), module, Pruners::AUDIO_INPUT));
-				addInput(createInputCentered<PJ301MPort>(mm2px(RATIO_CV_INPUTpos), module, Pruners::RATIO_CV_INPUT));
-				addInput(createInputCentered<PJ301MPort>(mm2px(HEAD_CV_INPUTpos), module, Pruners::HEAD_CV_INPUT));
-				addInput(createInputCentered<PJ301MPort>(mm2px(REC_CV_INPUTpos), module, Pruners::REC_CV_INPUT));
-				addInput(createInputCentered<PJ301MPort>(mm2px(PLAY_CV_INPUTpos), module, Pruners::BUFFER_SIZE_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(FEEDBACK_CV_INPUTpos), module, Pruners::FEEDBACK_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(BUFFER_SIZE_CV_INPUTpos), module, Pruners::BUFFER_SIZE_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(POSITION_CV_INPUTpos), module, Pruners::POSITION_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(PLAYSPEED_CV_INPUTpos), module, Pruners::PLAYSPEED_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(RATIO_CV_INPUTpos), module, Pruners::RATIO_CV_INPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(HEAD_CV_INPUTpos), module, Pruners::HEAD_CV_INPUT));
 
-				addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Pruners::MIX_OUTPUT));
-				addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD1_OUTPUTpos), module, Pruners::HEAD1_OUTPUT));
-				addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD2_OUTPUTpos), module, Pruners::HEAD2_OUTPUT));
-				addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD3_OUTPUTpos), module, Pruners::HEAD3_OUTPUT));
-				addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD4_OUTPUTpos), module, Pruners::HEAD4_OUTPUT));
+addInput(createInputCentered<PJ301MPort>(mm2px(AUDIO_INPUTpos), module, Pruners::AUDIO_INPUT));
+
+addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD1_OUTPUTpos), module, Pruners::HEAD1_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD4_OUTPUTpos), module, Pruners::HEAD4_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(MIX_OUTPUTpos), module, Pruners::MIX_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD3_OUTPUTpos), module, Pruners::HEAD3_OUTPUT));
+addOutput(createOutputCentered<PJ301MPort>(mm2px(HEAD2_OUTPUTpos), module, Pruners::HEAD2_OUTPUT));
+
+addChild(createLightCentered<SmallLight<WhiteLight>>(mm2px(FREEZE_LIGHTpos), module, Pruners::FREEZE_LIGHT));
+
 	}
 };
 

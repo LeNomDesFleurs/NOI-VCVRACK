@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.tidal": "haskell",
         "vector": "cpp",
         "__bit_reference": "cpp",
         "__bits": "cpp",
@@ -73,6 +74,11 @@
         "fstream": "cpp",
         "iomanip": "cpp",
         "iostream": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "charconv": "cpp",
+        "execution": "cpp",
+        "forward_list": "cpp",
+        "print": "cpp",
+        "queue": "cpp"
     }
 }

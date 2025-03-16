@@ -6,4 +6,5 @@
 .DS_Store
 /Rack-SDK
 /REF
+position.txt
 *.dylib
