@@ -226,10 +226,21 @@ namespace noi
 		}
 		Biquad::Biquad(std::string type) { setType(type); }
 
+
+		FeedbackFilter::FeedbackFilter(float max_time, float initial_delay, int _sample_rate)
+		: m_buffer{buffer::RingBuffer(max_time, initial_delay, _sample_rate)}
+		{}
+
 		void FeedbackFilter::clearBuffer()
 		{
 			m_buffer.clearBuffer();
 		}
+
+		void FeedbackFilter::reset(float max_time, float initial_delay, int _sample_rate){
+			m_looptime = initial_delay;
+			m_buffer.reset(max_time, initial_delay, _sample_rate);
+		}
+
 		void FeedbackFilter::setReadSpeed(float ratio)
 		{
 			m_buffer.setStep(ratio);
@@ -245,9 +256,11 @@ namespace noi
 			m_gain = feedback;
 		}
 
+		/// @brief time in second
+		/// @param time 
 		void FeedbackFilter::resize(float time)
 		{
-			m_buffer.setSize(time);
+			m_buffer.setSize(time * 1000);
 			m_looptime = time;
 		}
 

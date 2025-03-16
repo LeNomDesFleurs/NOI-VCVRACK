@@ -1,19 +1,29 @@
 #include "reverb.hpp"
 
+using namespace noi::Filter;
+
 namespace noi
 {
 
 	namespace Reverb
 	{
 
-		Schroeder::Schroeder()
-		{
-			ap1.setReadSpeed(1.0);
-			ap2.setReadSpeed(1.0);
-			cb1.setReadSpeed(1.0);
-			cb2.setReadSpeed(1.0);
-			cb3.setReadSpeed(1.0);
-			cb4.setReadSpeed(1.0);
+		Schroeder::Schroeder(int sample_rate)
+		: ap1{Allpass(.005, .005, sample_rate)}
+		, ap2{Allpass(.007, .007, sample_rate)}
+		, cb1{Comb(2.0, 0.200, sample_rate)}
+		, cb2{Comb(2.0, 0.120, sample_rate)}
+		, cb3{Comb(2.0, 0.560, sample_rate)}
+		, cb4{Comb(2.0, 0.055, sample_rate)}
+		{}
+
+		void Schroeder::reset(int sample_rate){
+			ap1.reset(.005, .005, sample_rate);
+			ap2.reset(.007, .007, sample_rate);
+			cb1.reset(2.0, .200, sample_rate);
+			cb2.reset(2.0, .120, sample_rate);
+			cb3.reset(2.0, .560, sample_rate);
+			cb4.reset(2.0, .055, sample_rate);
 		}
 		void Schroeder::setStep(float speed)
 		{
@@ -48,19 +58,45 @@ namespace noi
 			comb_sum = ap2.process(comb_sum);
 			return noi::Outils::dryWet(input, comb_sum, m_DryWet);
 		}
+//MOORER -------------------------------------
+static const float MAX_COMB_SIZE = 4.f;
 
-		StereoMoorer::StereoMoorer(noi::Reverb::StereoMoorer::Parameters params)
-		{
-			for (int i = 0; i < 2; i++)
+StereoMoorer::StereoMoorer(StereoMoorer::Parameters parameters, int sample_rate)
+: m_combs {{{Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate)
+},{
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate),
+    Comb(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate)
+}}}
+, m_allpasses { {Allpass(0.006, 0.006, sample_rate), Allpass(0.006, 0.006, sample_rate)} }
+, m_params {parameters}
+, m_combs_status {{{0, 0, 0, 0, 0, 0},{0, 0, 0, 0, 0, 0}}}
+, m_pan_coefs {0, 0, 0, 0, 0, 0}
+{
+  updateParameters(parameters);
+  m_allpasses[0].setGain(0.9);
+  m_allpasses[1].setGain(0.9);
+};
+
+void StereoMoorer::reset(StereoMoorer::Parameters parameters, int sample_rate){
+	for (int i = 0; i < 2; i++)
 			{
-				m_allpasses[i].clearBuffer();
-				for (int j = 0; j < 6; j++)
+				m_allpasses[i].reset(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate);
+				for (auto &comb : m_combs[i])
 				{
-					m_combs[i][j].clearBuffer();
+					comb.reset(MAX_COMB_SIZE, MAX_COMB_SIZE / 2.f, sample_rate);
+					m_params.rt60 *= m_params.variation;
 				}
 			}
-			updateParameters(params);
-		}
+}
 
 		void StereoMoorer::updateParameters(noi::Reverb::StereoMoorer::Parameters params)
 		{

@@ -40,8 +40,8 @@ struct Hellebore : Module {
 	};
 
 	noi::Filter::LPF SlewLPF{20};
-	noi::Reverb::StereoMoorer::Parameters m_params{false, 1.F, 0.01f, 0.1f, 10.f};
-	noi::Reverb::StereoMoorer moorer {m_params};
+	noi::Reverb::StereoMoorer::Parameters m_params{false, 1.f, 0.01f, 0.1f, 10.f};
+	noi::Reverb::StereoMoorer moorer;
 	std::array<float, 2> signal_outputs = {0, 0};
 	std::array<float, 2> signal_inputs = {0, 0};
 
@@ -49,8 +49,9 @@ struct Hellebore : Module {
 	moorer.SetSampleRate(e.sampleRate);
 	}
 
-	Hellebore() {
-
+	Hellebore()
+	: moorer{m_params, static_cast<int>(APP->engine->getSampleRate())}
+	 {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 
 		configParam(VARIATION_PARAM, 0.f, 0.2f, 0.1, "Variation");
@@ -74,8 +75,6 @@ struct Hellebore : Module {
 		configOutput(L_OUTPUT, "Left");
 		configOutput(R_OUTPUT, "Right");
 		configOutput(TEST_OUTPUT, "TEST");
-
-		
 	}
 
 

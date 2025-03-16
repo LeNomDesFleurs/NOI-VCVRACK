@@ -76,7 +76,8 @@ public:
 		   }
 		};
 	
-	Wilt() {
+	Wilt()
+	:schroeder{static_cast<int>(APP->engine->getSampleRate())} {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configParam(SPEED_PARAM, -2.f, 2.f, 1.f, "Speed");
 		configInput(SIGNAL_INPUT, "Audio");

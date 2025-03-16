@@ -3,15 +3,26 @@
 namespace noi{
 namespace buffer{
 
-	RingBuffer::RingBuffer(float max_time){
-		m_buffer_size = noi::Outils::convertMsToSample(max_time, m_sample_rate);
-		size_t buffer_int = static_cast<size_t> (m_buffer_size);
-		m_buffer.resize(buffer_int);
-		m_read = 0.f;
-		m_write = m_buffer_size/2.f;
-		m_step = 1.f;
+	RingBuffer::RingBuffer(float max_time, float initial_delay, int _sample_rate)
+		: m_sample_rate{static_cast<float>(_sample_rate)},
+		  m_buffer{*new std::vector<float>(max_time * m_sample_rate, 0)},
+		  m_write{(initial_delay * m_sample_rate)},
+		  m_buffer_size{(float)(m_buffer.size() - 1)},
+		  m_time{initial_delay},
+		  m_actual_size {m_write }
+	{
 		std::fill(m_buffer.begin(), m_buffer.end(), 0.);
 	}
+
+	void RingBuffer::reset(float max_time, float initial_delay, int _sample_rate){
+		m_sample_rate = (float) _sample_rate;
+		m_write = (int)(initial_delay * m_sample_rate);
+		m_actual_size = (float)m_write;
+		m_buffer.resize(max_time * m_sample_rate);
+		fill(m_buffer.begin(), m_buffer.end(), 0.f);
+		m_buffer_size = (int)m_buffer.size() - 1;
+	}
+
 	void RingBuffer::clearBuffer(){
 		m_buffer.clear();
 	}

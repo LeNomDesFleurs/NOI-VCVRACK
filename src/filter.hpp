@@ -74,7 +74,7 @@ namespace Filter {
 
 	class FeedbackFilter {
 		protected:
-		noi::buffer::RingBuffer m_buffer{2.f};
+		noi::buffer::RingBuffer m_buffer;
 		float m_gain=0.;
 		/// @brief time in seconds
 		float m_looptime=0.;
@@ -85,14 +85,15 @@ namespace Filter {
 		void setGain(float rt60);
 		void overrideFeedback(float feedback);
 		void resize(float time);
-		FeedbackFilter()=default;
+		FeedbackFilter(float max_time, float initial_delay, int _sample_rate);
+		void reset(float max_time, float initial_delay, int _sample_rate);
 		// FeedbackFilter() : FeedbackFilter(){};
 	};
 
 	class Allpass : public FeedbackFilter{
 		public:
 		float process(float input);
-		Allpass()=default;
+		Allpass(float max_time, float initial_delay, int _sample_rate):FeedbackFilter(max_time, initial_delay, _sample_rate){};
 	};
 
 	class Comb : public FeedbackFilter{
@@ -101,7 +102,8 @@ namespace Filter {
 		float process(float input);
 		float processFreezed();
 		void setFreeze(bool statut);
-		Comb()=default;
+		Comb(float max_time, float initial_delay, int _sample_rate):FeedbackFilter(max_time, initial_delay, _sample_rate){};
+
 	}; /*Comb*/
 
 }/*Filter*/

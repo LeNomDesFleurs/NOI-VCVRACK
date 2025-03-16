@@ -19,7 +19,8 @@ namespace Reverb {
 		noi::Filter::Comb cb4;
 		
 	public:
-		Schroeder();
+		Schroeder(int sample_rate);
+		void reset(int sample_rate);
 		void setStep(float speed);
 		void setTime(float rt60);
 		void setDryWet(float DryWet);
@@ -42,7 +43,8 @@ struct Parameters{
 		rt60;
 };
 
-StereoMoorer(noi::Reverb::StereoMoorer::Parameters params);
+StereoMoorer(noi::Reverb::StereoMoorer::Parameters params, int setSampleRate);
+void reset(noi::Reverb::StereoMoorer::Parameters params, int setSampleRate);
 void updateParameters(noi::Reverb::StereoMoorer::Parameters params);
 void setPan();
 void setTime();
@@ -53,23 +55,8 @@ void SetSampleRate(float sample_rate);
 std::array<float, 2> processStereo(std::array<float, 2> inputs);
 
 private:
-std::array<std::array<noi::Filter::Comb, 6>, 2> m_combs = {{{
-			noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb()},
-			{noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb(),
-			noi::Filter::Comb()}}
-};
-	std::array<noi::Filter::Allpass, 2> m_allpasses{
-			noi::Filter::Allpass(),
-			noi::Filter::Allpass()};
+	std::array<std::array<noi::Filter::Comb, 6>, 2> m_combs;
+	std::array<noi::Filter::Allpass, 2> m_allpasses;
 	noi::Reverb::StereoMoorer::Parameters m_params = {false, 1.0, 0.01, 0.1, 10.0};
 	std::array<std::array<float, 6>, 2> m_combs_status = {{{0., 0., 0., 0., 0., 0.},{0., 0., 0., 0., 0., 0.}}} ;
 	std::array<float, 6> m_pan_coefs = {{0., 0., 0., 0., 0., 0.}};
