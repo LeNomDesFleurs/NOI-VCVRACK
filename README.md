@@ -30,7 +30,7 @@ If you set the frequency to 2000Hz, ratio to 1.5 and band parameter to 3:<br>
 You'll get 3 bandpassed version of your sound at 2000Hz, 3000Hz and 4500Hz.<br>
 Here with white noise in input.<br>
 
-![image](https://user-images.githubusercontent.com/117636251/212921153-b8240dd6-806a-485d-9e3d-f4fb1ce3b8fb.png)
+![image](modules.png)
 
 
 # Sunflower [Circular Mixer]
