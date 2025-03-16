@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <vector>
+#include <array>
 const float cheappi{ 3.14159265359 };
 
 namespace noi {
