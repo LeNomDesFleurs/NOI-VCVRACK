@@ -142,8 +142,8 @@ float slewValue(float new_value, float old_value, float slew_factor) {
   float equalPowerCrossfade(float dry, float wet, float parameter) {
 	parameter = 1. - parameter;
 	parameter = (parameter - 0.5) * 2;
-	float volumes_dry = sqrt(0.5f * (1.f + parameter));
-	float volumes_wet = sqrt(0.5f * (1.f - parameter));
+	float volumes_dry = std::sqrt(0.5f * (1.f + parameter));
+	float volumes_wet = std::sqrt(0.5f * (1.f - parameter));
 	return (dry * volumes_dry) + (wet * volumes_wet);
   }
   
@@ -151,8 +151,8 @@ float slewValue(float new_value, float old_value, float slew_factor) {
 	std::array<float, 2> output;
 	  parameter = 1. - parameter;
 	  parameter = (parameter - 0.5) * 2;
-	  float volumes_dry = sqrt(0.5f * (1.f + parameter));
-	  float volumes_wet = sqrt(0.5f * (1.f - parameter));
+	  float volumes_dry = std::sqrt(0.5f * (1.f + parameter));
+	  float volumes_wet = std::sqrt(0.5f * (1.f - parameter));
 	for (int i = 0; i < 2; i++) {
 	  output[i] = (dry[i] * volumes_dry) + (wet[i] * volumes_wet);
 	}
