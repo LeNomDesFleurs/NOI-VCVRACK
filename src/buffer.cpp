@@ -40,16 +40,16 @@ namespace buffer{
 			int_read = 0;
 		if (int_read > m_buffer_size -2)
 			int_read = m_buffer_size - 2;
-			// get previous sample
-			float sample1 = m_buffer[int_read];
-			// get next sample
-			float sample2 = m_buffer[int_read + 1];
-			// linear interpolation
-			float output = ((sample2 - sample1) * fractional) + sample1;
-			// workaround for the bug
-			if (output > 10. || output < -10.)
-			{
-				clearBuffer();
+        // get previous sample
+        float sample1 = m_buffer[int_read];
+        // get next sample
+        float sample2 = m_buffer[int_read + 1];
+        // linear interpolation
+        float output = ((sample2 - sample1) * fractional) + sample1;
+        // workaround for the bug
+        if (output > 10. || output < -10.)
+        {
+            clearBuffer();
 		}
 		return output;
 	}
