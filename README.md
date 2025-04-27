@@ -3,22 +3,24 @@
 ![image](Modules.png)
 
 
-Hello and welcome to the NOI Manual !<br>
-Link to the VCV library :<br>
-https://library.vcvrack.com/NOI
+Hello and welcome to the NOI Manual 📚 !<br>
+[Link to the VCV library](https://library.vcvrack.com/NOI)
+
+Those [modules are usable in MetaModule](https://github.com/Ericxgao/metamodule-noi) thanks to [Ericxgao](https://github.com/Ericxgao)
 
 # Global UI tips
-- Input are circled
 
-- Output are on a black background
+- ⌾ Inputs are circled 
 
-- Plain lines are audio path
+- ⚫ Outputs are on a black background 
 
-- Dotted lines are CV path
+- ⎸ Plain lines are audio pathes 
 
-- Little cross at the end of a line indicate normalisation (replaced by the input if connected)
+- ⦙ Dotted lines are CV pathes 
 
-- Trimpot are almost always Attenuverter for CV input.
+- ⤫ Little cross at the end of a line indicate normalisation (replaced by the input if connected)
+
+- +/- Trimpot are almost always Attenuverter for CV input 
 
 # Sinensis [filter bank]
 
