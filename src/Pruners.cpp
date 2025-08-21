@@ -125,7 +125,7 @@ public:
  float head_param = params[HEAD_PARAM].getValue();
  float head_cv = inputs[HEAD_CV_INPUT].getVoltage() * params[HEAD_CV_PARAM].getValue();
  head_param += head_cv;
- head_param = noi::Outils::clipValue(head_param, 0.f, 4.f);
+ head_param = noi::Outils::clipValue(head_param, 1.f, 4.f);
 
  float play_speed_param = params[PLAYSPEED_PARAM].getValue();
  float play_speed_cv = inputs[PLAYSPEED_CV_INPUT].getVoltage() * params[PLAYSPEED_CV_PARAM].getValue();

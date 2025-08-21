@@ -69,10 +69,10 @@ std::array<float, 5> Philodendron::process(float input) {
     float feedback;
       feedback = input + (m_outputs[channel::MIX] * m_parameters.feedback);
       feedback = hpf.processhpf(feedback);
-      if (feedback <= -1.f) feedback = -1.f;
-      if (feedback >= 1.f) feedback = 1.f;
-      if (m_outputs[channel::MIX] <= -1.f) m_outputs[channel::MIX] = -1.f;
-      if (m_outputs[channel::MIX] >= 1.f) m_outputs[channel::MIX] = 1.f;
+      if (feedback <= -10.f) feedback = -10.f;
+      if (feedback >= 10.f) feedback = 10.f;
+      if (m_outputs[channel::MIX] <= -10.f) m_outputs[channel::MIX] = -10.f;
+      if (m_outputs[channel::MIX] >= 10.f) m_outputs[channel::MIX] = 10.f;
 
     if (!m_parameters.freeze){
       m_ring_buffer.writeSample(feedback);

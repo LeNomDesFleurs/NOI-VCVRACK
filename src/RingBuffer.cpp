@@ -52,7 +52,7 @@ void StereoRingBuffer::setSampleRate(float _sample_rate) {
 
 void StereoRingBuffer::setHeadsReadSpeed(float base_read_speed, float ratio){
   heads[0].read_speed = base_read_speed;
-  if (ratio > 0) {
+  if (ratio >= 0) {
     ratio += 1.f;
     for (int i = 1; i < NUMBER_OF_HEADS; i++)
     {
