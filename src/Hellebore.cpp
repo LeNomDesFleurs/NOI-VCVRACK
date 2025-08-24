@@ -127,14 +127,23 @@ struct HelleboreWidget : ModuleWidget {
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Hellebore.svg"), asset::plugin(pluginInstance, "res/HelleboreDark.svg")));
 
 
-auto FREEZE_PARAMpos = Vec(25.4, 71.18);
-auto SIZE_PARAMpos = Vec(8.214, 46.133);
-auto TIME_PARAMpos = Vec(25.4, 28.742);
-auto VARIATION_PARAMpos = Vec(43.222, 46.133);
-auto TIME_CV_PARAMpos = Vec(25.4, 46.192);
-auto VARIATION_CV_PARAMpos = Vec(40.906, 62.362);
-auto SIZE_CV_PARAMpos = Vec(10.174, 62.362);
-auto DRYWET_PARAMpos = Vec(25.4, 96.69);
+// auto FREEZE_PARAMpos = Vec(25.4, 71.18);
+// auto SIZE_PARAMpos = Vec(8.214, 46.133);
+// auto TIME_PARAMpos = Vec(25.4, 28.742);
+// auto VARIATION_PARAMpos = Vec(43.222, 46.133);
+// auto TIME_CV_PARAMpos = Vec(25.4, 46.192);
+// auto VARIATION_CV_PARAMpos = Vec(40.906, 62.362);
+// auto SIZE_CV_PARAMpos = Vec(10.174, 62.362);
+// auto DRYWET_PARAMpos = Vec(25.4, 96.69);
+
+auto FREEZE_PARAMpos = Vec(25.4, 71.176);
+auto SIZE_PARAMpos = Vec(8.214, 46.534);
+auto TIME_PARAMpos = Vec(25.4, 29.46);
+auto VARIATION_PARAMpos = Vec(43.222, 46.534);
+auto TIME_CV_PARAMpos = Vec(25.4, 46.432);
+auto VARIATION_CV_PARAMpos = Vec(40.906, 62.601);
+auto SIZE_CV_PARAMpos = Vec(10.174, 62.601);
+auto DRYWET_PARAMpos = Vec(25.4, 97.09);
 
 auto TIME_CV_INPUTpos =Vec(25.4, 60.556);
 auto VARIATION_CV_INPUTpos =Vec(41.88, 80.539);

@@ -122,11 +122,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.207422"
-     inkscape:cx="3.3128435"
-     inkscape:cy="266.6839"
+     inkscape:zoom="1.3468813"
+     inkscape:cx="102.08769"
+     inkscape:cy="276.93607"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      units="mm"
      inkscape:snap-bbox="true"
@@ -134,10 +134,10 @@
      inkscape:bbox-nodes="false"
      inkscape:snap-bbox-edge-midpoints="false"
      inkscape:window-width="1728"
-     inkscape:window-height="1057"
-     inkscape:window-x="0"
-     inkscape:window-y="32"
-     inkscape:window-maximized="1"
+     inkscape:window-height="909"
+     inkscape:window-x="471"
+     inkscape:window-y="190"
+     inkscape:window-maximized="0"
      inkscape:snap-bbox-midpoints="true"
      inkscape:snap-nodes="false"
      inkscape:pagecheckerboard="0"
@@ -181,9 +181,9 @@
        style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect16734);display:inline"><tspan
          x="-201.01953"
          y="223.37212"
-         id="tspan2"><tspan
+         id="tspan4"><tspan
            dx="0 30.820312 25.292969"
-           id="tspan1">DEL</tspan></tspan></text>
+           id="tspan3">DEL</tspan></tspan></text>
     <circle
        style="display:inline;fill:#c6c6c6;stroke:#c6c6c6;stroke-width:0.3408;fill-opacity:1;stroke-opacity:1"
        id="circle574"
@@ -1143,58 +1143,51 @@
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="path1939"
-       cx="12.823709"
-       cy="50.360989"
+       cx="12.823698"
+       cy="51.078556"
        r="2.2489583"
        inkscape:label="FREQ" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3479"
-       cx="6.4348187"
-       cy="29.90588"
+       cx="6.434835"
+       cy="30.145437"
        r="2.2489583"
        inkscape:label="FREQ_CV" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3481"
-       cx="38.273933"
-       cy="50.361004"
+       cx="38.273926"
+       cy="51.078552"
        r="2.2489583"
        inkscape:label="Q" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3483"
-       cx="45.333035"
-       cy="29.90588"
+       cx="45.333046"
+       cy="30.14543"
        r="2.2489583"
        inkscape:label="Q_CV" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3485"
-       cx="12.353084"
-       cy="76.600395"
+       cx="12.353064"
+       cy="77.001099"
        r="2.2489583"
        inkscape:label="BAND" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3487"
-       cx="38.498878"
-       cy="76.719681"
+       cx="38.49889"
+       cy="77.120384"
        r="2.2489583"
        inkscape:label="RATIO" />
     <circle
        style="display:inline;fill:#ff0000;stroke:#000000;stroke-width:0;paint-order:stroke fill markers"
        id="circle3489"
-       cx="8.3116426"
-       cy="94.374802"
+       cx="8.3116484"
+       cy="94.614349"
        r="2.2489583" />
-    <circle
-       style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
-       id="circle3491"
-       cx="8.3116426"
-       cy="94.374802"
-       r="2.2489583"
-       inkscape:label="BAND_CV" />
     <circle
        style="display:inline;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:bevel;stroke-dasharray:none;stroke-dashoffset:0;paint-order:normal"
        id="circle2143"
@@ -1262,8 +1255,8 @@
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle979"
-       cx="43.213646"
-       cy="94.374802"
+       cx="43.213623"
+       cy="94.614388"
        r="2.2489583"
        inkscape:label="RATIO_CV" />
     <circle

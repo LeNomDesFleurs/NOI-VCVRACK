@@ -167,15 +167,22 @@ struct SinensisWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Sinensis.svg"), asset::plugin(pluginInstance, "res/SinensisDark.svg")));
 
-		auto FREQ_CV_PARAMpos = Vec(6.435, 29.906);
-		auto Q_CV_PARAMpos = Vec(45.333, 29.906);
-		auto FREQ_PARAMpos = Vec(12.824, 50.361);
-		auto Q_PARAMpos = Vec(38.274, 50.361);
-		auto BAND_PARAMpos = Vec(12.353, 76.6);
-		auto RATIO_PARAMpos = Vec(38.499, 76.72);
-		auto BAND_CV_PARAMpos = Vec(8.312, 94.375);
-		auto RATIO_CV_PARAMpos = Vec(43.214, 94.375);
-
+		// auto FREQ_CV_PARAMpos = Vec(6.435, 29.906);
+		// auto Q_CV_PARAMpos = Vec(45.333, 29.906);
+		// auto FREQ_PARAMpos = Vec(12.824, 50.361);
+		// auto Q_PARAMpos = Vec(38.274, 50.361);
+		// auto BAND_PARAMpos = Vec(12.353, 76.6);
+		// auto RATIO_PARAMpos = Vec(38.499, 76.72);
+		auto BAND_CV_PARAMpos = Vec(8.312, 94.614);
+		// auto RATIO_CV_PARAMpos = Vec(43.214, 94.375);
+		auto FREQ_CV_PARAMpos = Vec(6.435, 30.145);
+		auto Q_CV_PARAMpos = Vec(45.333, 30.145);
+		auto FREQ_PARAMpos = Vec(12.824, 51.079);
+		auto Q_PARAMpos = Vec(38.274, 51.079);
+		auto BAND_PARAMpos = Vec(12.353, 77.001);
+		auto RATIO_PARAMpos = Vec(38.499, 77.12);
+		auto RATIO_CV_PARAMpos = Vec(43.214, 94.614);
+		
 		auto FREQ_CV_INPUTpos = Vec(16.637, 16.861);
 		auto Q_CV_INPUTpos = Vec(34.706, 16.861);
 		auto SIGNAL_INPUTpos = Vec(25.613, 34.015);

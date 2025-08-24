@@ -174,7 +174,7 @@ struct SunflowerWidget : ModuleWidget {
 		addParam(createParamCentered<RoundHugeBlackKnob>
 			(mm2px(Vec(56.117672, 35.177231)), module, Sunflower::PARAM_DIFFUSION));
 		addParam(createParamCentered<Trimpot>
-			(mm2px(Vec(35.56, 34.87)), module, Sunflower::PARAM_AMP));
+			(mm2px(Vec(35.56, 35.107)), module, Sunflower::PARAM_AMP));
 
 		addParam(createParamCentered<Trimpot>
 			(mm2px(Vec(35.56002592289244, 64.43645038308394)), module, Sunflower::PARAM_A));

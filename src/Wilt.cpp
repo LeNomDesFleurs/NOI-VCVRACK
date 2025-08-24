@@ -154,13 +154,21 @@ struct WiltWidget : ModuleWidget {
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Wilt.svg"), asset::plugin(pluginInstance, "res/WiltDark.svg")));
 
 	
-auto REDUX_MOD_PARAMpos = Vec(52.544, 24.405);
+// auto REDUX_MOD_PARAMpos = Vec(52.544, 24.405);
+// auto INTFLOAT_PARAMpos = Vec(52.552, 42.065);
+// auto REDUX_PARAMpos = Vec(31.441, 45.341);
+// auto TONE_PARAMpos = Vec(11.101, 57.535);
+// auto RT60_PARAMpos = Vec(44.606, 71.836);
+// auto SPEED_PARAMpos = Vec(15.497, 87.317);
+// auto DW_PARAMpos = Vec(51.522, 93.393);
+
+auto REDUX_MOD_PARAMpos = Vec(52.544, 24.661);
 auto INTFLOAT_PARAMpos = Vec(52.552, 42.065);
-auto REDUX_PARAMpos = Vec(31.441, 45.341);
-auto TONE_PARAMpos = Vec(11.101, 57.535);
-auto RT60_PARAMpos = Vec(44.606, 71.836);
-auto SPEED_PARAMpos = Vec(15.497, 87.317);
-auto DW_PARAMpos = Vec(51.522, 93.393);
+auto REDUX_PARAMpos = Vec(31.441, 46.059);
+auto TONE_PARAMpos = Vec(11.101, 57.936);
+auto RT60_PARAMpos = Vec(44.606, 73.035);
+auto SPEED_PARAMpos = Vec(15.497, 88.244);
+auto DW_PARAMpos = Vec(51.522, 93.793);
 
 auto REDUX_MOD_INPUTpos =Vec(35.506, 18.014);
 auto SIGNAL_INPUTpos =Vec(14.15, 25.083);

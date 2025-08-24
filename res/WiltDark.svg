@@ -110,9 +110,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.7117454"
-     inkscape:cx="54.91471"
-     inkscape:cy="227.25343"
+     inkscape:zoom="1.047498"
+     inkscape:cx="-7.6372464"
+     inkscape:cy="261.57569"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -121,11 +121,11 @@
      inkscape:snap-page="true"
      inkscape:bbox-nodes="false"
      inkscape:snap-bbox-edge-midpoints="false"
-     inkscape:window-width="1728"
+     inkscape:window-width="1336"
      inkscape:window-height="1057"
-     inkscape:window-x="0"
+     inkscape:window-x="399"
      inkscape:window-y="32"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      inkscape:snap-bbox-midpoints="true"
      inkscape:snap-nodes="false"
      inkscape:pagecheckerboard="0"
@@ -189,9 +189,9 @@
        style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect16734)"><tspan
          x="-201.01953"
          y="223.37212"
-         id="tspan2"><tspan
+         id="tspan4"><tspan
            dx="0 30.820312 25.292969"
-           id="tspan1">DEL</tspan></tspan></text>
+           id="tspan3">DEL</tspan></tspan></text>
     <circle
        style="display:inline;fill:#c6c6c6;fill-opacity:1;stroke:#c6c6c6;stroke-width:0.3408;stroke-opacity:1"
        id="circle574"
@@ -4661,15 +4661,15 @@
     <circle
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle2022"
-       cx="51.521553"
-       cy="93.392807"
+       cx="51.521557"
+       cy="93.793457"
        r="2.2489583"
        inkscape:label="DW" />
     <circle
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle2024"
        cx="44.605667"
-       cy="71.835976"
+       cy="73.035049"
        r="2.2489583"
        inkscape:label="RT60" />
     <circle
@@ -4689,17 +4689,17 @@
     <circle
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle2032"
-       cx="52.54401"
-       cy="24.405025"
+       cx="52.544048"
+       cy="24.660559"
        r="2.2489583"
        inkscape:label="REDUX_MOD" />
     <circle
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle2038"
        cx="31.441498"
-       cy="45.340996"
-       r="2.2489583"
-       inkscape:label="REDUX" />
+       cy="46.058559"
+       inkscape:label="REDUX"
+       r="2.2489583" />
     <circle
        style="display:inline;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linejoin:bevel"
        id="path6028"
@@ -4717,15 +4717,15 @@
     <circle
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle1910"
-       cx="11.100641"
-       cy="57.535023"
+       cx="11.100645"
+       cy="57.935699"
        r="2.2489583"
        inkscape:label="TONE" />
     <circle
        style="display:inline;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle2094"
-       cx="15.497073"
-       cy="87.316788"
+       cx="15.497072"
+       cy="88.244202"
        r="2.2489583"
        inkscape:label="SPEED" />
   </g>

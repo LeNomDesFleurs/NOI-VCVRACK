@@ -158,11 +158,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.7137163"
-     inkscape:cx="83.736145"
-     inkscape:cy="255.58489"
+     inkscape:zoom="2.3163692"
+     inkscape:cx="79.650515"
+     inkscape:cy="309.96786"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      units="mm"
      inkscape:snap-bbox="true"
@@ -213,9 +213,9 @@
        style="font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;white-space:pre;shape-inside:url(#rect16734);display:inline"><tspan
          x="-201.01953"
          y="223.37212"
-         id="tspan5"><tspan
+         id="tspan2"><tspan
            dx="0 30.820312 25.292969"
-           id="tspan4">DEL</tspan></tspan></text>
+           id="tspan1">DEL</tspan></tspan></text>
     <circle
        style="display:inline;fill:#c6c6c6;stroke:#c6c6c6;stroke-width:0.3408;fill-opacity:1;stroke-opacity:1"
        id="circle574"
@@ -343,7 +343,7 @@
        style="font-size:10.6667px;line-height:1.25;font-family:'Eras Light ITC';-inkscape-font-specification:'Eras Light ITC';word-spacing:0px;white-space:pre;shape-inside:url(#rect4513);display:inline"><tspan
          x="196.76172"
          y="25.574428"
-         id="tspan6">,`,`,`,`,`,`,`,`,`,`</tspan></text>
+         id="tspan3">,`,`,`,`,`,`,`,`,`,`</tspan></text>
     <g
        aria-label=",`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,`,"
        transform="matrix(0.26458333,0,0,0.26458333,-51.424789,170.74976)"
@@ -1122,45 +1122,45 @@
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="path1939"
-       cx="-43.222351"
-       cy="46.132858"
+       cx="-43.222324"
+       cy="46.533504"
        r="2.2489583"
        inkscape:label="VARIATION"
        transform="scale(-1,1)" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3479"
-       cx="25.4"
-       cy="46.192482"
+       cx="25.399996"
+       cy="46.432083"
        r="2.2489583"
        inkscape:label="TIME_CV" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3481"
-       cx="25.4"
-       cy="28.742035"
+       cx="25.400002"
+       cy="29.459606"
        r="2.2489583"
        inkscape:label="TIME" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3483"
-       cx="-40.905602"
-       cy="62.361679"
+       cx="-40.905575"
+       cy="62.601223"
        r="2.2489583"
        inkscape:label="VARIATION_CV"
        transform="scale(-1,1)" />
     <circle
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3485"
-       cx="25.400032"
-       cy="96.689209"
+       cx="25.399975"
+       cy="97.089859"
        r="2.2489583"
        inkscape:label="DRYWET" />
     <ellipse
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle3487"
-       cx="8.2140408"
-       cy="-46.132858"
+       cx="8.2140398"
+       cy="-46.533543"
        inkscape:label="SIZE"
        transform="scale(1,-1)"
        rx="2.2489583"
@@ -1242,8 +1242,8 @@
     <ellipse
        style="display:inline;fill:#ff0000;stroke:none;stroke-width:0;paint-order:stroke fill markers"
        id="circle979"
-       cx="10.174001"
-       cy="62.361679"
+       cx="10.173981"
+       cy="62.601223"
        inkscape:label="SIZE_CV"
        rx="2.2490001"
        ry="2.2489583" />
