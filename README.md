@@ -1,6 +1,10 @@
 # NOI
 
+![image](ModulesDark.png)
 ![image](Modules.png)
+
+Now available in dark mode !
+`View > Use dark panels if available`
 
 
 Hello and welcome to the NOI Manual 📚 !<br>
@@ -12,7 +16,7 @@ Those [modules are usable in MetaModule](https://github.com/Ericxgao/metamodule-
 
 - ⌾ Inputs are circled 
 
-- ⚫ Outputs are on a black background 
+- ⚫ Outputs are on a solid background 
 
 - ⎸ Plain lines are audio pathes 
 
@@ -25,7 +29,7 @@ Those [modules are usable in MetaModule](https://github.com/Ericxgao/metamodule-
 # Sinensis [filter bank]
 
 Sinensis is a parallel band-pass bank (6 of them).<br>
-The two big knobs set the frequency and the Q of all filters (it oscillate at high Q).<br>
+The two big knobs set the frequency and the Q of all filters (it oscillates at high Q).<br>
 The normal ones set the number of band and the relationship between them ("ratio").<br>
 If a frequency goes beyond 15kHz or 20Hz, it is folded back in audible range.<br>
 If you set the frequency to 2000Hz, ratio to 1.5 and band parameter to 3:<br>
@@ -37,7 +41,7 @@ Here with white noise in input.<br>
 
 # Sunflower [Circular Mixer]
 Sunflower crossfade between 12 inputs.<br>
-The Knobs with an arrow let you choose the input, the diffusion how nerby input will bleed in.<br>
+The Knobs with an arrow let you choose the input, the diffusion how nearby input will bleed in.<br>
 The latch let you lock on connected input only.<br>
 
 # Dicotyledon [Logic Processor]
