@@ -151,7 +151,7 @@ public:
 struct WiltWidget : ModuleWidget {
 	WiltWidget(Wilt* module) {
 		setModule(module);
-		setPanel(createPanel(asset::plugin(pluginInstance, "res/Wilt.svg")));
+		setPanel(createPanel(asset::plugin(pluginInstance, "res/Wilt.svg"), asset::plugin(pluginInstance, "res/WiltDark.svg")));
 
 	
 auto REDUX_MOD_PARAMpos = Vec(52.544, 24.405);

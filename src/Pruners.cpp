@@ -183,7 +183,7 @@ struct PrunersWidget :
 				ModuleWidget{
 					PrunersWidget(Pruners * module){
 						setModule(module);
-				setPanel(createPanel(asset::plugin(pluginInstance, "res/Pruners.svg")));
+				setPanel(createPanel(asset::plugin(pluginInstance, "res/Pruners.svg"), asset::plugin(pluginInstance, "res/PrunersDark.svg")));
 //      ./SVG.py createmodule position res/Pruners.svg  
 		
 auto POSITION_CV_PARAMpos = Vec(8.871, 17.076);

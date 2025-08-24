@@ -165,7 +165,7 @@ public:
 struct SinensisWidget : ModuleWidget {
 	SinensisWidget(Sinensis* module) {
 		setModule(module);
-		setPanel(createPanel(asset::plugin(pluginInstance, "res/Sinensis.svg")));
+		setPanel(createPanel(asset::plugin(pluginInstance, "res/Sinensis.svg"), asset::plugin(pluginInstance, "res/SinensisDark.svg")));
 
 		auto FREQ_CV_PARAMpos = Vec(6.435, 29.906);
 		auto Q_CV_PARAMpos = Vec(45.333, 29.906);

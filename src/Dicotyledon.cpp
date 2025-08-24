@@ -94,7 +94,7 @@ public:
 struct DicotyledonWidget : ModuleWidget {
 	DicotyledonWidget(Dicotyledon* module) {
 		setModule(module);
-		setPanel(createPanel(asset::plugin(pluginInstance, "res/Dicotyledon.svg")));
+		setPanel(createPanel(asset::plugin(pluginInstance, "res/Dicotyledon.svg"), asset::plugin(pluginInstance, "res/DicotyledonDark.svg")));
 
 		//
 		//			INPUT

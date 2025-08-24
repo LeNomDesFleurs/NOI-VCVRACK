@@ -164,7 +164,7 @@ struct Sunflower : Module {
 struct SunflowerWidget : ModuleWidget {
 	SunflowerWidget(Sunflower* module) {
 		setModule(module);
-		setPanel(createPanel(asset::plugin(pluginInstance, "res/Sunflower.svg")));
+		setPanel(createPanel(asset::plugin(pluginInstance, "res/Sunflower.svg"), asset::plugin(pluginInstance, "res/SunflowerDark.svg")));
 
 		//
 		//					PARAM

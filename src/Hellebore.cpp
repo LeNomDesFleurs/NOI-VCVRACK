@@ -124,7 +124,7 @@ struct Hellebore : Module {
 struct HelleboreWidget : ModuleWidget {
 	HelleboreWidget(Hellebore* module) {
 		setModule(module);
-		setPanel(createPanel(asset::plugin(pluginInstance, "res/Hellebore.svg")));
+		setPanel(createPanel(asset::plugin(pluginInstance, "res/Hellebore.svg"), asset::plugin(pluginInstance, "res/HelleboreDark.svg")));
 
 
 auto FREEZE_PARAMpos = Vec(25.4, 71.18);
