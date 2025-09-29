@@ -1,9 +1,7 @@
 #pragma once
 
 
-#include <string>
 #include <math.h>
-#include <vector>
 #include "outils.hpp"
 #include <rack.hpp>
 #include "buffer.hpp"
@@ -13,6 +11,15 @@
 namespace noi {
 
 namespace Filter {
+
+	enum FilterTypes
+	{
+		LowPass,
+		BandPass,
+		HighPass,
+		Peak
+	};
+
 	//alpass biquad
 	class BPF {
 	private:
@@ -40,19 +47,19 @@ namespace Filter {
 	 class Biquad {
 
 	private:
-		std::string m_type;
+		FilterTypes m_type {noi::Filter::FilterTypes::LowPass};
 		float m_b[3]={0., 0., 0.};
 		float m_a[3]={0., 0., 0.};
 		float m_b_gain[3]={0., 0., 0.};
 		float m_a_gain[3]={0., 0., 0.};
-		float m_fc;
-		float m_Q;
-		float m_omega;
-		float m_cosomega;
-		float m_sinomega;
-		float m_alpha;
+		float m_fc {0.0};
+		float m_Q {0.0};
+		float m_omega {0.0};
+		float m_cosomega {0.0};
+		float m_sinomega {0.0};
+		float m_alpha {0.0};
 		// float m_Fe;
-		float m_G;
+		float m_G {0.0};
 		float m_sample_rate = 48000;
 
 	public:
@@ -65,11 +72,11 @@ namespace Filter {
 		void setParam(float fc, float Q, float G);
 		void setParam(float frequence, float Q);
 		void setParam(float frequence);
-		std::string getType();
+		FilterTypes getType();
 		float process(float b0);
-		void setType(std::string type);
-		Biquad(std::string type, float freq, float Q);
-		Biquad(std::string type);
+		void setType(FilterTypes type);
+		Biquad(FilterTypes type, float freq, float Q);
+		Biquad(FilterTypes type);
 	 }; /*Biquad*/
 
 	class FeedbackFilter {

@@ -9,7 +9,7 @@
 struct Wilt : Module {
 private:
 	int counter{};
-	noi::Filter::Biquad lpf{ "LPF", 10000.f, 0.707 };
+	noi::Filter::Biquad lpf{ noi::Filter::FilterTypes::LowPass, 10000.f, 0.707 };
 	noi::Reverb::Schroeder schroeder;
 	float redux_input,
 	redux_output,

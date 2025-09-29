@@ -5,7 +5,7 @@
 
 struct Sinensis : Module {
 private:
-	noi::Filter::Biquad bpf[6]{ {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"}, {"BPF"} };
+	noi::Filter::Biquad bpf[6]{{noi::Filter::FilterTypes::BandPass}, {noi::Filter::FilterTypes::BandPass}, {noi::Filter::FilterTypes::BandPass}, {noi::Filter::FilterTypes::BandPass}, {noi::Filter::FilterTypes::BandPass}, {noi::Filter::FilterTypes::BandPass}};
 	//PARAM
 	float frequence, Q, numberOfBand, ratio;
 	float freq_cv;
@@ -166,7 +166,6 @@ struct SinensisWidget : ModuleWidget {
 	SinensisWidget(Sinensis* module) {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Sinensis.svg"), asset::plugin(pluginInstance, "res/SinensisDark.svg")));
-
 		// auto FREQ_CV_PARAMpos = Vec(6.435, 29.906);
 		// auto Q_CV_PARAMpos = Vec(45.333, 29.906);
 		// auto FREQ_PARAMpos = Vec(12.824, 50.361);

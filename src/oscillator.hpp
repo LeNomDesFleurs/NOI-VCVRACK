@@ -9,21 +9,36 @@
 #include "outils.hpp"
 namespace noi{
 	namespace Oscillator{
+
+		enum OscillatorTypes
+		{
+			Saw,
+			Square,
+			Triangle
+		};
+
 		//Ramp based oscillator with triangle and square output
 		class RampBipolar {
 		private:
 			float m_statut{0};
-			std::string m_type;
+			noi::Oscillator::OscillatorTypes m_type;
 		public:
 			float Process(float freq, float sampleRate) {
 				m_statut += 10 / (sampleRate / freq);
 				if (m_statut > 5) { m_statut = -5; }
-				if (m_type == "SAW") { return m_statut; }
-				else if (m_type == "SQR") { return (m_statut > 0) ? 5 : -5; }
-				else if (m_type == "TRI") { return (abs(m_statut) - 2.5) * 2 ;}
-				else{return 0;}
+				switch(m_type){
+					case noi::Oscillator::OscillatorTypes::Saw:
+					return m_statut;
+					break;
+					case noi::Oscillator::OscillatorTypes::Square:
+					return (m_statut > 0) ? 5 : -5;
+					break;
+					case noi::Oscillator::OscillatorTypes::Triangle:
+					return (abs(m_statut) - 2.5) * 2;
+					break;
+				}
 			}
-			RampBipolar(std::string type) { m_type = type; }
+			RampBipolar(noi::Oscillator::OscillatorTypes type) { m_type = type; }
 		};
 
 		class Wind {

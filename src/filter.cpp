@@ -132,23 +132,22 @@ namespace noi
 			m_cosomega = cos(m_omega);
 			m_sinomega = sin(m_omega);
 			m_alpha = m_sinomega / (2 * m_Q);
-			if (m_type == "PEAK")
-			{
+
+			switch (m_type) { 
+			case noi::Filter::FilterTypes::Peak: 
 				computePEAKCoef();
-			}
-			else if (m_type == "LPF")
-			{
+				break;
+			case noi::Filter::FilterTypes::LowPass:
 				computeLPFCoef();
-			}
-			else if (m_type == "HPF")
-			{
-				computeHPFCoef();
-			}
-			else if (m_type == "BPF")
-			{
+				break;
+			case noi::Filter::FilterTypes::BandPass:
 				computeBPFCoef();
-			}
+				break;
+			case noi::Filter::FilterTypes::HighPass:
+				computeHPFCoef();
+				break;
 		}
+	}
 
 		void Biquad::setParam(float fc, float Q, float G)
 		{
@@ -180,7 +179,7 @@ namespace noi
 			}
 			computeCoef();
 		}
-		std::string Biquad::getType() { return m_type; }
+		noi::Filter::FilterTypes Biquad::getType() { return m_type; }
 
 		void Biquad::setSampleRate(float sample_rate)
 		{
@@ -218,18 +217,20 @@ namespace noi
 			return m_a[0];
 			// return m_sample_rate;
 		}
-		void Biquad::setType(std::string type) { m_type = type; }
-		Biquad::Biquad(std::string type, float freq, float Q)
+		void Biquad::setType(noi::Filter::FilterTypes type) { m_type = type; }
+		Biquad::Biquad(noi::Filter::FilterTypes type, float freq, float Q)
 		{
 			setType(type);
 			setParam(freq, Q);
 		}
-		Biquad::Biquad(std::string type) { setType(type); }
+		Biquad::Biquad(noi::Filter::FilterTypes type) { setType(type); }
 
 
 		FeedbackFilter::FeedbackFilter(float max_time, float initial_delay, int _sample_rate)
-		: m_buffer{buffer::RingBuffer(max_time, initial_delay, _sample_rate)}
-		{}
+		:
+					m_buffer{buffer::RingBuffer(max_time, initial_delay, _sample_rate)}
+					{
+					}
 
 		void FeedbackFilter::clearBuffer()
 		{
