@@ -20,4 +20,5 @@ extern Model* modelSunflower;
 extern Model* modelSinensis;
 extern Model* modelHellebore;
 extern Model* modelPruners;
+extern Model* modelMarcotage;
 #endif /*PLUGIN*/

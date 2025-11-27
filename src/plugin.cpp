@@ -18,5 +18,5 @@ void init(Plugin* p) {
 	p->addModel(modelHellebore);
 	// p->addModel(modelMyModule);
 	p->addModel(modelPruners);
-	// p->addModel(modelPhilodendron);
+	p->addModel(modelMarcotage);
 }

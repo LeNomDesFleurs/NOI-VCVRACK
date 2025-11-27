@@ -19,6 +19,12 @@
             "description": "granular reverb",
             "tags": ["Digital", "Effect"]
         },
+          {
+            "slug": "Marcotage",
+            "name": "Marcotage",
+            "description": "buffer battle",
+            "tags": ["Digital", "Effect"]
+        },
         {
             "slug": "Wilt",
             "name": "Wilt",
