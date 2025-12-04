@@ -42,7 +42,7 @@ struct Marcotage : Module {
 
 	std::array<float, 2> signal_outputs = {0, 0};
 	std::array<float, 2> signal_inputs = {0, 0};
-    TugBuffer tugbuffer{80000};
+    TugBuffer tugbuffer{4000};
 
     void onSampleRateChange(const SampleRateChangeEvent & e) override{
 	tugbuffer.setSampleRate(e.sampleRate);
